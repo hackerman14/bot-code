@@ -32,22 +32,91 @@ client.on('message', message => {
     }
 
     if (message.content.includes("siri")) {
-        message.channel.send("i'm not smart as ai lol")
+        message.channel.send("i guess ")
     }
 
     if (message.content.includes("alexa")) {
-        message.channel.send("you can go purchase one in amazon")
+        message.channel.send("you can go purchase one on amazon")
     }
-  
+
     if (message.content.startsWith("bot.exe has stopped working")) {
         message.channel.send("bot.exe has stopped working")
     }
   
-
     if (message.content.startsWith(`${prefix}help`)) {
-        message.channel.send("**Here's the command list!** \n`rh!help` - Shows this command list! \n`rh!about` - Shows you the info about the bot! \n`rh!useless` - Tells you a useless fact! \n`rh!skeppy` - Tells you a random Skeppy meme! \n`rh!ping` - Replies you the respond time for the bot! \n`rh!annoy` - Sends people a DM to annoy them! \n`rh!spam` - Spams messages! *(WARNING: THIS MAY EXPLODE THE CHAT, RECOMMENDED NOT TO USE!)*")
+        message.channel.send({
+            embed: {
+                color: 0x33cc33,
+                title: "Command List",
+                description: "**Here's all the available commands!**",
+                fields: [{
+                        name: "rh!help",
+                        value: "Shows this command list!"
+                    },
+                    {
+                        name: "rh!about",
+                        value: "Shows you the info about the bot!"
+                    },
+                    {
+                        name: "rh!useless",
+                        value: "Tells you a random useless fact!"
+                    },
+                    {
+                        name: "rh!skeppy",
+                        value: "Tells you a random Skeppy meme!"
+                    },
+                    {
+                        name: "rh!ping",
+                        value: "Replies you the respond time of the bot!"
+                    },
+                    {
+                        name: "rh!annoy",
+                        value: "Sends people a DM to annoy them!"
+                    },
+                    {
+                        name: "rh!spam",
+                        value: "Spams messages!"
+                    },
+                ],
+            }
+        });
     }
 
+    if (message.content.startsWith(`${prefix}about`)) {
+        message.channel.send({
+            embed: {
+                color: 0x33cc33,
+                title: "About This Bot",
+                description: "**The information about this bot!**",
+                fields: [{
+                        name: "Bot Name",
+                        value: "hackerman14"
+                    },
+                    {
+                        name: "Creator",
+                        value: "Raymond#1725"
+                    },
+                    {
+                        name: "Host",
+                        value: "Glitch.com"
+                    },
+                    {
+                        name: "Always Online",
+                        value: "LNGZL. Development"
+                    },
+                    {
+                        name: "Code Source",
+                        value: "[raymond-1227/hackerman14-bot](https://github.com/raymond-1227/hackerman14-bot)"
+                    },
+                    {
+                        name: "rh!annoy",
+                        value: "Sends people a DM to annoy them!"
+                    }
+                ],
+            }
+        });
+    }
+  
     if (message.content.startsWith(`${prefix}about`)) {
         message.channel.send("**About this Bot** \nBot Name: Raymond \nCreator: Raymond#1725 \nHost: Glitch.com \nAlways Online: LNGZL. Development")
     }
@@ -74,8 +143,8 @@ client.on('message', message => {
         mentionedUser.send('Am I a joke to you?');
         message.channel.send("Annoyed " + mentionedUser + "! (Oh wait, I annoyed them 2 times!)");
     }
-  
-    if (message.content.startsWith(`${prefix}spam`)) {  
+
+    if (message.content.startsWith(`${prefix}spam`)) {
         message.channel.send("bot.exe has stopped working")
     }
 })
