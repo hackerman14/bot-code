@@ -1,4 +1,4 @@
-<img align="right" width="140" height="140" src="https://discordapp.com/channels/457611176558460948/609430876626878476/622729946145488936">
+<img align="right" width="140" height="140" src="https://cdn.discordapp.com/attachments/609430876626878476/622729942895034368/Avatar.png">
 
 #### hackerman14 bot
 The world's worst ever Discord bot bringing quality content to your Discord server.
