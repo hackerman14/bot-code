@@ -21,7 +21,7 @@ hackerman14 is a trash Discord bot aimed at bringing fun to your Discord serer. 
 		- It lacks permission to `Send Messages` or `View Channel`.
 		- You typed the wrong prefix for the bot.
 		- The command doesn't exist.
-    - You typed the command with error grammars. (For example, the command is `rh!help`, but you typed `rh!Help`.)
+    		- You typed the command with error grammars. (For example, the command is `rh!help`, but you typed `rh!Help`.)
 		- None of these apply to you? Contact `Raymond#1725` via DM or join our Discord server for help!
 - <u>How can I contribute (suggestions, code, etc)?</u>
 	- You can help me by suggesting me what features should I add via my Discord server or my DM. (But plead don't spam my DM!)
