@@ -33,4 +33,4 @@ hackerman14 is a trash Discord bot aimed at bringing fun to your Discord serer. 
 
 #### Credits
 - Developer: `Raymond#1725`
-- Library: [Discord.js](https://discord.js.org)
+- Library: [discord.js](https://discord.js.org)
