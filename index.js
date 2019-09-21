@@ -1,6 +1,9 @@
 const Discord = require('discord.js');
+const {
+    RichEmbed
+} = require('discord.js');
 const client = new Discord.Client();
-const prefix = 'rh!'
+const prefix = 'rh!';
 const http = require('http');
 const express = require('express');
 const app = express();
@@ -42,7 +45,7 @@ client.on('message', message => {
     if (message.content.includes("siri")) {
         message.channel.send("tim cook was here")
     }
-  
+
     if (message.content.includes("cortana")) {
         message.channel.send("bill gates was here (oh wait nvm bill gates has already retired from microsoft)")
     }
@@ -54,8 +57,8 @@ client.on('message', message => {
         message.channel.send({
             embed: {
                 color: 0x33cc33,
-                title: "Command List",
-                description: "**Here's all the available commands!**",
+                title: "**Command List**",
+                description: "Here's all the available commands!",
                 fields: [{
                         name: "`rh!help`",
                         value: "Shows this command list!"
@@ -80,6 +83,10 @@ client.on('message', message => {
                         name: "`rh!annoy`",
                         value: "Sends people a DM to annoy them!"
                     },
+                    {
+                        name: "`rh!omg`",
+                        value: "Something interesting..."
+                    }
                 ],
             }
         });
@@ -89,8 +96,8 @@ client.on('message', message => {
         message.channel.send({
             embed: {
                 color: 0xff3300,
-                title: "About This Bot",
-                description: "**The information about this bot!**",
+                title: "**About This Bot**",
+                description: "The information about this bot!",
                 fields: [{
                         name: "Bot Name",
                         value: "hackerman14"
@@ -114,8 +121,8 @@ client.on('message', message => {
                     {
                         name: "Library",
                         value: "[Discord.js](https://discord.js.org)"
-                    }                
-                   ],
+                    }
+                ],
             }
         });
     }
@@ -134,14 +141,46 @@ client.on('message', message => {
     }
 
     if (message.content.startsWith(`${prefix}ping`)) {
-        message.channel.send("Your ping is " + Math.round(client.ping) + " ms");
+        message.channel.send({
+            embed: {
+                color: 0x0099ff,
+                title: "**Ping Pong!**",
+                description: "Your ping is " + Math.round(client.ping) + " ms",
+                fields: [],
+            }
+        });
     }
 
     if (message.content.startsWith(`${prefix}annoy`)) {
         const mentionedUser = message.mentions.users.first();
         if (!mentionedUser) return message.channel.send("dude mention someone to continue annoying someone lol");
-        mentionedUser.send('Am I a joke to you?');
-        message.channel.send("Annoyed " + mentionedUser + "! (Oh wait, I annoyed them 2 times!)");
+        mentionedUser.send({
+            embed: {
+                color: 0xff9900,
+                title: "**People Annoyer™**",
+                description: "Am I a joke to you?",
+                fields: [],
+            }
+        })
+        message.channel.send({
+            embed: {
+                color: 0xff9900,
+                title: "**People Annoyer™**",
+                description: "Annoyed " + mentionedUser + "!",
+                fields: [],
+            }
+        })
+    }
+
+    if (message.content.startsWith(`${prefix}omg`)) {
+        message.channel.send({
+            embed: {
+                color: 0xff33cc,
+                title: "**World's First Code Ever Written**",
+                description: "Hello, World!",
+                fields: [],
+            }
+        })
     }
 
 })
