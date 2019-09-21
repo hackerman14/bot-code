@@ -6,7 +6,7 @@ The world's worst ever Discord bot bringing quality content to your Discord serv
 
 [Invite hackerman14](https://discordapp.com/oauth2/authorize?client_id=619613322903420929&scope=bot&permissions=3072) | [My Server](https://discord.gg/fy6nBMg)
 - - -
-hackerman14 is a trash Discord bot aimed at bringing fun to your Discord serer. We focus on keeping our commands clean, simple and to the point, giving you the worst bot to play with.
+hackerman14 is a trash Discord bot aimed at bringing fun to your Discord server. We focus on keeping our commands clean, simple and to the point, giving you the worst bot to play with.
 
 #### Features
 - Unstable Uptime
