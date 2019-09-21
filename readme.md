@@ -9,7 +9,7 @@ The world's worst ever Discord bot bringing quality content to your Discord serv
 hackerman14 is a trash Discord bot aimed at bringing fun to your Discord server. We focus on keeping our commands clean, simple and to the point, giving you the worst bot to play with.
 
 #### Features
-- Unstable Uptime
+- Unstable Uptime (Maybe)
 - Trash Commands
 - More functions will be available in the future!
 
