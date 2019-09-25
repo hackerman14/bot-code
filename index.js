@@ -4,6 +4,8 @@ const {
 } = require('discord.js');
 const client = new Discord.Client();
 const prefix = 'rh!';
+const ytdl = require('ytdl-core');
+const queue = new Map();
 const http = require('http');
 const express = require('express');
 const app = express();
@@ -14,7 +16,7 @@ app.get("/", (request, response) => {
 app.listen(process.env.PORT);
 
 client.once('ready', () => {
-    console.log('Your bot is now online!')
+    console.log('Ready!')
 
     client.user.setActivity('rh!help', {
             type: 'PLAYING'
@@ -25,9 +27,15 @@ client.once('ready', () => {
     client.user.setStatus('dnd')
 
 })
+client.once('reconnecting', () => {
+    console.log('Reconnecting!');
+});
+client.once('disconnect', () => {
+    console.log('Disconnect!');
+});
 
 
-client.on('message', message => {
+client.on('message', async message => {
     //console.log(message.content);
 
     if (message.content.includes("@everyone")) {
@@ -86,7 +94,19 @@ client.on('message', message => {
                     {
                         name: "`rh!omg`",
                         value: "Something interesting..."
-                    }
+                    },
+                    {
+                        name: "`rh!play <Video URL>`",
+                        value: "Plays music through Windows Media Player! *(Note: The bot usually lags, please wait a few seconds for the bot to load song.)*"
+                    },
+                    {
+                        name: "`rh!skip`",
+                        value: "Skips a song from the playlist! *(Note: If there's no more queued songs left, the bot will disconnect from the channel that the bot is in.)*"
+                    },
+                    {
+                        name: "`rh!stop`",
+                        value: "Stops the Windows Media Player!"
+                    } 
                 ],
             }
         });
@@ -182,7 +202,126 @@ client.on('message', message => {
             }
         })
     }
+	if (message.author.bot) return;
+	if (!message.content.startsWith(prefix)) return;
 
-})
+	const serverQueue = queue.get(message.guild.id);
+
+	if (message.content.startsWith(`${prefix}play`)) {
+		execute(message, serverQueue);
+    message.channel.send({
+    embed: {
+          color: 0xff9900,
+                title: "**Windows Media Player**",
+                description: "Playing music for you!",
+                fields: [],
+            }
+        })
+		return;
+	} else if (message.content.startsWith(`${prefix}skip`)) {
+		skip(message, serverQueue);
+    message.channel.send({
+    embed: {
+          color: 0xff9900,
+                title: "**Windows Media Player**",
+                description: "Skiped song!",
+                fields: [],
+            }
+        })
+		return;
+	} else if (message.content.startsWith(`${prefix}stop`)) {
+		stop(message, serverQueue);
+    message.channel.send({
+    embed: {
+          color: 0xff9900,
+                title: "**Windows Media Player**",
+                description: "Stopped the playlist!",
+                fields: [],
+            }
+        })
+		return;
+  }
+});
+
+async function execute(message, serverQueue) {
+	const args = message.content.split(' ');
+
+	const voiceChannel = message.member.voiceChannel;
+	if (!voiceChannel) return message.channel.send('You need to be in a voice channel to play music!');
+	const permissions = voiceChannel.permissionsFor(message.client.user);
+	if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
+		return message.channel.send("dude i don't have permission to connect and speak in voice chat");
+	}
+
+	const songInfo = await ytdl.getInfo(args[1]);
+	const song = {
+		title: songInfo.title,
+		url: songInfo.video_url,
+	};
+
+	if (!serverQueue) {
+		const queueContruct = {
+			textChannel: message.channel,
+			voiceChannel: voiceChannel,
+			connection: null,
+			songs: [],
+			volume: 5,
+			playing: true,
+		};
+
+		queue.set(message.guild.id, queueContruct);
+
+		queueContruct.songs.push(song);
+
+		try {
+			var connection = await voiceChannel.join();
+			queueContruct.connection = connection;
+			play(message.guild, queueContruct.songs[0]);
+		} catch (err) {
+			console.log(err);
+			queue.delete(message.guild.id);
+			return message.channel.send(err);
+		}
+	} else {
+		serverQueue.songs.push(song);
+		console.log(serverQueue.songs);
+		return message.channel.send(`${song.title} has been added to the queue!`);
+	}
+
+}
+
+function skip(message, serverQueue) {
+	if (!message.member.voiceChannel) return message.channel.send('You have to be in a voice channel to stop the music!');
+	if (!serverQueue) return message.channel.send('There is no song that I could skip!');
+	serverQueue.connection.dispatcher.end();
+}
+
+function stop(message, serverQueue) {
+	if (!message.member.voiceChannel) return message.channel.send('You have to be in a voice channel to stop the music!');
+	serverQueue.songs = [];
+	serverQueue.connection.dispatcher.end();
+}
+
+function play(guild, song) {
+	const serverQueue = queue.get(guild.id);
+
+	if (!song) {
+		serverQueue.voiceChannel.leave();
+		queue.delete(guild.id);
+		return;
+	}
+
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
+		.on('end', () => {
+			console.log('Music ended!');
+			serverQueue.songs.shift();
+			play(guild, serverQueue.songs[0]);
+		})
+		.on('error', error => {
+			console.error(error);
+		});
+	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+}
+
 
 client.login(process.env.TOKEN);
