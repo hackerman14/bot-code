@@ -18,7 +18,7 @@ hackerman14 is a trash Discord bot aimed at bringing fun to your Discord server.
 	- The default prefix is `rh!`, you can type `rh!help` for all available commands.
 - <u>Why is the bot not responding?</u>
 	- There can be many reasons, but here are the most common reasons:
-		- It lacks permission to `Send Messages` or `View Channel`.
+		- It lacks permission to `Read Messages`, `Read Message History`, `Send Messages`, `View Channel`, `Connect`, `Speak`, `Use Voice Activity`. (If you don't want to add the permissions one by one, you could just give it `Administrator`!)
 		- You typed the wrong prefix for the bot.
 		- The command doesn't exist.
     	- You typed the command with error grammars. (For example, the command is `rh!help`, but you typed `rh!Help`.)
