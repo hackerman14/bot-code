@@ -88,10 +88,6 @@ client.on('message', async message => {
                         value: "Replies you the respond time of the bot!"
                     },
                     {
-                        name: "`rh!annoy`",
-                        value: "Sends people a DM to annoy them!"
-                    },
-                    {
                         name: "`rh!omg`",
                         value: "Something interesting..."
                     },
@@ -171,26 +167,6 @@ client.on('message', async message => {
         });
     }
 
-    if (message.content.startsWith(`${prefix}annoy`)) {
-        const mentionedUser = message.mentions.users.first();
-        if (!mentionedUser) return message.channel.send("dude mention someone to continue annoying someone lol");
-        mentionedUser.send({
-            embed: {
-                color: 0xff9900,
-                title: "**People Annoyer™**",
-                description: "Am I a joke to you?",
-                fields: [],
-            }
-        })
-        message.channel.send({
-            embed: {
-                color: 0xff9900,
-                title: "**People Annoyer™**",
-                description: "Annoyed " + mentionedUser + "!",
-                fields: [],
-            }
-        })
-    }
 
     if (message.content.startsWith(`${prefix}omg`)) {
         message.channel.send({
@@ -250,7 +226,14 @@ async function execute(message, serverQueue) {
     if (!voiceChannel) return message.channel.send('You need to be in a voice channel to play music!');
     const permissions = voiceChannel.permissionsFor(message.client.user);
     if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
-        return message.channel.send("dude i don't have permission to connect and speak in voice chat");
+        return message.channel.send({
+            embed: {
+                color: 0xff9900,
+                title: "**Windows Media Player**",
+                description: "I don't have permissions to `Connect` or `Speak`!",
+                fields: [],
+            }
+        })
     }
 
     const songInfo = await ytdl.getInfo(args[1]);
