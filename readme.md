@@ -6,10 +6,13 @@ The world's worst ever Discord bot bringing quality content to your Discord serv
 
 [Invite hackerman14](https://discordapp.com/oauth2/authorize?client_id=619613322903420929&scope=bot&permissions=3072) | [My Server](https://discord.gg/fy6nBMg)
 - - -
-hackerman14 is a trash Discord bot aimed at bringing fun to your Discord server. We focus on keeping our commands clean, simple and to the point, giving you the worst bot to play with.
+hackerman14 is a trash Discord bot aimed at bringing fun to your Discord serer. We focus on keeping our commands clean, simple and to the point, giving you the worst bot to play with.
+
+#### IMPORTANT!!!!111!!1
+If the bot went offline, please visit [https://raymond-discord-bot.glitch.me/](https://raymond-discord-bot.glitch.me) so you can wake up the bot.
 
 #### Features
-- Unstable Uptime (Maybe)
+- Unstable Uptime (Sometimes yes)
 - Trash Commands
 - More functions will be available in the future!
 
@@ -29,7 +32,7 @@ hackerman14 is a trash Discord bot aimed at bringing fun to your Discord server.
 	- You can host it on your computer, or host it on a web hosting. But I will report you for copyright issues.
 
 #### Hope List
-- Add more functions to the bot. (Like music, etcetera.)
+- Improve the bot's speed
 
 #### Credits
 - Developer: `Raymond#1725`
