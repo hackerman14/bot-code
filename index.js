@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { RichEmbed } = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
 const queue = new Map();
@@ -12,6 +11,9 @@ app.get("/", (request, response) => {
   response.sendStatus(200);
 });
 app.listen(process.env.PORT);
+
+var GphApiClient = require("giphy-js-sdk-core");
+var gif_api_thing = GphApiClient + process.env.GIPHYTOKEN;
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -37,7 +39,7 @@ client.once("disconnect", () => {
 });
 
 client.on("message", async message => {
-  //console.log(message.content);
+  // Fun Auto Responds
 
   if (message.content.includes("@everyone")) {
     message.channel.send("REEEEEEEEEEEEEEEEE");
@@ -64,6 +66,27 @@ client.on("message", async message => {
   if (message.content.includes("alexa")) {
     message.channel.send("you can go purchase one on amazon");
   }
+
+  // DM
+
+  if (message.channel.type == "dm") {
+    message.author.send({
+      embed: {
+        color: Math.floor(Math.random() * 16777214) + 1,
+        title: "**Bruh Moment**",
+        description: "You realise that I don't work in DMs...",
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
+      }
+    });
+    return;
+  }
+
+  // Commands
+
   if (message.content.startsWith(`${prefix}help`)) {
     message.channel.send({
       embed: {
@@ -93,7 +116,19 @@ client.on("message", async message => {
           },
           {
             name: "`rh!omg`",
-            value: "Something interesting..."
+            value: "100% basic coding course for sure!"
+          },
+          {
+            name: "`rh!8`",
+            value: "8 Ball Machine that gives you random answers!"
+          },
+          {
+            name: "`rh!gif`",
+            value: "Sends random GIFs!"
+          },
+          {
+            name: " `rh!attributions`",
+            value: "Shows stuff about APIs that require credits!"
           },
           {
             name: "`rh!play <Video URL>`",
@@ -109,7 +144,11 @@ client.on("message", async message => {
             name: "`rh!stop`",
             value: "Stops the Windows Media Player!"
           }
-        ]
+        ],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -146,7 +185,11 @@ client.on("message", async message => {
             name: "Library",
             value: "[Discord.js](https://discord.js.org)"
           }
-        ]
+        ],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -261,7 +304,11 @@ client.on("message", async message => {
         color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Useless Fact Machine**",
         description: randomAnswer,
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -304,7 +351,11 @@ client.on("message", async message => {
         color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Skeppy Meme Machine**",
         description: randomAnswer,
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -313,9 +364,13 @@ client.on("message", async message => {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Ping Pong!**",
-        description: "Your ping is " + Math.round(client.ping) + " ms",
-        fields: []
+        title: "**Lag Machine**",
+        description: "Your ping is " + Math.round(client.ping) + " ms!",
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -326,10 +381,154 @@ client.on("message", async message => {
         color: Math.floor(Math.random() * 16777214) + 1,
         title: "**World's First Code Ever Written**",
         description: "Hello, World!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
+
+  if (message.content.startsWith(`${prefix}8`)) {
+    var answers = [
+      "It is certain.",
+      "It is decidedly so.",
+      "Without a doubt.",
+      "Yes - definitely.",
+      "You may rely on it.",
+      "As I see it, yes.",
+      "Most likely.",
+      "Outlook good.",
+      "Yes",
+      "Signs point to yes.",
+      "Reply hazy, try again.",
+      "Ask again later.",
+      "Better not tell you now.",
+      "Cannot predict now.",
+      "Concentrate and ask again.",
+      "Don't count on it.",
+      "My reply is no.",
+      "My sources say no.",
+      "Outlook not so good.",
+      "Very doubtful."
+    ];
+    var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+    message.channel.send({
+      embed: {
+        color: Math.floor(Math.random() * 16777214) + 1,
+        title: "**8 Ball Machine**",
+        description: randomAnswer,
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
+      }
+    });
+  }
+
+  if (message.content.startsWith(`${prefix}gif`)) {
+    fetch(
+      "http://api.giphy.com/v1/gifs/random?api_key=(YOUR_GIPHY_TOKEN_HERE)"
+    )
+      .then(res => res.json())
+      .then(body => {
+        message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**GIF Machine**",
+            description: "Here's your GIF!",
+            fields: [],
+            timestamp: new Date(),
+            image: {
+              url: body.data.image_original_url
+            },
+            footer: {
+              text: "Made with ❤️ created by Raymond#1725"
+            }
+          }
+        });
+      });
+  }
+
+  if (message.content.startsWith(`${prefix}attributions`)) {
+    message.channel.send({
+      embed: {
+        color: Math.floor(Math.random() * 16777214) + 1,
+        title: "**Attributions**",
+        description: "All APIs requiring credits are listed here with logo.",
+        fields: [
+          {
+            name: "GIPHY for Developers",
+            value: "Used for sending GIFs!"
+          }
+        ],
+        timestamp: new Date(),
+        image: {
+          url:
+            "https://cdn.glitch.com/3c584fbb-057b-43a0-994b-8c2ce94fdebc%2FPoweredBy_200_Horizontal_Light-Backgrounds_With_Logo.gif?v=1571492323469"
+        },
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
+      }
+    });
+  }
+
+  if (message.content.startsWith(`${prefix}sample`)) {
+    const exampleEmbed = {
+      color: 0x0099ff,
+      title: "Some title",
+      url: "https://discord.js.org",
+      author: {
+        name: "Some name",
+        icon_url: "https://i.imgur.com/wSTFkRM.png",
+        url: "https://discord.js.org"
+      },
+      description: "Some description here",
+      thumbnail: {
+        url: "https://i.imgur.com/wSTFkRM.png"
+      },
+      fields: [
+        {
+          name: "Regular field title",
+          value: "Some value here"
+        },
+        {
+          name: "\u200b",
+          value: "\u200b"
+        },
+        {
+          name: "Inline field title",
+          value: "Some value here",
+          inline: true
+        },
+        {
+          name: "Inline field title",
+          value: "Some value here",
+          inline: true
+        },
+        {
+          name: "Inline field title",
+          value: "Some value here",
+          inline: true
+        }
+      ],
+      image: {
+        url: "https://i.imgur.com/wSTFkRM.png"
+      },
+      timestamp: new Date(),
+      footer: {
+        text: "Some footer text here",
+        icon_url: "https://i.imgur.com/wSTFkRM.png"
+      }
+    };
+
+    message.channel.send({ embed: exampleEmbed });
+  }
+
+  // Music Commands
 
   if (message.author.bot) return;
   if (!message.content.startsWith(prefix)) return;
@@ -346,7 +545,11 @@ client.on("message", async message => {
         color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: "Skiped song!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
     return;
@@ -357,12 +560,18 @@ client.on("message", async message => {
         color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: "Stopped the playlist!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
     return;
   }
 });
+
+// Async Functions
 
 async function execute(message, serverQueue) {
   const args = message.content.split(" ");
@@ -371,21 +580,29 @@ async function execute(message, serverQueue) {
   if (!voiceChannel)
     return message.channel.send({
       embed: {
-        color: 0xff9900,
+        color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description:
           "Dude you have to be in a channel so I can play music for you OK?",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
     return message.channel.send({
       embed: {
-        color: 0xff9900,
+        color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: "Dude I don't have permissions to `Connect` or `Speak`!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -424,10 +641,14 @@ async function execute(message, serverQueue) {
     console.log(serverQueue.songs);
     return message.channel.send({
       embed: {
-        color: 0xff9900,
+        color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: `${song.title} has been added to the queue!`,
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   }
@@ -437,19 +658,27 @@ function skip(message, serverQueue) {
   if (!message.member.voiceChannel)
     return message.channel.send({
       embed: {
-        color: 0xff9900,
+        color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: "You have to be in a voice channel to stop the music!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   if (!serverQueue)
     return message.channel.send({
       embed: {
-        color: 0xff9900,
+        color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: "There isn't any songs I could skip!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   serverQueue.connection.dispatcher.end();
@@ -459,10 +688,14 @@ function stop(message, serverQueue) {
   if (!message.member.voiceChannel)
     return message.channel.send({
       embed: {
-        color: 0xff9900,
+        color: Math.floor(Math.random() * 16777214) + 1,
         title: "**Windows Media Player**",
         description: "You have to be in a voice channel to stop the music!",
-        fields: []
+        fields: [],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
       }
     });
   serverQueue.songs = [];
