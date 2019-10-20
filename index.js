@@ -131,6 +131,10 @@ client.on("message", async message => {
             value: "Shows stuff about APIs that require credits!"
           },
           {
+            name: "`rh!error`",
+            value: "Typical Windows error message intergrated to a bot!"
+          },
+          {
             name: "`rh!play <Video URL>`",
             value:
               "Plays music through Windows Media Player! *(Note: The bot usually lags, please wait a few seconds for the bot to load song.)*"
@@ -184,6 +188,10 @@ client.on("message", async message => {
           {
             name: "Library",
             value: "[Discord.js](https://discord.js.org)"
+          },
+          {
+            name: "Random Message Colors",
+            value: "Code: ```js\nMath.floor(Math.random() * 16777214) + 1```"
           }
         ],
         timestamp: new Date(),
@@ -430,7 +438,7 @@ client.on("message", async message => {
 
   if (message.content.startsWith(`${prefix}gif`)) {
     fetch(
-      "http://api.giphy.com/v1/gifs/random?api_key=(YOUR_GIPHY_TOKEN_HERE)"
+      "http://api.giphy.com/v1/gifs/random?api_key=nb7UjlzPM54irOmovYKYDH3WpA7voJEB"
     )
       .then(res => res.json())
       .then(body => {
@@ -528,6 +536,24 @@ client.on("message", async message => {
     message.channel.send({ embed: exampleEmbed });
   }
 
+  if (message.content.startsWith(`${prefix}error`)) {
+    message.channel.send({
+      embed: {
+        color: Math.floor(Math.random() * 16777214) + 1,
+        title: "**Discord.js**",
+        fields: [
+          {
+            name: "Index.js has stopped working",
+            value: "Discord.js is checking a solution to the problem..."
+          }
+        ],
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
+      }
+    });
+  }
   // Music Commands
 
   if (message.author.bot) return;
