@@ -1,6 +1,12 @@
+// Main Code Rules
+
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
+const DBL = require("dblapi.js");
+const dbl = new DBL(process.env.DBTOKEN, client);
+const db = require("quick.db");
+const fetch = require("node-fetch");
 const queue = new Map();
 const prefix = "rh!";
 const http = require("http");
@@ -12,22 +18,24 @@ app.get("/", (request, response) => {
 });
 app.listen(process.env.PORT);
 
-var GphApiClient = require("giphy-js-sdk-core");
-var gif_api_thing = GphApiClient + process.env.GIPHYTOKEN;
+// Console Logging
 
 client.once("ready", () => {
   console.log("Ready!");
+  console.log("The bot is currently on " + client.guilds.size + " severs!");
 
-  client.user
-    .setActivity("hello-express | rh!help", {
-      type: "PLAYING"
-    })
-    .then(presence =>
-      console.log(
-        `Activity set to "${presence.game ? presence.game.name : "none"}"`
+  setInterval(() => {
+    client.user
+      .setActivity("on " + client.guilds.size + " guilds | rh!help", {
+        type: "PLAYING"
+      })
+      .then(presence =>
+        console.log(
+          `Activity set to "${presence.game ? presence.game.name : "none"}"`
+        )
       )
-    )
-    .catch(console.error);
+      .catch(console.error);
+  }, 1800000);
 
   client.user.setStatus("dnd");
 });
@@ -38,33 +46,60 @@ client.once("disconnect", () => {
   console.log("Disconnect!");
 });
 
+dbl.on("posted", () => {
+  console.log("Server count is posted on TOP.gg!");
+});
+dbl.on("error", e => {
+  console.log(`An error occurred to TOP.gg! ${e}`);
+});
+
+// Client Codes
+
 client.on("message", async message => {
-  // Fun Auto Responds
+  // Client Rules
 
-  if (message.content.includes("@everyone")) {
-    message.channel.send("REEEEEEEEEEEEEEEEE");
-  }
+  let msg = message.content.toLowerCase();
+  if (message.author.bot) return;
+  if (!message.guild) return;
+  if (!message.content.startsWith(prefix)) return;
+  const args = message.content.slice(prefix.length).split(" ");
+  const command = args.shift().toLowerCase();
 
-  if (message.content.startsWith("<@!619613322903420929>")) {
-    message.channel.send("sup");
-  }
+  // Set Custom Prefix
 
-  if (message.content.includes("ok google")) {
-    message.channel.send("dude im not google assistant");
-  }
+  if (msg.startsWith(`${prefix}setprefix`)) {
+    let fetched = await db.fetch(`prefix_${message.guild.id}`);
+    if (!fetched === null) prefix = "rh!";
+    else prefix = fetched;
 
-  if (message.content.includes("siri")) {
-    message.channel.send("tim cook was here");
-  }
+    if (!message.member.hasPermission("ADMINISTRATOR"))
+      return message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Prefix Changer**",
+          description: "No, you aren't allowed to change my prefix! HA!",
+          fields: [],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by Raymond#1725"
+          }
+        }
+      });
 
-  if (message.content.includes("cortana")) {
-    message.channel.send(
-      "bill gates was here (oh wait nvm bill gates has already retired from microsoft)"
-    );
-  }
-
-  if (message.content.includes("alexa")) {
-    message.channel.send("you can go purchase one on amazon");
+    db.set(`prefix_${message.guild.id}`, args.join(" ")).then(i => {
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Prefix Changer**",
+          description: "Sucessfully set the prefix!",
+          fields: [],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by Raymond#1725"
+          }
+        }
+      });
+    });
   }
 
   // DM
@@ -87,68 +122,13 @@ client.on("message", async message => {
 
   // Commands
 
-  if (message.content.startsWith(`${prefix}help`)) {
+  if (msg.includes("<!@619613322903420929>")) {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Command List**",
-        description: "Here's all the available commands!",
-        fields: [
-          {
-            name: "`rh!help`",
-            value: "Shows this command list!"
-          },
-          {
-            name: "`rh!about`",
-            value: "Shows you the info about the bot!"
-          },
-          {
-            name: "`rh!useless`",
-            value: "Tells you a random useless fact!"
-          },
-          {
-            name: "`rh!skeppy`",
-            value: "Tells you a random Skeppy meme!"
-          },
-          {
-            name: "`rh!ping`",
-            value: "Replies you the respond time of the bot!"
-          },
-          {
-            name: "`rh!omg`",
-            value: "100% basic coding course for sure!"
-          },
-          {
-            name: "`rh!8`",
-            value: "8 Ball Machine that gives you random answers!"
-          },
-          {
-            name: "`rh!gif`",
-            value: "Sends random GIFs!"
-          },
-          {
-            name: " `rh!attributions`",
-            value: "Shows stuff about APIs that require credits!"
-          },
-          {
-            name: "`rh!error`",
-            value: "Typical Windows error message intergrated to a bot!"
-          },
-          {
-            name: "`rh!play <Video URL>`",
-            value:
-              "Plays music through Windows Media Player! *(Note: The bot usually lags, please wait a few seconds for the bot to load song.)*"
-          },
-          {
-            name: "`rh!skip`",
-            value:
-              "Skips a song from the playlist! *(Note: If there's no more queued songs left, the bot will disconnect from the channel that the bot is in.)*"
-          },
-          {
-            name: "`rh!stop`",
-            value: "Stops the Windows Media Player!"
-          }
-        ],
+        title: "**A Small Introduction**",
+        description: "Hello! I am hackerman14, and my bot prefix is `rh!`.",
+        fields: [],
         timestamp: new Date(),
         footer: {
           text: "Made with ❤️ created by Raymond#1725"
@@ -156,8 +136,13 @@ client.on("message", async message => {
       }
     });
   }
+  
+  if (msg.startsWith(`${prefix}help`)) {
+    helpMenu(message)
+    return;
+  }
 
-  if (message.content.startsWith(`${prefix}about`)) {
+  if (msg.startsWith(`${prefix}about`)) {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
@@ -190,6 +175,10 @@ client.on("message", async message => {
             value: "[Discord.js](https://discord.js.org)"
           },
           {
+            name: "GIF Sources",
+            value: "[Powered by GIPHY](https://giphy.com)"
+          },
+          {
             name: "Random Message Colors",
             value: "Code: ```js\nMath.floor(Math.random() * 16777214) + 1```"
           }
@@ -202,7 +191,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}useless`)) {
+  if (msg.startsWith(`${prefix}useless`)) {
     var answers = [
       "Rubber bands last longer when refrigerated.",
       "Peanuts are one of the ingredients of dynamite.",
@@ -321,7 +310,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}skeppy`)) {
+  if (msg.startsWith(`${prefix}skeppy`)) {
     var answers = [
       "flip flop",
       "14",
@@ -368,7 +357,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}ping`)) {
+  if (msg.startsWith(`${prefix}ping`)) {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
@@ -383,7 +372,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}omg`)) {
+  if (msg.startsWith(`${prefix}omg`)) {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
@@ -398,7 +387,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}8`)) {
+  if (msg.startsWith(`${prefix}8`)) {
     var answers = [
       "It is certain.",
       "It is decidedly so.",
@@ -436,7 +425,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}gif`)) {
+  if (msg.startsWith(`${prefix}gif`)) {
     fetch(
       "http://api.giphy.com/v1/gifs/random?api_key=nb7UjlzPM54irOmovYKYDH3WpA7voJEB"
     )
@@ -460,7 +449,7 @@ client.on("message", async message => {
       });
   }
 
-  if (message.content.startsWith(`${prefix}attributions`)) {
+  if (msg.startsWith(`${prefix}attributions`)) {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
@@ -484,7 +473,7 @@ client.on("message", async message => {
     });
   }
 
-  if (message.content.startsWith(`${prefix}sample`)) {
+  if (msg.startsWith(`${prefix}sample`)) {
     const exampleEmbed = {
       color: 0x0099ff,
       title: "Some title",
@@ -536,7 +525,7 @@ client.on("message", async message => {
     message.channel.send({ embed: exampleEmbed });
   }
 
-  if (message.content.startsWith(`${prefix}error`)) {
+  if (msg.startsWith(`${prefix}error`)) {
     message.channel.send({
       embed: {
         color: Math.floor(Math.random() * 16777214) + 1,
@@ -554,46 +543,38 @@ client.on("message", async message => {
       }
     });
   }
-  // Music Commands
 
-  if (message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
+  if (msg.startsWith(`${prefix}avatar`)) {
+    const user = message.mentions.users.first() || message.author;
+    message.channel.send({
+      embed: {
+        color: Math.floor(Math.random() * 16777214) + 1,
+        title: "**Photo Machine**",
+        description: "Here's the avatar!",
+        fields: [],
+        timestamp: new Date(),
+        image: {
+          url: user.avatarURL
+        },
+        footer: {
+          text: "Made with ❤️ created by Raymond#1725"
+        }
+      }
+    });
+  }
+
+  // Music Commands
 
   const serverQueue = queue.get(message.guild.id);
 
-  if (message.content.startsWith(`${prefix}play`)) {
+  if (msg.startsWith(`${prefix}play`)) {
     execute(message, serverQueue);
     return;
-  } else if (message.content.startsWith(`${prefix}skip`)) {
+  } else if (msg.startsWith(`${prefix}skip`)) {
     skip(message, serverQueue);
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: "Skiped song!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by Raymond#1725"
-        }
-      }
-    });
     return;
-  } else if (message.content.startsWith(`${prefix}stop`)) {
+  } else if (msg.startsWith(`${prefix}stop`)) {
     stop(message, serverQueue);
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: "Stopped the playlist!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by Raymond#1725"
-        }
-      }
-    });
-    return;
   }
 });
 
@@ -748,6 +729,125 @@ function play(guild, song) {
       console.error(error);
     });
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+}
+
+function helpMenu(message) {
+  let channel = message.channel;
+
+  // next create rich embeds
+  let embed1 = new Discord.RichEmbed({
+    color: Math.floor(Math.random() * 16777214) + 1,
+    title: "**Commands List**",
+    description: "Here's all the available commands!",
+    fields: []
+  });
+
+  let embed2 = new Discord.RichEmbed({
+    color: Math.floor(Math.random() * 16777214) + 1,
+    title: "*Main Commands*",
+    description: "Basic commands of the bot!",
+    fields: [
+      {
+        name: "`rh!help`",
+        value: "Shows this command list!"
+      },
+      {
+        name: "`rh!about`",
+        value: "Shows you the info about the bot!"
+      },
+      {
+        name: "`rh!attributions`",
+        value: "Shows stuff about APIs that require credits!"
+      }
+    ]
+  });
+
+  let embed3 = new Discord.RichEmbed({
+    color: Math.floor(Math.random() * 16777214) + 1,
+    title: "*Fun Commands*",
+    description: "Some fun commands you can play with!",
+    fields: [
+      {
+        name: "`rh!useless`",
+        value: "Tells you a random useless fact!"
+      },
+      {
+        name: "`rh!skeppy`",
+        value: "Tells you a random Skeppy meme!"
+      },
+      {
+        name: "`rh!omg`",
+        value: "100% basic coding course for sure!"
+      },
+      {
+        name: "`rh!8`",
+        value: "Ask any yes/no question, and it will answer you something!"
+      },
+      {
+        name: "`rh!gif`",
+        value: "Sends you a random GIF!"
+      },
+      {
+        name: "`rh!error`",
+        value: "Typical Windows error message intergrated to a bot!"
+      }
+    ]
+  });
+
+  let embed4 = new Discord.RichEmbed({
+    color: Math.floor(Math.random() * 16777214) + 1,
+    title: "*Misc Commands*",
+    description: "Just some boring commands!",
+    fields: [
+      {
+        name: "`rh!ping`",
+        value: "Replies you the respond time of the bot!"
+      },
+      {
+        name: "`rh!avatar`",
+        value: "Sends your/other's Discord avatar!"
+      }
+    ]
+  });
+
+  let embed5 = new Discord.RichEmbed({
+    color: Math.floor(Math.random() * 16777214) + 1,
+    title: "*Music Commands*",
+    description:
+      "Some commands let's you listen to music in Discord voice channels!",
+    fields: [
+      {
+        name: "`rh!play <YouTube Video URL>`",
+        value:
+          "Plays music through Windows Media Player! *(Note: The bot usually lags, please wait a few seconds for the bot to load song.)*"
+      },
+      {
+        name: "`rh!skip`",
+        value:
+          "Skips a song from the playlist! *(Note: If there's no more queued songs left, the bot will disconnect from the channel that the bot is in.)*"
+      },
+      {
+        name: "`rh!stop`",
+        value: "Stops the music player!"
+      }
+    ],
+    timestamp: new Date(),
+    footer: {
+      text: "Made with ❤️ created by Raymond#1725"
+    }
+  });
+
+  // Send the embed message to the channel
+  channel.send(embed1).then(msg => {
+    // after the first is sent, send the 2nd (makes sure it's in the correct order)
+    channel.send(embed2).then(msg => {
+      channel.send(embed3).then(msg => {
+        channel.send(embed4).then(msg => {
+          channel.send(embed5);
+        });
+      });
+    });
+  });
 }
 
 client.login(process.env.TOKEN);
