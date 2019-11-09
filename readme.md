@@ -30,8 +30,4 @@ A Discord bot that tries to bring "quality" content to your Discord server, ahh 
 *   Developer: [Raymond#1725](https://raymond-1227.github.io)
 *   Library: [discord.js](https://discord.js.org)
 *   GIF Library: [Giphy for Developers](https://developers.giphy.com)
-*   Server Count: [DiscordBots API](https://top.gg/api/docs)
-
-#### Credits
-- Developer: `Raymond#1725`
-- Library: [discord.js](https://discord.js.org)
+*   Server Count: [DBL API](https://top.gg/api/docs)
