@@ -1,2 +1,3 @@
+# This file helps making the repotsitory label being labeled as "JavaScript".
 * linguist-vendored
 *.js linguist-vendored=false
