@@ -31,3 +31,4 @@ A Discord bot that tries to bring "quality" content to your Discord server, ahh 
 *   Library: [discord.js](https://discord.js.org)
 *   GIF Library: [Giphy for Developers](https://developers.giphy.com)
 *   Server Count: [DBL API](https://top.gg/api/docs)
+*   Boring Facts: [useless-facts-api](https://github.com/sameerkumar18/useless-facts-api)
