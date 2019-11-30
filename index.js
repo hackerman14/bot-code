@@ -1,20 +1,22 @@
-// Main Code Rules
+// Global Definitions
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
+const fs = require("fs");
+const randomPuppy = require("random-puppy");
+const weather = require("weather-js");
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBTOKEN, client);
-const db = require("quick.db");
 const fetch = require("node-fetch");
 const queue = new Map();
-const prefix = "rh!";
 const emojiNext = "➡"; // Unicodes are auto identified in Discord, so it's fine!
 const emojiPrevious = "⬅";
 const reactionArrow = [emojiPrevious, emojiNext];
 const time = 600000; // Menu Timeout: 10 Minutes
 const http = require("http");
 const express = require("express");
+
 const app = express();
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping Received");
@@ -24,6 +26,10 @@ app.listen(process.env.PORT);
 
 let cooldown = new Set();
 let cdseconds = 5;
+const prefix = "rh!";
+const { getMember, formatDate } = require("./functions.js");
+const { stripIndents } = require("common-tags");
+const owner = "Raymond#9999";
 
 // Console Logging
 
@@ -36,16 +42,18 @@ client.once("ready", () => {
       client.users.size +
       " users!"
   );
-  client.user
-    .setActivity("Type 'rh!help' for help!", {
-      type: "PLAYING"
-    })
-    .then(presence =>
-      console.log(
-        `Activity set to "${presence.game ? presence.game.name : "none"}"`
+  setInterval(() => {
+    client.user
+      .setActivity("Type rh!help for help!", {
+        type: "PLAYING"
+      })
+      .then(presence =>
+        console.log(
+          `Activity set to "${presence.game ? presence.game.name : "none"}"`
+        )
       )
-    )
-    .catch(console.error);
+      .catch(console.error);
+  }, 100000);
 
   client.user.setStatus("dnd");
 });
@@ -73,8 +81,7 @@ client.on("message", async message => {
   if (!message.guild) return;
   if (!message.content.startsWith(prefix)) return;
   const channel = message.channel;
-  const args = message.content.substring(prefix.length).split(" ");
-  const command = args.shift().toLowerCase();
+  var args = message.content.split(" ").slice(1);
 
   // Commands Cooldown & All Commands
   if (cooldown.has(message.author.id)) {
@@ -87,49 +94,12 @@ client.on("message", async message => {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
   } else {
     // Every commands goes here!
-
-    // Set Custom Prefix
-
-    if (msg.startsWith(`${prefix}setprefix`)) {
-      let fetched = await db.fetch(`prefix_${message.guild.id}`);
-      if (!fetched === null) prefix = "rh!";
-      else prefix = fetched;
-
-      if (!message.member.hasPermission("ADMINISTRATOR"))
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Prefix Changer**",
-            description: "No, you aren't allowed to change my prefix! HA!",
-            fields: [],
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by Raymond#1725"
-            }
-          }
-        });
-
-      db.set(`prefix_${message.guild.id}`, args.join(" ")).then(i => {
-        message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Prefix Changer**",
-            description: "Sucessfully set the prefix!",
-            fields: [],
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by Raymond#1725"
-            }
-          }
-        });
-      });
-    }
 
     // DM
 
@@ -142,7 +112,7 @@ client.on("message", async message => {
           fields: [],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by Raymond#1725"
+            text: "Made with ❤️ created by" + owner
           }
         }
       });
@@ -169,7 +139,7 @@ client.on("message", async message => {
             },
             {
               name: "Creator",
-              value: "[Raymond#1725](https://raymond-1227.github.io)"
+              value: "[" + owner + "](https://raymond-1227.github.io)"
             },
             {
               name: "Host",
@@ -191,7 +161,7 @@ client.on("message", async message => {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by Raymond#1725"
+            text: "Made with ❤️ created by " + owner
           }
         }
       });
@@ -209,286 +179,421 @@ client.on("message", async message => {
               fields: [],
               timestamp: new Date(),
               footer: {
-                text: "Made with ❤️ created by Raymond#1725"
+                text: "Made with ❤️ created by " + owner
               }
             }
           });
         });
     }
-    var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Useless Fact Machine**",
-        description: randomAnswer,
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by Raymond#1725"
-        }
-      }
-    });
-  }
 
-  if (msg.startsWith(`${prefix}skeppy`)) {
-    var answers = [
-      "flip flop",
-      "14",
-      "ping spoofing",
-      "turtle",
-      "daddy",
-      "BadBoyHalo",
-      "BadBoyHalo is a potato",
-      "Jif",
-      "I was testing",
-      "cheesy fries",
-      "slash slash undo",
-      "idot",
-      "sotp",
-      "pine cone",
-      "thin crust pizza",
-      "ding",
-      "oh my godness",
-      "candad",
-      "muffintop",
-      "muffin",
-      "bisector",
-      "photosynthesis",
-      "slash slash sudo",
-      "CryBoyHalo",
-      "muffin time",
-      "uh oh spaghettios",
-      "japenese symbol for beginner",
-      "diameter",
-      "perpendicularity"
-    ];
-    var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Skeppy Meme Machine**",
-        description: randomAnswer,
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by Raymond#1725"
-        }
-      }
-    });
-  }
-
-  if (msg.startsWith(`${prefix}ping`)) {
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Lag Machine**",
-        description: "Your ping is " + Math.round(client.ping) + " ms!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by Raymond#1725"
-        }
-      }
-    });
-  }
-
-  if (msg.startsWith(`${prefix}8`)) {
-    const sayMessage = args.join(" ");
-    var answers = [
-      "It is certain.",
-      "It is decidedly so.",
-      "Without a doubt.",
-      "Yes - definitely.",
-      "You may rely on it.",
-      "As I see it, yes.",
-      "Most likely.",
-      "Outlook good.",
-      "Yes",
-      "Signs point to yes.",
-      "Reply hazy, try again.",
-      "Ask again later.",
-      "Better not tell you now.",
-      "Cannot predict now.",
-      "Concentrate and ask again.",
-      "Don't count on it.",
-      "My reply is no.",
-      "My sources say no.",
-      "Outlook not so good.",
-      "Very doubtful."
-    ];
-    var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**8 Ball Machine**",
-        description: "OH! IT ANSWERS YOU SOMETHING!",
-        fields: [
-          {
-            name: "Your Question",
-            value: sayMessage
-          },
-          {
-            name: "The 8 Ball's Answer",
-            value: randomAnswer
+    if (msg.startsWith(`${prefix}skeppy`)) {
+      var answers = [
+        "flip flop",
+        "14",
+        "ping spoofing",
+        "turtle",
+        "daddy",
+        "BadBoyHalo",
+        "BadBoyHalo is a potato",
+        "Jif",
+        "I was testing",
+        "cheesy fries",
+        "slash slash undo",
+        "idot",
+        "sotp",
+        "pine cone",
+        "thin crust pizza",
+        "ding",
+        "oh my godness",
+        "candad",
+        "muffintop",
+        "muffin",
+        "bisector",
+        "photosynthesis",
+        "slash slash sudo",
+        "CryBoyHalo",
+        "muffin time",
+        "uh oh spaghettios",
+        "japenese symbol for beginner",
+        "diameter",
+        "perpendicularity"
+      ];
+      var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Skeppy Meme Machine**",
+          description: randomAnswer,
+          fields: [],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
           }
-        ],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by Raymond#1725"
         }
-      }
-    });
-  }
-
-  if (msg.startsWith(`${prefix}gif`)) {
-    fetch(process.env.GIPHY)
-      .then(res => res.json())
-      .then(body => {
-        message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**GIF Machine**",
-            description: "Here's your GIF!",
-            fields: [],
-            timestamp: new Date(),
-            image: {
-              url: body.data.image_original_url
-            },
-            footer: {
-              text: "Made with ❤️ created by Raymond#1725"
-            }
-          }
-        });
       });
-  }
+    }
 
-  if (msg.startsWith(`${prefix}sample`)) {
-    const exampleEmbed = {
-      color: 0x0099ff,
-      title: "Some title",
-      url: "https://discord.js.org",
-      author: {
-        name: "Some name",
-        icon_url: "https://i.imgur.com/wSTFkRM.png",
-        url: "https://discord.js.org"
-      },
-      description: "Some description here",
-      thumbnail: {
-        url: "https://i.imgur.com/wSTFkRM.png"
-      },
-      fields: [
-        {
-          name: "Regular field title",
-          value: "Some value here"
-        },
-        {
-          name: "\u200b",
-          value: "\u200b"
-        },
-        {
-          name: "Inline field title",
-          value: "Some value here",
-          inline: true
-        },
-        {
-          name: "Inline field title",
-          value: "Some value here",
-          inline: true
-        },
-        {
-          name: "Inline field title",
-          value: "Some value here",
-          inline: true
+    if (msg.startsWith(`${prefix}ping`)) {
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Lag Machine**",
+          description: "Your ping is " + Math.round(client.ping) + " ms!",
+          fields: [],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
         }
-      ],
-      image: {
-        url: "https://i.imgur.com/wSTFkRM.png"
-      },
-      timestamp: new Date(),
-      footer: {
-        text: "Some footer text here",
-        icon_url: "https://i.imgur.com/wSTFkRM.png"
-      }
-    };
+      });
+    }
 
-    message.channel.send({ embed: exampleEmbed });
-  }
+    if (msg.startsWith(`${prefix}8`)) {
+      const sayMessage = args.join(" ");
+      var answers = [
+        "It is certain.",
+        "It is decidedly so.",
+        "Without a doubt.",
+        "Yes - definitely.",
+        "You may rely on it.",
+        "As I see it, yes.",
+        "Most likely.",
+        "Outlook good.",
+        "Yes",
+        "Signs point to yes.",
+        "Reply hazy, try again.",
+        "Ask again later.",
+        "Better not tell you now.",
+        "Cannot predict now.",
+        "Concentrate and ask again.",
+        "Don't count on it.",
+        "My reply is no.",
+        "My sources say no.",
+        "Outlook not so good.",
+        "Very doubtful."
+      ];
+      var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**8 Ball Machine**",
+          description: "OH! IT ANSWERS YOU SOMETHING!",
+          fields: [
+            {
+              name: "Your Question",
+              value: sayMessage
+            },
+            {
+              name: "The 8 Ball's Answer",
+              value: randomAnswer
+            }
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
 
-  if (msg.startsWith(`${prefix}user`)) {
-    const user = message.mentions.users.first() || message.author;
-    message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**User Information**",
-        description: "Here's the user's information!",
+    if (msg.startsWith(`${prefix}gif`)) {
+      fetch(process.env.GIPHY)
+        .then(res => res.json())
+        .then(body => {
+          message.channel.send({
+            embed: {
+              color: Math.floor(Math.random() * 16777214) + 1,
+              title: "**GIF Machine**",
+              description: "Here's your GIF!",
+              fields: [],
+              timestamp: new Date(),
+              image: {
+                url: body.data.image_original_url
+              },
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          });
+        });
+    }
+
+    if (msg.startsWith(`${prefix}sample`)) {
+      const exampleEmbed = {
+        color: 0x0099ff,
+        title: "Some title",
+        url: "https://discord.js.org",
+        author: {
+          name: "Some name",
+          icon_url: "https://i.imgur.com/wSTFkRM.png",
+          url: "https://discord.js.org"
+        },
+        description: "Some description here",
         thumbnail: {
-          url: user.avatarURL
+          url: "https://i.imgur.com/wSTFkRM.png"
         },
         fields: [
           {
-            name: "Username",
-            value: message.author.username
+            name: "Regular field title",
+            value: "Some value here"
           },
           {
-            name: "User ID",
-            value: message.author.id
+            name: "\u200b",
+            value: "\u200b"
+          },
+          {
+            name: "Inline field title",
+            value: "Some value here",
+            inline: true
+          },
+          {
+            name: "Inline field title",
+            value: "Some value here",
+            inline: true
+          },
+          {
+            name: "Inline field title",
+            value: "Some value here",
+            inline: true
           }
         ],
+        image: {
+          url: "https://i.imgur.com/wSTFkRM.png"
+        },
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Some footer text here",
+          icon_url: "https://i.imgur.com/wSTFkRM.png"
         }
-      }
-    });
-  }
+      };
 
-  if (msg.startsWith(`${prefix}say`)) {
-    const sayMessage = args.join(" ");
-    if (!args[1])
-      return message.channel
-        .send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Action Copy Cat**",
-            description: "You need to say something for the bot to say!",
-            fields: [],
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by Raymond#1725"
+      message.channel.send({ embed: exampleEmbed });
+    }
+
+    if (msg.startsWith(`${prefix}user`)) {
+      // Member Variables
+      const member = getMember(message, args.join(" "));
+      const joined = formatDate(member.joinedAt);
+      const roles =
+        member.roles
+          .filter(r => r.id !== message.guild.id)
+          .map(r => r)
+          .join(", ") || "none";
+
+      // User Variables
+
+      const created = formatDate(member.user.createdAt);
+
+      const memberi = () =>
+        new Discord.RichEmbed({
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Member Information**" + stripIndents,
+          description: "Here's the user's information of this server!",
+          thumbnail: {
+            url: member.displayAvatarURL
+          },
+          fields: [
+            {
+              name: "Display Name",
+              value: member.displayName,
+              inline: true
+            },
+            {
+              name: "Member Since",
+              value: joined,
+              inline: true
+            },
+            {
+              name: "Roles",
+              value: roles,
+              inline: true
             }
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
           }
-        })
-        .then(msg => {
-          msg.delete(10000);
         });
-    message.delete().catch(O_o => {});
-    message.channel.send(sayMessage);
+      const useri = () =>
+        new Discord.RichEmbed({
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**User Information**" + stripIndents,
+          description: "Here's the user's information!",
+          thumbnail: {
+            url: member.displayAvatarURL
+          },
+          fields: [
+            {
+              name: "Username",
+              value: member.user.username,
+              inline: true
+            },
+            {
+              name: "Discord Tag",
+              value: member.user.tag,
+              inline: true
+            },
+            {
+              name: "Account Since",
+              value: created,
+              inline: true
+            }
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        });
+      if (member.user.presence.game)
+        useri.addField(
+          `Currently Playing`,
+          `Name: ${member.user.presence.game.name}`
+        );
+
+      message.channel.send(useri).then(msg => {
+        channel.send(memberi);
+      });
+    }
+
+    if (msg.startsWith(`${prefix}say`)) {
+      const sayMessage = args.join(" ");
+      if (!args[0])
+        return message.channel
+          .send({
+            embed: {
+              color: Math.floor(Math.random() * 16777214) + 1,
+              title: "**Action Copy Cat**",
+              description: "You need to say something for the bot to say!",
+              fields: [],
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          })
+          .then(msg => {
+            msg.delete(10000);
+          });
+      message.delete().catch(O_o => {});
+      message.channel.send(sayMessage);
+    }
+
+    if (msg.startsWith(`${prefix}meme`)) {
+      const subReddits = [
+        "dankmeme",
+        "memes",
+        "me_irl",
+        "AdviceAnimals",
+        "MemeEconomy",
+        "ComedyCemetery",
+        "PrequelMemes",
+        "terriblefacebookmemes",
+        "PewdiepieSubmissions",
+        "funny",
+        "teenagers"
+      ];
+      const random = subReddits[Math.floor(Math.random() * subReddits.length)];
+      const meme = await randomPuppy(random);
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Reddit Memes**",
+          description: `A meme from /r/${random}`,
+          fields: [],
+          timestamp: new Date(),
+          image: {
+            url: meme
+          },
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
+
+    if (msg.startsWith(`${prefix}weather`)) {
+      weather.find({ search: args.join(" "), degreeType: "F" }),
+        function(err, result) {
+          if (err) console.log(err);
+          if (!args[0]) return;
+          console.log(JSON.stringify(result, null, 2));
+
+          var location = result[0].location;
+          var current = result[0].current;
+
+          message.channel.send({
+            embed: {
+              color: Math.floor(Math.random() * 16777214) + 1,
+              title: "**Weather Forecast**",
+              description: `{current.skytext}`,
+              author: { name: `Weather for ${current.observationpoint}` },
+              thumbnail: current.imageUrl,
+              fields: [
+                {
+                  name: "Timezone",
+                  value: `UTC${current.timezone}`,
+                  inline: true
+                },
+                {
+                  name: "Degree Type",
+                  value: location.degreeType,
+                  inline: true
+                },
+                {
+                  name: "Temperature",
+                  value: `${current.temperature} Degrees`,
+                  inline: true
+                },
+                {
+                  name: "Feels Like",
+                  value: `${current.feelslike} Degrees`,
+                  inline: true
+                },
+                {
+                  name: "Winds",
+                  value: current.winddisplay,
+                  inline: true
+                },
+                {
+                  name: "Humidity",
+                  value: `${current.humidity}%`,
+                  inline: true
+                }
+              ],
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          });
+        };
+    }
+
+    // Music Commands
+
+    const serverQueue = queue.get(message.guild.id);
+
+    if (msg.startsWith(`${prefix}play`)) {
+      execute(message, serverQueue);
+      return;
+    }
+
+    if (msg.startsWith(`${prefix}skip`)) {
+      skip(message, serverQueue);
+      return;
+    }
+
+    if (msg.startsWith(`${prefix}stop`)) {
+      stop(message, serverQueue);
+    }
+
+    // Adds the user to the set so that they can't talk for a minute
+    cooldown.add(message.author.id);
+    setTimeout(() => {
+      // Removes the user from the set after a minute
+      cooldown.delete(message.author.id);
+    }, 1000);
   }
-
-  // Music Commands
-
-  const serverQueue = queue.get(message.guild.id);
-
-  if (msg.startsWith(`${prefix}play`)) {
-    execute(message, serverQueue);
-    return;
-  }
-
-  if (msg.startsWith(`${prefix}skip`)) {
-    skip(message, serverQueue);
-    return;
-  }
-
-  if (msg.startsWith(`${prefix}stop`)) {
-    stop(message, serverQueue);
-  }
-
-  // Adds the user to the set so that they can't talk for a minute
-  cooldown.add(message.author.id);
-  setTimeout(() => {
-    // Removes the user from the set after a minute
-    cooldown.delete(message.author.id);
-  }, 1000);
 });
 
 // Async Functions
@@ -507,7 +612,7 @@ async function execute(message, serverQueue) {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
@@ -521,7 +626,7 @@ async function execute(message, serverQueue) {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
@@ -567,7 +672,7 @@ async function execute(message, serverQueue) {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
@@ -584,7 +689,7 @@ function skip(message, serverQueue) {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
@@ -597,7 +702,7 @@ function skip(message, serverQueue) {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
@@ -614,7 +719,7 @@ function stop(message, serverQueue) {
         fields: [],
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by Raymond#1725"
+          text: "Made with ❤️ created by " + owner
         }
       }
     });
@@ -654,12 +759,12 @@ const embed1 = () =>
       {
         name: ":robot: Bot Prefix",
         value: "`rh!`",
-        inline: "true"
+        inline: true
       },
       {
         name: ":keyboard: Placeholder Requirements",
         value: "`<>` = REQUIRED, `[]` = OPTIONAL",
-        inline: "true"
+        inline: true
       },
       {
         name: ":information_source: Basic Commands",
@@ -680,7 +785,7 @@ const embed1 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 1 · Made with ❤️ created by Raymond#1725"
+      text: "Page 1 · Made with ❤️ created by Raymond#9999"
     }
   });
 
@@ -688,7 +793,6 @@ const embed2 = () =>
   new Discord.RichEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":information_source: **Basic Commands**",
-    description: "Basic commands of the bot!",
     fields: [
       {
         name: "`rh!help`",
@@ -701,7 +805,7 @@ const embed2 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 2 · Made with ❤️ created by Raymond#1725"
+      text: "Page 2 · Made with ❤️ created by Raymond#9999"
     }
   });
 
@@ -709,10 +813,9 @@ const embed3 = () =>
   new Discord.RichEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":8ball: **Fun Commands**",
-    description: "Some fun commands you can play with!",
     fields: [
       {
-        name: "`rh!facts",
+        name: "`rh!facts`",
         value: "Tells you a boring fact!"
       },
       {
@@ -730,11 +833,15 @@ const embed3 = () =>
       {
         name: "`rh!say <Message>`",
         value: "Says something what you say!"
+      },
+      {
+        name: "`rh!meme`",
+        value: "Tells you a meme from Subreddits!"
       }
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 3 · Made with ❤️ created by Raymond#1725"
+      text: "Page 3 · Made with ❤️ created by Raymond#9999"
     }
   });
 
@@ -742,7 +849,6 @@ const embed4 = () =>
   new Discord.RichEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":cd: **Misc Commands**",
-    description: "Just some boring commands!",
     fields: [
       {
         name: "`rh!ping`",
@@ -755,7 +861,7 @@ const embed4 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 3 · Made with ❤️ created by Raymond#1725"
+      text: "Page 3 · Made with ❤️ created by Raymond#9999"
     }
   });
 
@@ -763,8 +869,6 @@ const embed5 = () =>
   new Discord.RichEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":musical_note: **Music Commands**",
-    description:
-      "Some commands let's you listen to music in Discord voice channels!",
     fields: [
       {
         name: "`rh!play <YouTube Video URL>`",
@@ -783,7 +887,7 @@ const embed5 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Made with ❤️ created by Raymond#1725"
+      text: "Made with ❤️ created by Raymond#9999"
     }
   });
 
@@ -824,5 +928,4 @@ function sendList(channel, getList) {
     .then(msgReaction => msgReaction.message.react(emojiNext))
     .then(msgReaction => createCollectorMessage(msgReaction.message, getList));
 }
-
 client.login(process.env.TOKEN);
