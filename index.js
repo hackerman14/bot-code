@@ -3,8 +3,9 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
-const fs = require("fs");
+const moment = require("moment");
 const randomPuppy = require("random-puppy");
+const ffmpeg = require("ffmpeg");
 const weather = require("weather-js");
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBTOKEN, client);
@@ -27,9 +28,9 @@ app.listen(process.env.PORT);
 let cooldown = new Set();
 let cdseconds = 5;
 const prefix = "rh!";
-const { getMember, formatDate } = require("./functions.js");
 const { stripIndents } = require("common-tags");
-const owner = "Raymond#9999";
+const owner = "Raymond#7846";
+const joinedAt = require("moment");
 
 // Console Logging
 
@@ -44,7 +45,7 @@ client.once("ready", () => {
   );
   setInterval(() => {
     client.user
-      .setActivity("Type rh!help for help!", {
+      .setActivity("rh!help | hackerman14.tk", {
         type: "PLAYING"
       })
       .then(presence =>
@@ -81,6 +82,7 @@ client.on("message", async message => {
   if (!message.guild) return;
   if (!message.content.startsWith(prefix)) return;
   const channel = message.channel;
+  const serverQueue = queue.get(message.guild.id);
   var args = message.content.split(" ").slice(1);
 
   // Commands Cooldown & All Commands
@@ -91,7 +93,6 @@ client.on("message", async message => {
         title: "**Command Cooldown**",
         description:
           "Dude you have to wait 1 seconds before you can do another command!",
-        fields: [],
         timestamp: new Date(),
         footer: {
           text: "Made with ❤️ created by " + owner
@@ -109,7 +110,6 @@ client.on("message", async message => {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Bruh Moment**",
           description: "You realise that I don't work in DMs...",
-          fields: [],
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by" + owner
@@ -176,7 +176,6 @@ client.on("message", async message => {
               color: Math.floor(Math.random() * 16777214) + 1,
               title: "**Boring Facts**",
               description: body.data,
-              fields: [],
               timestamp: new Date(),
               footer: {
                 text: "Made with ❤️ created by " + owner
@@ -224,7 +223,6 @@ client.on("message", async message => {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Skeppy Meme Machine**",
           description: randomAnswer,
-          fields: [],
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
@@ -239,7 +237,6 @@ client.on("message", async message => {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Lag Machine**",
           description: "Your ping is " + Math.round(client.ping) + " ms!",
-          fields: [],
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
@@ -277,7 +274,7 @@ client.on("message", async message => {
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**8 Ball Machine**",
-          description: "OH! IT ANSWERS YOU SOMETHING!",
+          description: "This smart ball has something to tell you.",
           fields: [
             {
               name: "Your Question",
@@ -305,7 +302,6 @@ client.on("message", async message => {
               color: Math.floor(Math.random() * 16777214) + 1,
               title: "**GIF Machine**",
               description: "Here's your GIF!",
-              fields: [],
               timestamp: new Date(),
               image: {
                 url: body.data.image_original_url
@@ -371,87 +367,92 @@ client.on("message", async message => {
     }
 
     if (msg.startsWith(`${prefix}user`)) {
-      // Member Variables
-      const member = getMember(message, args.join(" "));
-      const joined = formatDate(member.joinedAt);
-      const roles =
-        member.roles
-          .filter(r => r.id !== message.guild.id)
-          .map(r => r)
-          .join(", ") || "none";
-
-      // User Variables
-
-      const created = formatDate(member.user.createdAt);
-
-      const memberi = () =>
-        new Discord.RichEmbed({
+      var member = message.mentions.members.first() || message.author;
+      var userCreated = member.createdAt.toString().split(" ");
+      message.channel.send({
+        embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Member Information**" + stripIndents,
-          description: "Here's the user's information of this server!",
+          title: "**User Information**",
+          description: "Here's the user information!",
           thumbnail: {
-            url: member.displayAvatarURL
+            url: member.avatarURL
           },
           fields: [
             {
-              name: "Display Name",
-              value: member.displayName,
-              inline: true
+              name: "Username + Tag",
+              value: member.tag
             },
             {
-              name: "Member Since",
-              value: joined,
-              inline: true
-            },
-            {
-              name: "Roles",
-              value: roles,
-              inline: true
-            }
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        });
-      const useri = () =>
-        new Discord.RichEmbed({
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**User Information**" + stripIndents,
-          description: "Here's the user's information!",
-          thumbnail: {
-            url: member.displayAvatarURL
-          },
-          fields: [
-            {
-              name: "Username",
-              value: member.user.username,
-              inline: true
-            },
-            {
-              name: "Discord Tag",
-              value: member.user.tag,
-              inline: true
+              name: "User ID",
+              value: member.id
             },
             {
               name: "Account Since",
-              value: created,
-              inline: true
+              value:
+                userCreated[1] + ", " + userCreated[2] + " " + userCreated[3]
+            },
+            {
+              name: "Game Presence",
+              value: member.presence.game ? member.presence.game.name : "none",
             }
           ],
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
           }
-        });
-      if (member.user.presence.game)
-        useri.addField(
-          `Currently Playing`,
-          `Name: ${member.user.presence.game.name}`
-        );
+        }
+      });
+    }
 
-      message.channel.send(useri).then(msg => {
-        channel.send(memberi);
+    if (msg.startsWith(`${prefix}server`)) {
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Server Information**",
+          description: "Here's the server information!",
+          fields: [
+            {
+              name: "Server Name",
+              value: message.guild.name
+            },
+            {
+              name: "Server ID",
+              value: message.guild.id
+            },
+            {
+              name: "Server Since",
+              value: message.guild.createdAt
+            },
+            {
+              name: "Server Owner",
+              value: message.guild.owner.user
+            },
+            {
+              name: "Server Owner's User ID",
+              value: message.guild.owner.id
+            },
+            {
+              name: "Server Region",
+              value: message.guild.region
+            },
+            {
+              name: "Total Members",
+              value: message.guild.memberCount
+            },
+            {
+              name: "Total Channels",
+              value: message.guild.channels.size
+            },
+            {
+              name: "AFK Channel",
+              value: message.guild.afkchannel
+            }
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
       });
     }
 
@@ -464,7 +465,6 @@ client.on("message", async message => {
               color: Math.floor(Math.random() * 16777214) + 1,
               title: "**Action Copy Cat**",
               description: "You need to say something for the bot to say!",
-              fields: [],
               timestamp: new Date(),
               footer: {
                 text: "Made with ❤️ created by " + owner
@@ -499,7 +499,6 @@ client.on("message", async message => {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Reddit Memes**",
           description: `A meme from /r/${random}`,
-          fields: [],
           timestamp: new Date(),
           image: {
             url: meme
@@ -569,22 +568,92 @@ client.on("message", async message => {
         };
     }
 
+    if (msg.startsWith(`${prefix}uptime`))
+      return message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Time Tracker**",
+          description: secondsToString(process.uptime()),
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+
     // Music Commands
 
-    const serverQueue = queue.get(message.guild.id);
-
     if (msg.startsWith(`${prefix}play`)) {
-      execute(message, serverQueue);
-      return;
-    }
+      const voiceChannel = message.member.voiceChannel;
+      if (!voiceChannel) return;
+      const permissions = voiceChannel.permissionsFor(message.client.user);
+      if (!permissions.has("CONNECT")) return;
+      if (!permissions.has("SPEAK")) return;
 
-    if (msg.startsWith(`${prefix}skip`)) {
-      skip(message, serverQueue);
-      return;
-    }
+      const songInfo = await ytdl.getInfo(args[0]);
 
-    if (msg.startsWith(`${prefix}stop`)) {
-      stop(message, serverQueue);
+      const song = {
+        title: songInfo.title,
+        url: songInfo.video_url
+      };
+
+      if (!serverQueue) {
+        const queueConstruct = {
+          textChannel: message.channel,
+          voiceChannel: voiceChannel,
+          connection: null,
+          songs: [],
+          volume: 5,
+          playing: true
+        };
+        queue.set(message.guild.id, queueConstruct);
+        queueConstruct.songs.push(song);
+        try {
+          var connection = await voiceChannel.join();
+          queueConstruct.connection = connection;
+          play(message.guild, queueConstruct.songs[0]);
+        } catch (error) {
+          console.error(
+            `I was unable to join the voice channel ${voiceChannel}, the error is : ${error}`
+          );
+          return;
+        }
+      } else {
+        serverQueue.songs.push(song);
+        return;
+      }
+
+      return;
+    } else if (msg.startsWith(`${prefix}skip`)) {
+      if (!serverQueue)
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Windows Media Player**",
+            description: "I couldn't skip anything!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+
+      serverQueue.connection.dispatcher.end();
+      return;
+    } else if (msg.startsWith(`${prefix}stop`)) {
+      if (!message.member.voiceChannel) return;
+      message.member.voiceChannel.leave();
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Windows Media Player**",
+          description: "Player has stopped!",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
     }
 
     // Adds the user to the set so that they can't talk for a minute
@@ -596,140 +665,11 @@ client.on("message", async message => {
   }
 });
 
-// Async Functions
-
-async function execute(message, serverQueue) {
-  const args = message.content.split(" ");
-
-  const voiceChannel = message.member.voiceChannel;
-  if (!voiceChannel)
-    return message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description:
-          "Dude you have to be in a channel so I can play music for you OK?",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by " + owner
-        }
-      }
-    });
-  const permissions = voiceChannel.permissionsFor(message.client.user);
-  if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
-    return message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: "Dude I don't have permissions to `Connect` or `Speak`!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by " + owner
-        }
-      }
-    });
-  }
-
-  const songInfo = await ytdl.getInfo(args[1]);
-  const song = {
-    title: songInfo.title,
-    url: songInfo.video_url
-  };
-
-  if (!serverQueue) {
-    const queueContruct = {
-      textChannel: message.channel,
-      voiceChannel: voiceChannel,
-      connection: null,
-      songs: [],
-      volume: 5,
-      playing: true
-    };
-
-    queue.set(message.guild.id, queueContruct);
-
-    queueContruct.songs.push(song);
-
-    try {
-      var connection = await voiceChannel.join();
-      queueContruct.connection = connection;
-      play(message.guild, queueContruct.songs[0]);
-    } catch (err) {
-      console.log(err);
-      queue.delete(message.guild.id);
-      return message.channel.send(err);
-    }
-  } else {
-    serverQueue.songs.push(song);
-    console.log(serverQueue.songs);
-    return message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: `${song.title} has been added to the queue!`,
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by " + owner
-        }
-      }
-    });
-  }
-}
-
-function skip(message, serverQueue) {
-  if (!message.member.voiceChannel)
-    return message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: "You have to be in a voice channel to stop the music!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by " + owner
-        }
-      }
-    });
-  if (!serverQueue)
-    return message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: "There isn't any songs I could skip!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by " + owner
-        }
-      }
-    });
-  serverQueue.connection.dispatcher.end();
-}
-
-function stop(message, serverQueue) {
-  if (!message.member.voiceChannel)
-    return message.channel.send({
-      embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
-        title: "**Windows Media Player**",
-        description: "You have to be in a voice channel to stop the music!",
-        fields: [],
-        timestamp: new Date(),
-        footer: {
-          text: "Made with ❤️ created by " + owner
-        }
-      }
-    });
-  serverQueue.songs = [];
-  serverQueue.connection.dispatcher.end();
-}
+// Functions
 
 function play(guild, song) {
   const serverQueue = queue.get(guild.id);
-  return;
+
   if (!song) {
     serverQueue.voiceChannel.leave();
     queue.delete(guild.id);
@@ -739,14 +679,14 @@ function play(guild, song) {
   const dispatcher = serverQueue.connection
     .playStream(ytdl(song.url))
     .on("end", () => {
-      console.log("Music ended!");
+      console.log(`song ended`);
       serverQueue.songs.shift();
       play(guild, serverQueue.songs[0]);
+      return;
     })
-    .on("error", error => {
-      console.error(error);
-    });
-  dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    .on("error", error => console.error(error));
+
+  dispatcher.setVolumeLogarithmic(5 / 5);
 }
 
 const embed1 = () =>
@@ -785,7 +725,7 @@ const embed1 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 1 · Made with ❤️ created by Raymond#9999"
+      text: "Page 1 · Made with ❤️ created by Raymond#7846"
     }
   });
 
@@ -801,11 +741,15 @@ const embed2 = () =>
       {
         name: "`rh!about`",
         value: "Shows you the info about the bot!"
+      },
+      {
+        name: "`rh!uptime`",
+        value: "Shows you the uptime of the bot!"
       }
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 2 · Made with ❤️ created by Raymond#9999"
+      text: "Page 2 · Made with ❤️ created by Raymond#7846"
     }
   });
 
@@ -841,7 +785,7 @@ const embed3 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 3 · Made with ❤️ created by Raymond#9999"
+      text: "Page 3 · Made with ❤️ created by Raymond#7846"
     }
   });
 
@@ -855,13 +799,13 @@ const embed4 = () =>
         value: "Replies you the respond time of the bot!"
       },
       {
-        name: "`rh!user [Other Users]`",
-        value: "Send's your/other's Discord profile information!"
+        name: "`rh!user ~~[Other Users]~~`",
+        value: "Send's your/other's Discord profile information! (Currently search for other users is broken...)"
       }
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 3 · Made with ❤️ created by Raymond#9999"
+      text: "Page 3 · Made with ❤️ created by Raymond#7846"
     }
   });
 
@@ -887,7 +831,7 @@ const embed5 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Made with ❤️ created by Raymond#9999"
+      text: "Made with ❤️ created by Raymond#7846"
     }
   });
 
@@ -928,4 +872,33 @@ function sendList(channel, getList) {
     .then(msgReaction => msgReaction.message.react(emojiNext))
     .then(msgReaction => createCollectorMessage(msgReaction.message, getList));
 }
+
+function secondsToString(seconds) {
+  var days = Math.floor(seconds / 86400);
+  var hours = Math.floor((seconds % 86400) / 3600);
+  var minutes = Math.floor((seconds % 3600) / 60);
+  var seconds = Math.floor(seconds % 60);
+
+  var str = "";
+
+  if (days > 0) {
+    str += days + ":";
+  }
+  if (hours < 10) {
+    hours = "0" + hours;
+  }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+
+  str += hours + ":";
+  str += minutes + ":";
+  str += seconds;
+
+  return str;
+}
+
 client.login(process.env.TOKEN);
