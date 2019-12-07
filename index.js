@@ -901,4 +901,4 @@ function secondsToString(seconds) {
   return str;
 }
 
-client.login(process.env.TOKEN);
+client.login(process.env.DISCORD);
