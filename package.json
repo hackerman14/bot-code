@@ -19,10 +19,13 @@
     "giphy-js-sdk-core": "^2.0.3",
     "node-fetch": "^2.6.0",
     "opusscript": "^0.0.7",
-    "ytdl-core": "^1.0.3",
+    "ytdl-core": "^1.0.7",
     "random-puppy": "^1.1.0",
     "weather-js": "^2.0.0",
     "fs": "^0.0.2",
-    "common-tags": "^1.8.0"
+    "common-tags": "^1.8.0",
+    "ffmpeg": "^0.0.4",
+    "moment": "^2.24.0",
+    "simple-youtube-api": "^5.2.1"
   }
 }
