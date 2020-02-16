@@ -32,13 +32,12 @@ const opts = {
   key: process.env.YOUTUBE,
   type: "video"
 };
-let cooldown = new Set();
-let cdseconds = 5;
 const prefix = "rh!";
 const { stripIndents } = require("common-tags");
 const owner = "Raymond#9999";
 const joinedAt = require("moment");
-
+let cooldown = new Set();
+let cdseconds = 5;
 // Console Logging
 
 client.once("ready", () => {
@@ -118,7 +117,7 @@ client.on("message", async message => {
       message.author.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Bruh Moment**",
+          title: "**OK Boomer**",
           description: "You realise that I don't work in DMs...",
           timestamp: new Date(),
           footer: {
@@ -224,13 +223,27 @@ client.on("message", async message => {
         "uh oh spaghettios",
         "japenese symbol for beginner",
         "diameter",
-        "perpendicularity"
+        "perpendicularity",
+        "hi im the real skeppy",
+        "like or die tmr",
+        "heal pool",
+        "bald",
+        "fish in a bucket",
+        "golden helmet",
+        "a6d's little brother",
+        "BaldBoyHalo",
+        "magnifying glass tilted left",
+        "magnifying glass tilted right",
+        "f",
+        "japanese symbol for beginner",
+        "DrunkBoyHalo",
+        "oh neat, hieroglyphs"
       ];
       var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Skeppy Meme Machine**",
+          title: "**Skeppy Memes**",
           description: randomAnswer,
           timestamp: new Date(),
           footer: {
@@ -284,7 +297,7 @@ client.on("message", async message => {
         return message.channel.send({
           embed: {
             color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**8 Ball Machine**",
+            title: "**The Legendary 8 Ball**",
             description: "You need to say something for the bot to response!",
             timestamp: new Date(),
             footer: {
@@ -296,7 +309,7 @@ client.on("message", async message => {
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**8 Ball Machine**",
+          title: "**The Legendary 8 Ball**",
           description: "This smart ball has something to tell you.",
           fields: [
             {
@@ -304,7 +317,7 @@ client.on("message", async message => {
               value: sayMessage
             },
             {
-              name: "The 8 Ball's Answer",
+              name: "The 8 Ball's Big Words",
               value: randomAnswer
             }
           ],
@@ -323,7 +336,7 @@ client.on("message", async message => {
           message.channel.send({
             embed: {
               color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**GIF Machine**",
+              title: "**Random GIF**",
               description: "Here's your GIF!",
               timestamp: new Date(),
               image: {
@@ -337,7 +350,7 @@ client.on("message", async message => {
         });
     }
 
-    if (msg.startsWith(`${prefix}sample`)) {
+    if (msg.startsWith(`${prefix}sembed`)) {
       const exampleEmbed = {
         color: 0x0099ff,
         title: "Some title",
@@ -390,7 +403,7 @@ client.on("message", async message => {
     }
 
     if (msg.startsWith(`${prefix}user`)) {
-      var member = message.mentions.members.first() || message.author;
+      var member = message.mentions.users.first() || message.author;
       var userCreated = member.createdAt.toString().split(" ");
       message.channel.send({
         embed: {
@@ -412,7 +425,7 @@ client.on("message", async message => {
             {
               name: "Account Since",
               value:
-                userCreated[1] + ", " + userCreated[2] + " " + userCreated[3]
+                userCreated[1] + " " + userCreated[2] + ", " + userCreated[3]
             },
             {
               name: "Game Presence",
@@ -829,16 +842,16 @@ client.on("message", async message => {
       serverQueue.volume = args1[1];
       serverQueue.connection.dispatcher.setVolumeLogarithmic(args1[1] / 5);
       return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: `I set the volume to **${args1[1]}**`,
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Windows Media Player**",
+          description: `I set the volume to **${args1[1]}**`,
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
           }
-        });
+        }
+      });
     } else if (msg.startsWith(`${prefix}nowplaying`)) {
       if (!serverQueue)
         return message.channel.send({
@@ -992,18 +1005,34 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     } catch (error) {
       console.error(`I could not join the voice channel: ${error}`);
       queue.delete(message.guild.id);
-      return message.channel.send(
-        `I could not join the voice channel: ${error}`
-      );
+      return message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Windows Media Player**",
+          description: `I could not join the voice channel: ${error}`,
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
     }
   } else {
     serverQueue.songs.push(song);
     console.log(serverQueue.songs);
     if (playlist) return undefined;
     else
-      return message.channel.send(
-        `✅ **${song.title}** has been added to the queue!`
-      );
+      return message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Windows Media Player**",
+          description: `✅ **${song.title}** has been added to the queue!`,
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
   }
   return undefined;
 }
@@ -1030,7 +1059,17 @@ function play(guild, song) {
     .on("error", error => console.error(error));
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 
-  serverQueue.textChannel.send(`🎶 Start playing: **${song.title}**`);
+  serverQueue.textChannel.send({
+    embed: {
+      color: Math.floor(Math.random() * 16777214) + 1,
+      title: "**Windows Media Player**",
+      description: `🎶 Start playing: **${song.title}**`,
+      timestamp: new Date(),
+      footer: {
+        text: "Made with ❤️ created by " + owner
+      }
+    }
+  });
 }
 
 const embed1 = () =>
@@ -1069,7 +1108,7 @@ const embed1 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 1 · Made with ❤️ created by Raymond#7846"
+      text: "Page 1"
     }
   });
 
@@ -1093,7 +1132,7 @@ const embed2 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 2 · Made with ❤️ created by Raymond#7846"
+      text: "Page 2"
     }
   });
 
@@ -1129,7 +1168,7 @@ const embed3 = () =>
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 3 · Made with ❤️ created by Raymond#7846"
+      text: "Page 3"
     }
   });
 
@@ -1143,14 +1182,13 @@ const embed4 = () =>
         value: "Replies you the respond time of the bot!"
       },
       {
-        name: "`rh!user ~~[Other Users]~~`",
-        value:
-          "Send's your/other's Discord profile information! (Currently search for other users is broken...)"
+        name: "`rh!user [Other Users]`",
+        value: "Send's your/other's Discord profile information!"
       }
     ],
     timestamp: new Date(),
     footer: {
-      text: "Page 3 · Made with ❤️ created by Raymond#7846"
+      text: "Page 4"
     }
   });
 
@@ -1175,7 +1213,8 @@ const embed5 = () =>
       },
       {
         name: "`rh!volume [Volume]`",
-        value: "See/Change the volume of the sound playing from the fake Windows Media Player!"
+        value:
+          "See/Change the volume of the sound playing from the fake Windows Media Player!"
       },
       {
         name: "`rh!nowplaying`",
@@ -1193,11 +1232,10 @@ const embed5 = () =>
         name: "`rh!resume`",
         value: "Resumes the song from playinh"
       }
-      
     ],
     timestamp: new Date(),
     footer: {
-      text: "Made with ❤️ created by Raymond#7846"
+      text: "Page 5"
     }
   });
 
