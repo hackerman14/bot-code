@@ -1,31 +1,32 @@
 {
-  "name": "bot",
+  "name": "hackerman14",
   "version": "1.0.0",
-  "description": "",
+  "description": "The Discord bot for fun uses!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
   "engines": {
-    "node": "10.16.3"
+    "node": "12.16.1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dblapi.js": "^2.3.0",
-    "discord.js": "^11.5.1",
+    "dblapi.js": "^2.4.0",
+    "discord.js": "^12.0.2",
     "express": "^4.17.1",
     "giphy-js-sdk-core": "^2.0.3",
     "node-fetch": "^2.6.0",
     "opusscript": "^0.0.7",
-    "ytdl-core": "^1.0.7",
+    "ytdl-core": "^2.0.0",
     "random-puppy": "^1.1.0",
     "weather-js": "^2.0.0",
     "fs": "^0.0.2",
     "common-tags": "^1.8.0",
     "ffmpeg": "^0.0.4",
     "moment": "^2.24.0",
-    "simple-youtube-api": "^5.2.1"
+    "simple-youtube-api": "^5.2.1",
+    "urban": "^0.3.2"
   }
 }
