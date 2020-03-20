@@ -5,9 +5,9 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
 const YouTube = require("simple-youtube-api");
-const moment = require("moment");
 const randomPuppy = require("random-puppy");
-const ffmpeg = require("ffmpeg");
+const urban = require("urban");
+const { stripIndents } = require("common-tags");
 const weather = require("weather-js");
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBTOKEN, client);
@@ -33,31 +33,18 @@ const opts = {
   type: "video"
 };
 const prefix = "rh!";
-const { stripIndents } = require("common-tags");
-const owner = "Raymond#9999";
-const joinedAt = require("moment");
+const owner = "Raymond#9533";
 let cooldown = new Set();
-let cdseconds = 5;
 // Console Logging
 
 client.once("ready", () => {
   console.log("Ready!");
   console.log(
-    "The bot is currently on " +
-      client.guilds.size +
-      " severs, and will be serving " +
-      client.users.size +
-      " users!"
+    `The bot is currently serviing ${client.users.size} users, in ${client.guilds.size} servers.`
   );
   client.user
-    .setActivity("rh!help | hackerman14.tk", {
-      type: "PLAYING"
-    })
-    .then(presence =>
-      console.log(
-        `Activity set to "${presence.game ? presence.game.name : "none"}"`
-      )
-    )
+    .setActivity("discord.js", { type: "WATCHING" })
+
     .catch(console.error);
 
   client.user.setStatus("dnd");
@@ -70,6 +57,10 @@ client.once("disconnect", () => {
 });
 client.on("warn", console.warn);
 client.on("error", console.error);
+client.on("uncaughtException", err => {
+  console.log(err);
+  process.exit(1);
+});
 dbl.on("posted", () => {
   console.log("Server count is posted on TOP.gg!");
 });
@@ -140,10 +131,17 @@ client.on("message", async message => {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**About This Bot**",
           description: "The information about this bot!",
+          thumbnail: {
+            url: client.user.displayAvatarURL
+          },
           fields: [
             {
               name: "Bot Name",
               value: "hackerman14"
+            },
+            {
+              name: "Bot Since",
+              value: "September 7, 2019 at 3:22:08 AM"
             },
             {
               name: "Creator",
@@ -237,7 +235,11 @@ client.on("message", async message => {
         "f",
         "japanese symbol for beginner",
         "DrunkBoyHalo",
-        "oh neat, hieroglyphs"
+        "oh neat, hieroglyphs",
+        "a apollonian gasket",
+        "Rhobicosidodecahedron",
+        "minecraft but",
+        "do not do that"
       ];
       var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
       message.channel.send({
@@ -254,11 +256,32 @@ client.on("message", async message => {
     }
 
     if (msg.startsWith(`${prefix}ping`)) {
-      message.channel.send({
+      let m = await message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Lag Machine**",
-          description: "Your ping is " + Math.round(client.ping) + " ms!",
+          description: "Ping?",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+      m.edit({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Lag Machine**",
+          description: "Pong!",
+          fields: [
+            {
+              name: "Latency",
+              value: `${m.createdTimestamp - message.createdTimestamp}ms`
+            },
+            {
+              name: "API Latency",
+              value: `${Math.round(client.ws.ping)}ms`
+            }
+          ],
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
@@ -441,6 +464,24 @@ client.on("message", async message => {
     }
 
     if (msg.startsWith(`${prefix}server`)) {
+      var serverCreated = message.guild.createdAt.toString().split(" ");
+      let region = {
+        brazil: ":flag_br: Brazil",
+        "eu-central": ":flag_eu: Central Europe",
+        singapore: ":flag_sg: Singapore",
+        "us-central": ":flag_us: U.S. Central",
+        sydney: ":flag_au: Sydney",
+        "us-east": ":flag_us: U.S. East",
+        "us-south": ":flag_us: U.S. South",
+        "us-west": ":flag_us: U.S. West",
+        "eu-west": ":flag_eu: Western Europe",
+        "vip-us-east": ":flag_us: VIP U.S. East",
+        london: ":flag_gb: London",
+        amsterdam: ":flag_nl: Amsterdam",
+        hongkong: ":flag_hk: Hong Kong",
+        russia: ":flag_ru: Russia",
+        southafrica: ":flag_za:  South Africa"
+      };
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
@@ -457,7 +498,12 @@ client.on("message", async message => {
             },
             {
               name: "Server Since",
-              value: message.guild.createdAt
+              value:
+                serverCreated[1] +
+                " " +
+                serverCreated[2] +
+                ", " +
+                serverCreated[3]
             },
             {
               name: "Server Owner",
@@ -469,7 +515,7 @@ client.on("message", async message => {
             },
             {
               name: "Server Region",
-              value: message.guild.region
+              value: region[message.guild.region]
             },
             {
               name: "Total Members",
@@ -477,11 +523,15 @@ client.on("message", async message => {
             },
             {
               name: "Total Channels",
-              value: message.guild.channels.size
+              value: message.guild.channels.cache.size
+            },
+            {
+              name: "Total Roles",
+              value: message.guild.roles.cache.size
             },
             {
               name: "AFK Channel",
-              value: message.guild.afkchannel
+              value: message.guild.afkChannel
             }
           ],
           timestamp: new Date(),
@@ -560,7 +610,7 @@ client.on("message", async message => {
             embed: {
               color: Math.floor(Math.random() * 16777214) + 1,
               title: "**Weather Forecast**",
-              description: `{current.skytext}`,
+              description: `${current.skytext}`,
               author: { name: `Weather for ${current.observationpoint}` },
               thumbnail: current.imageUrl,
               fields: [
@@ -605,11 +655,19 @@ client.on("message", async message => {
     }
 
     if (msg.startsWith(`${prefix}uptime`)) {
+      let totalSeconds = client.uptime / 1000;
+      let days = Math.floor(totalSeconds / 86400);
+      let hours = Math.floor(totalSeconds / 3600);
+      totalSeconds %= 3600;
+      let minutes = Math.floor(totalSeconds / 60);
+      let seconds = totalSeconds % 60;
+      let roundedSeconds = Math.round(seconds);
+      let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Time Tracker**",
-          description: secondsToString(process.uptime()),
+          description: `The bot has stayed on for ${uptime}!`,
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
@@ -618,14 +676,156 @@ client.on("message", async message => {
       });
     }
 
+    if (msg.startsWith(`${prefix}joke`)) {
+      fetch("https://api.icndb.com/jokes/random")
+        .then(res => res.json())
+        .then(body => {
+          message.channel.send({
+            embed: {
+              color: Math.floor(Math.random() * 16777214) + 1,
+              title: "**Dumb Jokes**",
+              description: body.data,
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          });
+        });
+    }
+
+    if (msg.startsWith(`${prefix}urban`)) {
+      if (!message.channel.nsfw)
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Urban Dictionary**",
+            description:
+              "Due to some NSFW words definition, so please run this in a NSFW channel!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+
+      if (args < 1 || !["random", "search"].includes(args[0]))
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Urban Dictionary**",
+            description: "Please enter something in order to search!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+
+      let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
+      try {
+        search.first(res => {
+          if (!res)
+            return message.channel.send({
+              embed: {
+                color: Math.floor(Math.random() * 16777214) + 1,
+                title: "**Urban Dictionary**",
+                description: "No results found for this topic!",
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
+              }
+            });
+
+          let {
+            word,
+            definition,
+            example,
+            thumbs_up,
+            thumbs_down,
+            permalink,
+            author
+          } = res;
+
+          let urbanEmbed = new Discord.MessageEmbed({
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Urban Dictionary**",
+            description: "Here's the definition!",
+            thumbnail: {
+              url: "https://file.coffee/u/Q39Od2R9wwf.png"
+            },
+            fields: [
+              {
+                name: "Word",
+                value: word
+              },
+              {
+                name: "Definition",
+                value: definition || "No definition given"
+              },
+              {
+                name: "Word Example",
+                value: example || "No example given"
+              },
+              {
+                name: "Upvotes",
+                value: thumbs_up || 0
+              },
+              {
+                name: "Downvotes",
+                value: thumbs_down || 0
+              },
+              {
+                name: "Link to the word",
+                value: `[${word}](${permalink ||
+                  "https://urbandictionary.com"})`
+              },
+              {
+                name: "Author",
+                value: author || "Unknown"
+              }
+            ],
+            timestamp: new Date(),
+            footer: {
+              text: "Page 1"
+            }
+          });
+          message.channel.send(urbanEmbed);
+        });
+      } catch (e) {
+        console.log(e);
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Urban Dictionary**",
+            description: "An error occured, please try again!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      }
+    }
+
     // Music Commands
 
     if (msg.startsWith(`${prefix}play`)) {
       const voiceChannel = message.member.voiceChannel;
       if (!voiceChannel)
-        return message.channel.send(
-          "I'm sorry but you need to be in a voice channel to play music!"
-        );
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Windows Media Player**",
+            description:
+              "I'm sorry but you need to be in a voice channel to play music!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
       const permissions = voiceChannel.permissionsFor(message.client.user);
       if (!permissions.has("CONNECT")) {
         return message.channel.send({
@@ -1073,7 +1273,7 @@ function play(guild, song) {
 }
 
 const embed1 = () =>
-  new Discord.RichEmbed({
+  new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: "**Commands List**",
     description:
@@ -1113,7 +1313,7 @@ const embed1 = () =>
   });
 
 const embed2 = () =>
-  new Discord.RichEmbed({
+  new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":information_source: **Basic Commands**",
     fields: [
@@ -1137,7 +1337,7 @@ const embed2 = () =>
   });
 
 const embed3 = () =>
-  new Discord.RichEmbed({
+  new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":8ball: **Fun Commands**",
     fields: [
@@ -1173,7 +1373,7 @@ const embed3 = () =>
   });
 
 const embed4 = () =>
-  new Discord.RichEmbed({
+  new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":cd: **Misc Commands**",
     fields: [
@@ -1183,7 +1383,15 @@ const embed4 = () =>
       },
       {
         name: "`rh!user [Other Users]`",
-        value: "Send's your/other's Discord profile information!"
+        value: "Sends your/other's Discord profile information!"
+      },
+      {
+        name: "`rh!server`",
+        value: "Sends the server's detail"
+      },
+      {
+        name: "`rh!urban <search/random> [query]`",
+        value: "Search the words across the Urban Dictionary!"
       }
     ],
     timestamp: new Date(),
@@ -1193,7 +1401,7 @@ const embed4 = () =>
   });
 
 const embed5 = () =>
-  new Discord.RichEmbed({
+  new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: ":musical_note: **Music Commands**",
     fields: [
@@ -1275,34 +1483,6 @@ function sendList(channel, getList) {
     .then(msg => msg.react(emojiPrevious))
     .then(msgReaction => msgReaction.message.react(emojiNext))
     .then(msgReaction => createCollectorMessage(msgReaction.message, getList));
-}
-
-function secondsToString(seconds) {
-  var days = Math.floor(seconds / 86400);
-  var hours = Math.floor((seconds % 86400) / 3600);
-  var minutes = Math.floor((seconds % 3600) / 60);
-  var seconds = Math.floor(seconds % 60);
-
-  var str = "";
-
-  if (days > 0) {
-    str += days + ":";
-  }
-  if (hours < 10) {
-    hours = "0" + hours;
-  }
-  if (minutes < 10) {
-    minutes = "0" + minutes;
-  }
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-
-  str += hours + ":";
-  str += minutes + ":";
-  str += seconds;
-
-  return str;
 }
 
 client.login(process.env.DISCORD);
