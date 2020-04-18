@@ -4,10 +4,12 @@ const Util = require("discord.js");
 const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
+const fs = require("fs");
 const YouTube = require("simple-youtube-api");
 const randomPuppy = require("random-puppy");
 const urban = require("urban");
-const { stripIndents } = require("common-tags");
+const Keyv = require("keyv");
+const prefixes = new Keyv("sqlite://db.sqlite");
 const weather = require("weather-js");
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBTOKEN, client);
@@ -20,7 +22,6 @@ const reactionArrow = [emojiPrevious, emojiNext];
 const time = 600000; // Menu Timeout: 10 Minutes
 const http = require("http");
 const express = require("express");
-`1`;
 const app = express();
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping Received");
@@ -32,22 +33,28 @@ const opts = {
   key: process.env.YOUTUBE,
   type: "video"
 };
-const prefix = "rh!";
-const owner = "Raymond#9533";
+const globalPrefix = "rh!";
+const owner = "Raymond#2829";
+client.commands = new Discord.Collection();
+
 let cooldown = new Set();
 // Console Logging
 
 client.once("ready", () => {
   console.log("Ready!");
   console.log(
-    `The bot is currently serviing ${client.users.size} users, in ${client.guilds.size} servers.`
+    `The bot is currently serviing ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
   );
   client.user
-    .setActivity("discord.js", { type: "WATCHING" })
-
+    .setPresence({
+      activity: {
+        name: "rh!help | hackerman14.tk | SITE REVAMPED!!",
+        url: "https://hackerman14.tk"
+      },
+      status: "dnd"
+    })
+    .then(console.log)
     .catch(console.error);
-
-  client.user.setStatus("dnd");
 });
 client.once("reconnecting", () => {
   console.log("Reconnecting!");
@@ -76,13 +83,42 @@ client.on("message", async message => {
   let msg = message.content.toLowerCase();
   if (message.author.bot) return;
   if (!message.guild) return;
-  if (!message.content.startsWith(prefix)) return;
+  if (!message.content.startsWith(globalPrefix)) return;
   var args = message.content.split(" ").slice(1);
   const channel = message.channel;
   const args1 = message.content.split(" ");
   const searchString = args1.slice(1).join(" ");
   const url = args1[1] ? args1[1].replace(/<(.+)>/g, "$1") : "";
   const serverQueue = queue.get(message.guild.id);
+
+  // Custom Prefix
+
+  let gArgs;
+  // handle messages in a guild
+  if (message.guild) {
+    let prefix;
+
+    if (message.content.startsWith(globalPrefix)) {
+      prefix = globalPrefix;
+    } else {
+      // check the guild-level prefix
+      const guildPrefix = await prefixes.get(message.guild.id);
+      if (message.content.startsWith(guildPrefix)) prefix = guildPrefix;
+    }
+
+    // if we found a prefix, setup args; otherwise, this isn't a command
+    if (!prefix) return;
+    gArgs = message.content.slice(prefix.length).split(/\s+/);
+  } else {
+    // handle DMs
+    const slice = message.content.startsWith(globalPrefix)
+      ? globalPrefix.length
+      : 0;
+    gArgs = message.content.slice(slice).split(/\s+/);
+  }
+
+  // get the first space-delimited argument after the prefix as the command
+  const command = gArgs.shift().toLowerCase();
 
   // Commands Cooldown & All Commands
 
@@ -100,7 +136,7 @@ client.on("message", async message => {
       }
     });
   } else {
-    // Every commands goes here!
+    // Every command goes here!
 
     // DM
 
@@ -120,12 +156,12 @@ client.on("message", async message => {
 
     // Commands
 
-    if (msg.startsWith(`${prefix}help`)) {
+    if (command === "help1") {
       sendList(channel, getList);
       return;
     }
 
-    if (msg.startsWith(`${prefix}about`)) {
+    if (command === "about") {
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
@@ -173,7 +209,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}facts`)) {
+    if (command === "facts") {
       fetch("https://useless-facts.sameerkumar.website/api")
         .then(res => res.json())
         .then(body => {
@@ -191,7 +227,7 @@ client.on("message", async message => {
         });
     }
 
-    if (msg.startsWith(`${prefix}skeppy`)) {
+    if (command === "skeppy") {
       var answers = [
         "flip flop",
         "14",
@@ -239,7 +275,8 @@ client.on("message", async message => {
         "a apollonian gasket",
         "Rhobicosidodecahedron",
         "minecraft but",
-        "do not do that"
+        "do not do that",
+        "so i..."
       ];
       var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
       message.channel.send({
@@ -255,7 +292,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}ping`)) {
+    if (command === "ping") {
       let m = await message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
@@ -290,7 +327,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}8`)) {
+    if (command === "8") {
       const sayMessage = args.join(" ");
       var answers = [
         "It is certain.",
@@ -352,7 +389,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}gif`)) {
+    if (command === "gif") {
       fetch(process.env.GIPHY)
         .then(res => res.json())
         .then(body => {
@@ -373,8 +410,8 @@ client.on("message", async message => {
         });
     }
 
-    if (msg.startsWith(`${prefix}sembed`)) {
-      const exampleEmbed = {
+    if (command === "sEmbed") {
+      const sampleEmbed = {
         color: 0x0099ff,
         title: "Some title",
         url: "https://discord.js.org",
@@ -422,10 +459,10 @@ client.on("message", async message => {
         }
       };
 
-      message.channel.send({ embed: exampleEmbed });
+      message.channel.send({ embed: sampleEmbed });
     }
 
-    if (msg.startsWith(`${prefix}user`)) {
+    if (command === "user") {
       var member = message.mentions.users.first() || message.author;
       var userCreated = member.createdAt.toString().split(" ");
       message.channel.send({
@@ -434,7 +471,7 @@ client.on("message", async message => {
           title: "**User Information**",
           description: "Here's the user information!",
           thumbnail: {
-            url: member.avatarURL
+            url: member.avatarURL()
           },
           fields: [
             {
@@ -463,7 +500,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}server`)) {
+    if (command === "server") {
       var serverCreated = message.guild.createdAt.toString().split(" ");
       let region = {
         brazil: ":flag_br: Brazil",
@@ -487,6 +524,9 @@ client.on("message", async message => {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Server Information**",
           description: "Here's the server information!",
+          thumbnail: {
+            url: message.guild.iconURL()
+          },
           fields: [
             {
               name: "Server Name",
@@ -542,7 +582,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}say`)) {
+    if (command === "say") {
       const sayMessage = args.join(" ");
       if (!args[0])
         return message.channel
@@ -564,7 +604,7 @@ client.on("message", async message => {
       message.channel.send(sayMessage);
     }
 
-    if (msg.startsWith(`${prefix}meme`)) {
+    if (command === "meme") {
       const subReddits = [
         "dankmeme",
         "memes",
@@ -596,7 +636,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}weather`)) {
+    if (command === "weather") {
       weather.find({ search: args.join(" "), degreeType: "F" }),
         function(err, result) {
           if (err) console.log(err);
@@ -654,7 +694,7 @@ client.on("message", async message => {
         };
     }
 
-    if (msg.startsWith(`${prefix}uptime`)) {
+    if (command === "uptime") {
       let totalSeconds = client.uptime / 1000;
       let days = Math.floor(totalSeconds / 86400);
       let hours = Math.floor(totalSeconds / 3600);
@@ -662,7 +702,7 @@ client.on("message", async message => {
       let minutes = Math.floor(totalSeconds / 60);
       let seconds = totalSeconds % 60;
       let roundedSeconds = Math.round(seconds);
-      let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${seconds} seconds`;
+      let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${roundedSeconds} seconds`;
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
@@ -676,7 +716,7 @@ client.on("message", async message => {
       });
     }
 
-    if (msg.startsWith(`${prefix}joke`)) {
+    if (command === "joke") {
       fetch("https://api.icndb.com/jokes/random")
         .then(res => res.json())
         .then(body => {
@@ -694,7 +734,7 @@ client.on("message", async message => {
         });
     }
 
-    if (msg.startsWith(`${prefix}urban`)) {
+    if (command === "urban") {
       if (!message.channel.nsfw)
         return message.channel.send({
           embed: {
@@ -788,7 +828,7 @@ client.on("message", async message => {
             ],
             timestamp: new Date(),
             footer: {
-              text: "Page 1"
+              text: "Made with ❤️ created by " + owner
             }
           });
           message.channel.send(urbanEmbed);
@@ -809,10 +849,41 @@ client.on("message", async message => {
       }
     }
 
+    if (command === "prefix") {
+      // if there's at least one argument, set the prefix
+      if (args.length) {
+        await prefixes.set(message.guild.id, args[0]);
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Prefix Changer**",
+            description: `Successfully set prefix to \`${args[0]}\``,
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      }
+
+      return message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Prefix Changet**",
+          description: `Prefix is \`${(await prefixes.get(message.guild.id)) ||
+            globalPrefix}\``,
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
+
     // Music Commands
 
-    if (msg.startsWith(`${prefix}play`)) {
-      const voiceChannel = message.member.voiceChannel;
+    if (command === "play") {
+      const voiceChannel = message.member.voice.channel;
       if (!voiceChannel)
         return message.channel.send({
           embed: {
@@ -869,7 +940,7 @@ client.on("message", async message => {
           embed: {
             color: Math.floor(Math.random() * 16777214) + 1,
             title: "**Windows Media Player**",
-            description: `✅ Playlist: **${playlist.title}** has been added to the queue!`,
+            description: `Playlist: **${playlist.title}** has been added to the queue!`,
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
@@ -908,7 +979,7 @@ client.on("message", async message => {
               var response = await message.channel.awaitMessages(
                 msg2 => msg2.content > 0 && msg2.content < 11,
                 {
-                  maxMatches: 1,
+                  max: 1,
                   time: 10000,
                   errors: ["time"]
                 }
@@ -947,7 +1018,7 @@ client.on("message", async message => {
         }
         return handleVideo(video, message, voiceChannel);
       }
-    } else if (msg.startsWith(`${prefix}skip`)) {
+    } else if (command === "skip") {
       if (!message.member.voiceChannel)
         return message.channel.send({
           embed: {
@@ -972,9 +1043,9 @@ client.on("message", async message => {
             }
           }
         });
-      serverQueue.connection.dispatcher.end("Skip command has been used!");
+      serverQueue.connection.dispatcher.destroy("Skip command has been used!");
       return undefined;
-    } else if (msg.startsWith(`${prefix}stop`)) {
+    } else if (command === "stop") {
       if (!message.member.voiceChannel)
         return message.channel.send({
           embed: {
@@ -1000,9 +1071,9 @@ client.on("message", async message => {
           }
         });
       serverQueue.songs = [];
-      serverQueue.connection.dispatcher.end("Stop command has been used!");
+      serverQueue.connection.dispatcher.destroy("Stop command has been used!");
       return undefined;
-    } else if (msg.startsWith(`${prefix}volume`)) {
+    } else if (command === "volume") {
       if (!message.member.voiceChannel)
         return message.channel.send({
           embed: {
@@ -1052,7 +1123,7 @@ client.on("message", async message => {
           }
         }
       });
-    } else if (msg.startsWith(`${prefix}nowplaying`)) {
+    } else if (command === "nowplaying") {
       if (!serverQueue)
         return message.channel.send({
           embed: {
@@ -1069,14 +1140,14 @@ client.on("message", async message => {
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Windows Media Player**",
-          description: `🎶 Now playing: **${serverQueue.songs[0].title}**!`,
+          description: `Now playing: **${serverQueue.songs[0].title}**!`,
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
           }
         }
       });
-    } else if (msg.startsWith(`${prefix}queue`)) {
+    } else if (command === "queue") {
       if (!serverQueue)
         return message.channel.send({
           embed: {
@@ -1108,7 +1179,7 @@ client.on("message", async message => {
           }
         }
       });
-    } else if (msg.startsWith(`${prefix}pause`)) {
+    } else if (command === "pause") {
       if (serverQueue && serverQueue.playing) {
         serverQueue.playing = false;
         serverQueue.connection.dispatcher.pause();
@@ -1116,7 +1187,7 @@ client.on("message", async message => {
           embed: {
             color: Math.floor(Math.random() * 16777214) + 1,
             title: "**Windows Media Player**",
-            description: "⏸ Paused the music for you!",
+            description: "Paused the music for you!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
@@ -1135,7 +1206,7 @@ client.on("message", async message => {
           }
         }
       });
-    } else if (msg.startsWith(`${prefix}resume`)) {
+    } else if (command === "resume") {
       if (serverQueue && !serverQueue.playing) {
         serverQueue.playing = true;
         serverQueue.connection.dispatcher.resume();
@@ -1189,7 +1260,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     const queueConstruct = {
       textChannel: message.channel,
       voiceChannel: voiceChannel,
-      connection: null,
+      connection: 0,
       songs: [],
       volume: 5,
       playing: true
@@ -1226,7 +1297,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Windows Media Player**",
-          description: `✅ **${song.title}** has been added to the queue!`,
+          description: `**${song.title}** has been added to the queue!`,
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
@@ -1248,7 +1319,7 @@ function play(guild, song) {
   console.log(serverQueue.songs);
 
   const dispatcher = serverQueue.connection
-    .playStream(ytdl(song.url))
+    .play(ytdl(song.url))
     .on("end", reason => {
       if (reason === "Stream is not generating quickly enough.")
         console.log("Song ended.");
@@ -1263,7 +1334,7 @@ function play(guild, song) {
     embed: {
       color: Math.floor(Math.random() * 16777214) + 1,
       title: "**Windows Media Player**",
-      description: `🎶 Start playing: **${song.title}**`,
+      description: `Start playing: **${song.title}**`,
       timestamp: new Date(),
       footer: {
         text: "Made with ❤️ created by " + owner
@@ -1280,8 +1351,8 @@ const embed1 = () =>
       "Here's all the available commands! (Menu timeout is set to 10 minutes!)",
     fields: [
       {
-        name: ":robot: Bot Prefix",
-        value: "`rh!`",
+        name: ":robot: Default Prefix",
+        value: globalPrefix,
         inline: true
       },
       {
