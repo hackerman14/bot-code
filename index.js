@@ -156,7 +156,7 @@ client.on("message", async message => {
 
     // Commands
 
-    if (command === "help1") {
+    if (command === "help") {
       sendList(channel, getList);
       return;
     }
@@ -177,7 +177,7 @@ client.on("message", async message => {
             },
             {
               name: "Bot Since",
-              value: "September 7, 2019 at 3:22:08 AM"
+              value: "September 7, 2019"
             },
             {
               name: "Creator",
@@ -192,9 +192,8 @@ client.on("message", async message => {
               value: "[UptimeRobot](https://uptimerobot.com)"
             },
             {
-              name: "Code Sources",
-              value:
-                "[GitHub/raymond-1227/hackerman14-bot](https://github.com/raymond-1227/hackerman14-bot)"
+              name: "Source Codes",
+              value: "[GitHub/hackerman14](https://github.com/hackerman14)"
             },
             {
               name: "Library",
@@ -880,6 +879,50 @@ client.on("message", async message => {
       });
     }
 
+    if (command === "covid19") {
+      fetch("https://api.covid19api.com/summary")
+        .then(res => res.json())
+        .then(body => {
+          message.channel.send({
+            embed: {
+              color: Math.floor(Math.random() * 16777214) + 1,
+              title: "**COVID-19 Report**",
+              description: "Here are some sad news :(",
+              fields: [
+                {
+                  name: "New Comfirmed Cases",
+                  value: body.Global.NewConfirmed
+                },
+                {
+                  name: "New Death Cases",
+                  value: body.Global.NewDeaths
+                },
+                {
+                  name: "New Recovered Cases",
+                  value: body.Global.NewRecovered
+                },
+                {
+                  name: "Total Comfirmed Cases",
+                  value: body.Global.TotalConfirmed
+                },
+                {
+                  name: "Total Death Cases",
+                  value: body.Global.TotalDeaths
+                },
+                {
+                  name: "Total Recovered Cases",
+                  value: body.Global.TotalRecovered
+                }
+              ],
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          });
+        });
+    }
+
     // Music Commands
 
     if (command === "play") {
@@ -1463,6 +1506,10 @@ const embed4 = () =>
       {
         name: "`rh!urban <search/random> [query]`",
         value: "Search the words across the Urban Dictionary!"
+      },
+      {
+        name: "`rh!covid19`",
+        value: "Tells you any global numbers of cases between COVID-19!"
       }
     ],
     timestamp: new Date(),
