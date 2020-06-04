@@ -10,6 +10,11 @@ const randomPuppy = require("random-puppy");
 const urban = require("urban");
 const Keyv = require("keyv");
 const prefixes = new Keyv("sqlite://db.sqlite");
+const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
+const customAnalytics = new cheweyBotAnalyticsAPI(
+  process.env.CHEYWEYAPI,
+  client
+);
 const weather = require("weather-js");
 const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBTOKEN, client);
@@ -38,17 +43,18 @@ const owner = "Raymond#2829";
 client.commands = new Discord.Collection();
 
 let cooldown = new Set();
+
 // Console Logging
 
 client.once("ready", () => {
   console.log("Ready!");
   console.log(
-    `The bot is currently serviing ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
+    `The bot is currently serving ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
   );
   client.user
     .setPresence({
       activity: {
-        name: "rh!help | hackerman14.tk | SITE REVAMPED!!",
+        name: "rh!help | hackerman14.tk",
         url: "https://hackerman14.tk"
       },
       status: "dnd"
@@ -180,8 +186,12 @@ client.on("message", async message => {
               value: "September 7, 2019"
             },
             {
+              name: "Bot Website",
+              value: "[https://hackerman14.tk](https://hackerman14.tk)"
+            },
+            {
               name: "Creator",
-              value: "[" + owner + "](https://raymond-1227.github.io)"
+              value: "[" + owner + "](https://raymondlol.me)"
             },
             {
               name: "Host",
@@ -488,7 +498,9 @@ client.on("message", async message => {
             },
             {
               name: "Game Presence",
-              value: member.presence.game ? member.presence.game.name : "none"
+              value: member.presence.activities[0]
+                ? member.presence.activities.state
+                : "none"
             }
           ],
           timestamp: new Date(),
@@ -921,6 +933,23 @@ client.on("message", async message => {
             }
           });
         });
+    }
+
+    if (command === "photo") {
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Random HD Photo**",
+          description: "Here's your HD photo!",
+          timestamp: new Date(),
+          image: {
+            url: "https://source.unsplash.com/random?sig=" + Math.random()
+          },
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
     }
 
     // Music Commands
@@ -1472,6 +1501,10 @@ const embed3 = () =>
         value: "Sends you a random GIF!"
       },
       {
+        name: "`rh!photo`",
+        value: "Sends you a random HD photo with a random thumbnail!"
+      },
+      {
         name: "`rh!say <Message>`",
         value: "Says something what you say!"
       },
@@ -1521,7 +1554,8 @@ const embed4 = () =>
 const embed5 = () =>
   new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
-    title: ":musical_note: **Music Commands**",
+    title:
+      ":musical_note: **Music Commands** *(Currently they are all broken due to upgrading to v12)*",
     fields: [
       {
         name: "`rh!play <Song Name>`",
