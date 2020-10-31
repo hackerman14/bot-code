@@ -3,9 +3,7 @@
 const Util = require("discord.js");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const ytdl = require("ytdl-core");
 const fs = require("fs");
-const YouTube = require("simple-youtube-api");
 const randomPuppy = require("random-puppy");
 const urban = require("urban");
 const Keyv = require("keyv");
@@ -20,12 +18,9 @@ const DBL = require("dblapi.js");
 const dbl = new DBL(process.env.DBTOKEN, client);
 const fetch = require("node-fetch");
 const queue = new Map();
-const youtube = new YouTube(process.env.GOOGLEAPI);
 const emojiNext = "➡"; // Unicodes are auto identified in Discord, so it's fine!
 const emojiPrevious = "⬅";
 const reactionArrow = [emojiPrevious, emojiNext];
-const time = 600000; // Menu Timeout: 10 Minutes
-const http = require("http");
 const express = require("express");
 const app = express();
 app.get("/", (request, response) => {
@@ -33,11 +28,6 @@ app.get("/", (request, response) => {
   response.sendStatus(200);
 });
 app.listen(process.env.PORT);
-const opts = {
-  maxResults: 25,
-  key: process.env.YOUTUBE,
-  type: "video"
-};
 const globalPrefix = "rh!";
 const owner = "Raymond#2829";
 client.commands = new Discord.Collection();
@@ -52,14 +42,13 @@ client.once("ready", () => {
     `The bot is currently serving ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
   );
   client.user
-    .setPresence({
-      activity: {
-        name: "rh!help | hackerman14.tk",
-        url: "https://hackerman14.tk"
-      },
-      status: "dnd"
+    .setActivity("rh!help | hackerman14.tk | Back Online!", {
+      type: "STREAMING",
+      url: "https://www.twitch.tv/raymondhsu"
     })
-    .then(console.log)
+    .then(presence =>
+      console.log(`Activity is set to "${presence.activities[0].name}"!`)
+    )
     .catch(console.error);
 });
 client.once("reconnecting", () => {
@@ -195,11 +184,11 @@ client.on("message", async message => {
             },
             {
               name: "Host",
-              value: "[Glitch.com](https://glitch.com)"
+              value: "[Glitch](https://glitch.com)"
             },
             {
               name: "Always Online",
-              value: "[UptimeRobot](https://uptimerobot.com)"
+              value: "A few lines of codes in the index file"
             },
             {
               name: "Source Codes",
@@ -238,60 +227,68 @@ client.on("message", async message => {
 
     if (command === "skeppy") {
       var answers = [
-        "flip flop",
+        "like or die tmr",
+        "YOOO how's it going guys! welkom back to another video!",
+        "i love you guys, i fucking love you guys",
+        "ALRIGHT! so in today's video...",
+        "NOOOO!",
+        "m",
+        "QUIT GAME",
+        "hanyah hanyah HANYAAHHHH!!!!",
+        "BadBoyHalo is a potato",
+        "today i'm joined here by BaldBoyNoob",
+        "BaldBoyHalo",
+        "french man",
+        "the bisectors of the perpendicularity of the vectors",
+        "uh oh spaghettio",
+        "...it’s ‘cause everyone knows I’m a dog",
+        "shut up halo",
+        "oh shoot there's a mod on",
+        "*eagle loud screaming especially when he eats the spicy sauce*",
+        "i was testing",
+        "I JUST WANTED SANDDDD!!!",
+        "i'm a little police man/boi",
+        "if it's not worth it don't do it",
+        "if it's worth it do it",
         "14",
+        "WHY DID YOU DO IT!?!?",
+        "do not do this or u will see",
+        "quack",
+        "quork",
+        "FACE ID BITCH",
+        "flip flop",
+        "skippy",
         "ping spoofing",
         "turtle",
         "daddy",
-        "BadBoyHalo",
-        "BadBoyHalo is a potato",
-        "Jif",
-        "I was testing",
+        "magnifying glass tilted left/right",
+        "jif",
         "cheesy fries",
-        "slash slash undo",
-        "idot",
-        "sotp",
-        "pine cone",
-        "thin crust pizza",
         "ding",
-        "oh my godness",
+        "oh my goodness",
+        "idot",
+        "SOTP",
+        "pine cone",
+        "thin-crust pizza",
+        "slash slash undo",
         "candad",
-        "muffintop",
-        "muffin",
-        "bisector",
-        "photosynthesis",
-        "slash slash sudo",
-        "CryBoyHalo",
-        "muffin time",
-        "uh oh spaghettios",
-        "japenese symbol for beginner",
-        "diameter",
-        "perpendicularity",
-        "hi im the real skeppy",
-        "like or die tmr",
-        "heal pool",
-        "bald",
-        "fish in a bucket",
-        "golden helmet",
-        "a6d's little brother",
-        "BaldBoyHalo",
-        "magnifying glass tilted left",
-        "magnifying glass tilted right",
-        "f",
         "japanese symbol for beginner",
-        "DrunkBoyHalo",
-        "oh neat, hieroglyphs",
-        "a apollonian gasket",
-        "Rhobicosidodecahedron",
-        "minecraft but",
-        "do not do that",
-        "so i..."
+        "cursed",
+        "wee woo",
+        "kids trapped in the basement",
+        "mobile heal pool",
+        "simp pool",
+        "bisector",
+        "diameter",
+        "photosynthesis",
+        "perpendicularity",
+        "mr. squeegy"
       ];
       var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
       message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Skeppy Memes**",
+          title: "**Skeppy's Quotes or Memes**",
           description: randomAnswer,
           timestamp: new Date(),
           footer: {
@@ -728,7 +725,7 @@ client.on("message", async message => {
     }
 
     if (command === "joke") {
-      fetch("https://api.icndb.com/jokes/random")
+      fetch("https://official-joke-api.appspot.com/jokes/random")
         .then(res => res.json())
         .then(body => {
           message.channel.send({
@@ -891,7 +888,7 @@ client.on("message", async message => {
       });
     }
 
-    if (command === "covid19") {
+    if (command === "covid-19") {
       fetch("https://api.covid19api.com/summary")
         .then(res => res.json())
         .then(body => {
@@ -952,362 +949,26 @@ client.on("message", async message => {
       });
     }
 
-    // Music Commands
-
-    if (command === "play") {
-      const voiceChannel = message.member.voice.channel;
-      if (!voiceChannel)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description:
-              "I'm sorry but you need to be in a voice channel to play music!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      const permissions = voiceChannel.permissionsFor(message.client.user);
-      if (!permissions.has("CONNECT")) {
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description:
-              "I cannot connect to your voice channel, make sure I have the proper permissions!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      }
-      if (!permissions.has("SPEAK")) {
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description:
-              "I cannot speak in this voice channel, make sure I have the proper permissions!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      }
-
-      if (
-        url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)
-      ) {
-        const playlist = await youtube.getPlaylist(url);
-        const videos = await playlist.getVideos();
-        for (const video of Object.values(videos)) {
-          const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-          await handleVideo(video2, message, voiceChannel, true); // eslint-disable-line no-await-in-loop
-        }
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: `Playlist: **${playlist.title}** has been added to the queue!`,
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      } else {
-        try {
-          var video = await youtube.getVideo(url);
-        } catch (error) {
-          try {
-            var videos = await youtube.searchVideos(searchString, 10);
-            let index = 0;
-            message.channel.send({
-              embed: {
-                color: Math.floor(Math.random() * 16777214) + 1,
-                title: "**Windows Media Player**",
-                description:
-                  "Please provide a value to select one of the search results ranging from 1-10!",
-                fields: [
-                  {
-                    name: "Song Selection",
-                    value: `${videos
-                      .map(video2 => `**${++index} -** ${video2.title}`)
-                      .join("\n")}`
-                  }
-                ],
-                timestamp: new Date(),
-                footer: {
-                  text: "Made with ❤️ created by " + owner
-                }
-              }
-            });
-            // eslint-disable-next-line max-depth
-            try {
-              var response = await message.channel.awaitMessages(
-                msg2 => msg2.content > 0 && msg2.content < 11,
-                {
-                  max: 1,
-                  time: 10000,
-                  errors: ["time"]
-                }
-              );
-            } catch (err) {
-              console.error(err);
-              return message.channel.send({
-                embed: {
-                  color: Math.floor(Math.random() * 16777214) + 1,
-                  title: "**Windows Media Player**",
-                  description:
-                    "No or invalid value entered, cancelling video selection!",
-                  timestamp: new Date(),
-                  footer: {
-                    text: "Made with ❤️ created by " + owner
-                  }
-                }
-              });
-            }
-            const videoIndex = parseInt(response.first().content);
-            var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-          } catch (err) {
-            console.error(err);
-            return message.channel.send({
-              embed: {
-                color: Math.floor(Math.random() * 16777214) + 1,
-                title: "**Windows Media Player**",
-                description: "I could not obtain any search results!",
-                timestamp: new Date(),
-                footer: {
-                  text: "Made with ❤️ created by " + owner
-                }
-              }
-            });
-          }
-        }
-        return handleVideo(video, message, voiceChannel);
-      }
-    } else if (command === "skip") {
-      if (!message.member.voiceChannel)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "You are not in a voice channel!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      if (!serverQueue)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "There is nothing playing that I can skip for you!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      serverQueue.connection.dispatcher.destroy("Skip command has been used!");
-      return undefined;
-    } else if (command === "stop") {
-      if (!message.member.voiceChannel)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "You are not in a voice channel!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      if (!serverQueue)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "There is nothing playing that I can stop for you!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      serverQueue.songs = [];
-      serverQueue.connection.dispatcher.destroy("Stop command has been used!");
-      return undefined;
-    } else if (command === "volume") {
-      if (!message.member.voiceChannel)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "You are not in a voice channel!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      if (!serverQueue)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "There is nothing playing!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      if (!args1[1])
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: `The current volume is **${serverQueue.volume}**!`,
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      serverQueue.volume = args1[1];
-      serverQueue.connection.dispatcher.setVolumeLogarithmic(args1[1] / 5);
-      return message.channel.send({
+    if (command === "changelog") {
+      message.channel.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: `I set the volume to **${args1[1]}**`,
+          title: "**Bot Changelog**",
+          description: "Date: July 17, 2020",
           timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    } else if (command === "nowplaying") {
-      if (!serverQueue)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "There is nothing playing!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: `Now playing: **${serverQueue.songs[0].title}**!`,
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    } else if (command === "queue") {
-      if (!serverQueue)
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "There is nothing playing!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: `Now playing: ${serverQueue.songs[0].title}`,
           fields: [
             {
-              name: "Song Queue",
-              value: `${serverQueue.songs
-                .map(song => `**-** ${song.title}`)
-                .join("\n")}`
+              name: "Bot Hosting Changed",
+              value:
+                "I don't have money to host the bot on Microsoft Azure, so now it's hosting on Glitch, AGAIN."
             }
           ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    } else if (command === "pause") {
-      if (serverQueue && serverQueue.playing) {
-        serverQueue.playing = false;
-        serverQueue.connection.dispatcher.pause();
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "Paused the music for you!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      }
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: "There is nothing playing!",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    } else if (command === "resume") {
-      if (serverQueue && !serverQueue.playing) {
-        serverQueue.playing = true;
-        serverQueue.connection.dispatcher.resume();
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Windows Media Player**",
-            description: "▶ Resumed the music for you!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      }
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: "There is nothing playing!",
-          timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
           }
         }
       });
     }
-
-    return undefined;
 
     // Adds the user to the set so that they can't talk for a minute
     cooldown.add(message.author.id);
@@ -1318,109 +979,11 @@ client.on("message", async message => {
   }
 });
 
-// Functions
-
-async function handleVideo(video, message, voiceChannel, playlist = false) {
-  const serverQueue = queue.get(message.guild.id);
-  console.log(video);
-  const song = {
-    id: video.id,
-    title: Util.escapeMarkdown(video.title),
-    url: `https://www.youtube.com/watch?v=${video.id}`
-  };
-  if (!serverQueue) {
-    const queueConstruct = {
-      textChannel: message.channel,
-      voiceChannel: voiceChannel,
-      connection: 0,
-      songs: [],
-      volume: 5,
-      playing: true
-    };
-    queue.set(message.guild.id, queueConstruct);
-
-    queueConstruct.songs.push(song);
-
-    try {
-      var connection = await voiceChannel.join();
-      queueConstruct.connection = connection;
-      play(message.guild, queueConstruct.songs[0]);
-    } catch (error) {
-      console.error(`I could not join the voice channel: ${error}`);
-      queue.delete(message.guild.id);
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: `I could not join the voice channel: ${error}`,
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    }
-  } else {
-    serverQueue.songs.push(song);
-    console.log(serverQueue.songs);
-    if (playlist) return undefined;
-    else
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Windows Media Player**",
-          description: `**${song.title}** has been added to the queue!`,
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-  }
-  return undefined;
-}
-
-function play(guild, song) {
-  const serverQueue = queue.get(guild.id);
-
-  if (!song) {
-    serverQueue.voiceChannel.leave();
-    queue.delete(guild.id);
-    return;
-  }
-  console.log(serverQueue.songs);
-
-  const dispatcher = serverQueue.connection
-    .play(ytdl(song.url))
-    .on("end", reason => {
-      if (reason === "Stream is not generating quickly enough.")
-        console.log("Song ended.");
-      else console.log(reason);
-      serverQueue.songs.shift();
-      play(guild, serverQueue.songs[0]);
-    })
-    .on("error", error => console.error(error));
-  dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-
-  serverQueue.textChannel.send({
-    embed: {
-      color: Math.floor(Math.random() * 16777214) + 1,
-      title: "**Windows Media Player**",
-      description: `Start playing: **${song.title}**`,
-      timestamp: new Date(),
-      footer: {
-        text: "Made with ❤️ created by " + owner
-      }
-    }
-  });
-}
-
 const embed1 = () =>
   new Discord.MessageEmbed({
     color: Math.floor(Math.random() * 16777214) + 1,
     title: "**Commands List**",
-    description:
-      "Here's all the available commands! (Menu timeout is set to 10 minutes!)",
+    description: "Here's all the available commands!",
     fields: [
       {
         name: ":robot: Default Prefix",
@@ -1443,10 +1006,6 @@ const embed1 = () =>
       {
         name: ":cd: Misc Conmmands",
         value: "Page 4"
-      },
-      {
-        name: ":musical_note: Music Commands",
-        value: "Page 5"
       }
     ],
     timestamp: new Date(),
@@ -1471,6 +1030,10 @@ const embed2 = () =>
       {
         name: "`rh!uptime`",
         value: "Shows you the uptime of the bot!"
+      },
+      {
+        name: "`rh!changelog`",
+        value: "Shows you the changelog of the bot with a specific date!"
       }
     ],
     timestamp: new Date(),
@@ -1490,7 +1053,7 @@ const embed3 = () =>
       },
       {
         name: "`rh!skeppy`",
-        value: "Tells you a random Skeppy meme!"
+        value: "Tells you a random Skeppy quotes according to Wikitubia!"
       },
       {
         name: "`rh!8`",
@@ -1541,8 +1104,8 @@ const embed4 = () =>
         value: "Search the words across the Urban Dictionary!"
       },
       {
-        name: "`rh!covid19`",
-        value: "Tells you any global numbers of cases between COVID-19!"
+        name: "`rh!covid-19`",
+        value: "Tells you any global numbers of COVID-19 cases! :("
       }
     ],
     timestamp: new Date(),
@@ -1551,55 +1114,7 @@ const embed4 = () =>
     }
   });
 
-const embed5 = () =>
-  new Discord.MessageEmbed({
-    color: Math.floor(Math.random() * 16777214) + 1,
-    title:
-      ":musical_note: **Music Commands** *(Currently they are all broken due to upgrading to v12)*",
-    fields: [
-      {
-        name: "`rh!play <Song Name>`",
-        value:
-          "Plays music through fake Windows Media Player! *(Note: The bot usually lags, please wait a few seconds for the bot to load song.)*"
-      },
-      {
-        name: "`rh!skip`",
-        value:
-          "Skips a song from the playlist! *(Note: If there's no more queued songs left, the bot will disconnect from the channel that the bot is in.)*"
-      },
-      {
-        name: "`rh!stop`",
-        value: "Stops the music player!"
-      },
-      {
-        name: "`rh!volume [Volume]`",
-        value:
-          "See/Change the volume of the sound playing from the fake Windows Media Player!"
-      },
-      {
-        name: "`rh!nowplaying`",
-        value: "Sees what song is currently playing from the playlist!"
-      },
-      {
-        name: "`rh!queue`",
-        value: "Shows the entire list of the queue!"
-      },
-      {
-        name: "`rh!pause`",
-        value: "Pauses the song from playing!"
-      },
-      {
-        name: "`rh!resume`",
-        value: "Resumes the song from playinh"
-      }
-    ],
-    timestamp: new Date(),
-    footer: {
-      text: "Page 5"
-    }
-  });
-
-const list = [embed1, embed2, embed3, embed4, embed5];
+const list = [embed1, embed2, embed3, embed4];
 
 function getList(i) {
   return list[i]()
@@ -1622,11 +1137,10 @@ function onCollect(emoji, message, i, getList) {
 
 function createCollectorMessage(message, getList) {
   let i = 0;
-  const collector = message.createReactionCollector(filter, { time });
+  const collector = message.createReactionCollector(filter);
   collector.on("collect", r => {
     i = onCollect(r.emoji, message, i, getList);
   });
-  collector.on("end", collected => message.clearReactions());
 }
 
 function sendList(channel, getList) {
@@ -1638,3 +1152,14 @@ function sendList(channel, getList) {
 }
 
 client.login(process.env.DISCORD);
+
+// Auto Ping
+
+let count = 0;
+setInterval(
+  () =>
+    require("node-fetch")(process.env.URL).then(() =>
+      console.log(`[${++count}] here i pinged ${process.env.URL}`)
+    ),
+  300000
+);
