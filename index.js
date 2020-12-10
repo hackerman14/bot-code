@@ -7,6 +7,7 @@ const fs = require("fs");
 const randomPuppy = require("random-puppy");
 const urban = require("urban");
 const Keyv = require("keyv");
+const Statcord = require("statcord.js");
 const prefixes = new Keyv("sqlite://db.sqlite");
 const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
 const customAnalytics = new cheweyBotAnalyticsAPI(
@@ -28,10 +29,16 @@ app.get("/", (request, response) => {
   response.sendStatus(200);
 });
 app.listen(process.env.PORT);
-const globalPrefix = "rh!";
+const globalPrefix = "rh!" || "Rh!" || "rH!" || "RH!";
 const owner = "Raymond#2829";
 client.commands = new Discord.Collection();
-
+const statcord = new Statcord.Client({
+  client,
+  key: process.env.STATCORD,
+  postCpuStatistics: false /* Whether to post memory statistics or not, defaults to true */,
+  postMemStatistics: false /* Whether to post memory statistics or not, defaults to true */,
+  postNetworkStatistics: false /* Whether to post memory statistics or not, defaults to true */
+});
 let cooldown = new Set();
 
 // Console Logging
@@ -42,9 +49,9 @@ client.once("ready", () => {
     `The bot is currently serving ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
   );
   client.user
-    .setActivity("rh!help | hackerman14.tk | Back Online!", {
-      type: "STREAMING",
-      url: "https://www.twitch.tv/raymondhsu"
+    .setPresence({
+      activity: { name: "rh!help | hackerman14.tk | REBOOTED" },
+      status: "dnd"
     })
     .then(presence =>
       console.log(`Activity is set to "${presence.activities[0].name}"!`)
@@ -140,7 +147,7 @@ client.on("message", async message => {
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**OK Boomer**",
-          description: "You realise that I don't work in DMs...",
+          description: "You realize that I don't work in DMs...",
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by" + owner
@@ -417,55 +424,55 @@ client.on("message", async message => {
     }
 
     if (command === "sEmbed") {
-      const sampleEmbed = {
-        color: 0x0099ff,
-        title: "Some title",
-        url: "https://discord.js.org",
-        author: {
-          name: "Some name",
-          icon_url: "https://i.imgur.com/wSTFkRM.png",
-          url: "https://discord.js.org"
-        },
-        description: "Some description here",
-        thumbnail: {
-          url: "https://i.imgur.com/wSTFkRM.png"
-        },
-        fields: [
-          {
-            name: "Regular field title",
-            value: "Some value here"
+      message.channel.send({
+        embed: {
+          color: 0x0099ff,
+          title: "Some title",
+          url: "https://discord.js.org",
+          author: {
+            name: "Some name",
+            icon_url: "https://i.imgur.com/wSTFkRM.png",
+            url: "https://discord.js.org"
           },
-          {
-            name: "\u200b",
-            value: "\u200b"
+          description: "Some description here",
+          thumbnail: {
+            url: "https://i.imgur.com/wSTFkRM.png"
           },
-          {
-            name: "Inline field title",
-            value: "Some value here",
-            inline: true
+          fields: [
+            {
+              name: "Regular field title",
+              value: "Some value here"
+            },
+            {
+              name: "\u200b",
+              value: "\u200b"
+            },
+            {
+              name: "Inline field title",
+              value: "Some value here",
+              inline: true
+            },
+            {
+              name: "Inline field title",
+              value: "Some value here",
+              inline: true
+            },
+            {
+              name: "Inline field title",
+              value: "Some value here",
+              inline: true
+            }
+          ],
+          image: {
+            url: "https://i.imgur.com/wSTFkRM.png"
           },
-          {
-            name: "Inline field title",
-            value: "Some value here",
-            inline: true
-          },
-          {
-            name: "Inline field title",
-            value: "Some value here",
-            inline: true
+          timestamp: new Date(),
+          footer: {
+            text: "Some footer text here",
+            icon_url: "https://i.imgur.com/wSTFkRM.png"
           }
-        ],
-        image: {
-          url: "https://i.imgur.com/wSTFkRM.png"
-        },
-        timestamp: new Date(),
-        footer: {
-          text: "Some footer text here",
-          icon_url: "https://i.imgur.com/wSTFkRM.png"
         }
-      };
-
-      message.channel.send({ embed: sampleEmbed });
+      });
     }
 
     if (command === "user") {
@@ -632,7 +639,7 @@ client.on("message", async message => {
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Reddit Memes**",
-          description: `A meme from /r/${random}`,
+          description: `A meme from {/r/${random}}`,
           timestamp: new Date(),
           image: {
             url: meme
@@ -645,7 +652,7 @@ client.on("message", async message => {
     }
 
     if (command === "weather") {
-      weather.find({ search: args.join(" "), degreeType: "F" }),
+      weather.find({ search: args.join(" "), degreeType: "C" }),
         function(err, result) {
           if (err) console.log(err);
           if (!args[0]) return;
@@ -749,7 +756,7 @@ client.on("message", async message => {
             color: Math.floor(Math.random() * 16777214) + 1,
             title: "**Urban Dictionary**",
             description:
-              "Due to some NSFW words definition, so please run this in a NSFW channel!",
+              "Due to NSFW topic definitions so please run this in a NSFW channel!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
@@ -963,6 +970,32 @@ client.on("message", async message => {
                 "I don't have money to host the bot on Microsoft Azure, so now it's hosting on Glitch, AGAIN."
             }
           ],
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
+
+    if (command === "owner") {
+      if (message.author.id !== "410839910204047360")
+        return message.channel.send({
+          embed: {
+            color: "#db564f",
+            title: "**Bot Ownership Verification**",
+            description: `You're not the owner tho!`,
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      message.channel.send({
+        embed: {
+          color: "#64ab80",
+          title: "**Bot Ownership Verification**",
+          description: `Congratulations!!11!1! You're the owner of the bot!`,
+          timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
           }
