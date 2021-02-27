@@ -7,7 +7,6 @@ const fs = require("fs");
 const randomPuppy = require("random-puppy");
 const urban = require("urban");
 const Keyv = require("keyv");
-const Statcord = require("statcord.js");
 const prefixes = new Keyv("sqlite://db.sqlite");
 const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
 const customAnalytics = new cheweyBotAnalyticsAPI(
@@ -15,11 +14,14 @@ const customAnalytics = new cheweyBotAnalyticsAPI(
   client
 );
 const weather = require("weather-js");
-const DBL = require("dblapi.js");
-const dbl = new DBL(process.env.DBTOKEN, client);
+const Canvas = require("canvas");
+const { MongoClient } = require("mongodb");
+const MongoDBProvider = require("commando-provider-mongo").MongoDBProvider;
+const AutoPoster = require("topgg-autoposter");
+const ap = AutoPoster(process.env.TOPGG, client);
 const fetch = require("node-fetch");
 const queue = new Map();
-const emojiNext = "➡"; // Unicodes are auto identified in Discord, so it's fine!
+const emojiNext = "➡";
 const emojiPrevious = "⬅";
 const reactionArrow = [emojiPrevious, emojiNext];
 const express = require("express");
@@ -32,13 +34,6 @@ app.listen(process.env.PORT);
 const globalPrefix = "rh!" || "Rh!" || "rH!" || "RH!";
 const owner = "Raymond#2829";
 client.commands = new Discord.Collection();
-const statcord = new Statcord.Client({
-  client,
-  key: process.env.STATCORD,
-  postCpuStatistics: false /* Whether to post memory statistics or not, defaults to true */,
-  postMemStatistics: false /* Whether to post memory statistics or not, defaults to true */,
-  postNetworkStatistics: false /* Whether to post memory statistics or not, defaults to true */
-});
 let cooldown = new Set();
 
 // Console Logging
@@ -70,10 +65,10 @@ client.on("uncaughtException", err => {
   console.log(err);
   process.exit(1);
 });
-dbl.on("posted", () => {
-  console.log("Server count is posted on TOP.gg!");
+ap.on("posted", () => {
+  console.log("Posted stats to Top.gg!");
 });
-dbl.on("error", e => {
+ap.on("error", e => {
   console.log(`An error occurred to TOP.gg! ${e}`);
 });
 
@@ -88,15 +83,10 @@ client.on("message", async message => {
   if (!message.content.startsWith(globalPrefix)) return;
   var args = message.content.split(" ").slice(1);
   const channel = message.channel;
-  const args1 = message.content.split(" ");
-  const searchString = args1.slice(1).join(" ");
-  const url = args1[1] ? args1[1].replace(/<(.+)>/g, "$1") : "";
-  const serverQueue = queue.get(message.guild.id);
-
+  
   // Custom Prefix
 
   let gArgs;
-  // handle messages in a guild
   if (message.guild) {
     let prefix;
 
@@ -146,7 +136,7 @@ client.on("message", async message => {
       message.author.send({
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**OK Boomer**",
+          title: "**Anti-DM System**",
           description: "You realize that I don't work in DMs...",
           timestamp: new Date(),
           footer: {
@@ -187,7 +177,7 @@ client.on("message", async message => {
             },
             {
               name: "Creator",
-              value: "[" + owner + "](https://raymondlol.me)"
+              value: "[" + owner + "](https://raymond-1227.github.io)"
             },
             {
               name: "Host",
@@ -195,7 +185,8 @@ client.on("message", async message => {
             },
             {
               name: "Always Online",
-              value: "A few lines of codes in the index file"
+              value:
+                "A few lines of codes in the index file (but doesn't make the bot really stay on 24/7)"
             },
             {
               name: "Source Codes",
@@ -289,7 +280,8 @@ client.on("message", async message => {
         "diameter",
         "photosynthesis",
         "perpendicularity",
-        "mr. squeegy"
+        "mr. squeegy",
+        "trapping 100 kids"
       ];
       var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
       message.channel.send({
@@ -616,7 +608,9 @@ client.on("message", async message => {
             msg.delete(10000);
           });
       message.delete().catch(O_o => {});
-      message.channel.send(sayMessage);
+      message.channel.send(
+        `${message.author.toString()} wants me to say "${sayMessage}"`
+      );
     }
 
     if (command === "meme") {
@@ -961,13 +955,12 @@ client.on("message", async message => {
         embed: {
           color: Math.floor(Math.random() * 16777214) + 1,
           title: "**Bot Changelog**",
-          description: "Date: July 17, 2020",
+          description: "Date: February 10, 2021",
           timestamp: new Date(),
           fields: [
             {
-              name: "Bot Hosting Changed",
-              value:
-                "I don't have money to host the bot on Microsoft Azure, so now it's hosting on Glitch, AGAIN."
+              name: "Added reboot command",
+              value: "lmao u can't use it"
             }
           ],
           footer: {
@@ -983,7 +976,7 @@ client.on("message", async message => {
           embed: {
             color: "#db564f",
             title: "**Bot Ownership Verification**",
-            description: `You're not the owner tho!`,
+            description: "You're not the owner tho!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
@@ -994,7 +987,8 @@ client.on("message", async message => {
         embed: {
           color: "#64ab80",
           title: "**Bot Ownership Verification**",
-          description: `Congratulations!!11!1! You're the owner of the bot!`,
+          description:
+            "Congratulations, you're the owner of the bot! (Verified by Professor DumbGuy123)",
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner
@@ -1003,10 +997,185 @@ client.on("message", async message => {
       });
     }
 
-    // Adds the user to the set so that they can't talk for a minute
+    if (command === "print") {
+      const canvas = Canvas.createCanvas(700, 250);
+      const ctx = canvas.getContext("2d");
+
+      const background = await Canvas.loadImage("./wallpaper.jpg");
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#74037b";
+      ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.clip();
+
+      const attachment = new Discord.MessageAttachment(canvas.toBuffer());
+
+      channel.send(attachment);
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Crappy Printing Machine**",
+          description: "Here's your beautiful text-to-image thing!",
+          timestamp: new Date(),
+          fields: [
+            {
+              name: "Preparing a canva thing",
+              value: "Will add an image manupulation stuff ok bye"
+            }
+          ],
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
+
+    if (command === "encode") {
+      var toEncode = args.join(" ");
+      var input = toEncode.value;
+      var output;
+      output.value = "";
+      for (var i = 0; i < input.length; i++) {
+        output.value += input[i].charCodeAt(0).toString(2) + " ";
+      }
+      if (!args[0])
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Text Encoder**",
+            description:
+              "You need to say something for me to encode it to binaries!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Text Encoder**",
+          description: "Here's your encoded message!",
+          timestamp: new Date(),
+          fields: [
+            {
+              name: "Binary Results",
+              value: output
+            }
+          ],
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
+
+    if (command === "decode") {
+      var toDecode = args.join(" ");
+      if (!args[0])
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Text Encoder**",
+            description:
+              "You need to say something for me to encode it into binary!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      if (isNaN(args[0]))
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**Text Encoder**",
+            description:
+              "You need to say the binary code for decode it into text!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**Text Encoder**",
+          description: "Here's your encoded message!",
+          timestamp: new Date(),
+          fields: [
+            {
+              name: "Binary Results",
+              value: parseInt(toDecode, 2).toString(10)
+            }
+          ],
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+    }
+
+    if (command === "blahtestlol") {
+      const sayMessage = args.join(" ");
+      if (!args[0])
+        return message.channel
+          .send({
+            embed: {
+              color: Math.floor(Math.random() * 16777214) + 1,
+              title: "**Action Copy Cat**",
+              description: "You need to say something for the bot to say!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          })
+          .then(msg => {
+            msg.delete(10000);
+          });
+      message.delete().catch(O_o => {});
+      message.channel.send(
+        `${message.author.toString()} wants me to say "${sayMessage}"`
+      );
+    }
+
+    if (command === "reload") {
+      if (message.author.id !== "410839910204047360")
+        return message.channel.send({
+          embed: {
+            color: Math.floor(Math.random() * 16777214) + 1,
+            title: "**iReboot**",
+            description:
+              "Only the bot owner can perform this action you dumb item!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
+          }
+        });
+      await message.channel.send({
+        embed: {
+          color: Math.floor(Math.random() * 16777214) + 1,
+          title: "**iReboot**",
+          description: "Bot is now rebooting!",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      });
+      await client.destroy();
+      return process.exit(0);
+    }
+
     cooldown.add(message.author.id);
     setTimeout(() => {
-      // Removes the user from the set after a minute
       cooldown.delete(message.author.id);
     }, 1000);
   }
@@ -1066,7 +1235,7 @@ const embed2 = () =>
       },
       {
         name: "`rh!changelog`",
-        value: "Shows you the changelog of the bot with a specific date!"
+        value: "Shows you the change log of the bot with a specific date!"
       }
     ],
     timestamp: new Date(),
@@ -1107,6 +1276,10 @@ const embed3 = () =>
       {
         name: "`rh!meme`",
         value: "Tells you a meme from Subreddits!"
+      },
+      {
+        name: "`rh!print`",
+        value: "Say something, the bot will output your text as an image!"
       }
     ],
     timestamp: new Date(),
@@ -1139,6 +1312,10 @@ const embed4 = () =>
       {
         name: "`rh!covid-19`",
         value: "Tells you any global numbers of COVID-19 cases! :("
+      },
+      {
+        name: "`rh!reload`",
+        value: "Reboots the bot!"
       }
     ],
     timestamp: new Date(),
