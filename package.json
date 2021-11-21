@@ -8,29 +8,26 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": "12.16.2"
+    "node": "16.6.1"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@keyv/sqlite": "^2.0.2",
-    "@top-gg/sdk": "^3.0.7",
-    "canvas": "^2.6.1",
-    "commando-provider-mongo": "^2.1.0",
+    "@top-gg/sdk": "^3.1.2",
     "common-tags": "^1.8.0",
     "discord-bot-analytics": "^1.0.14",
-    "discord.js": "^12.5.1",
-    "discord.js-commando": "github:discordjs/commando",
+    "discord.js": "^13.1.0",
     "express": "^4.17.1",
     "fs": "^0.0.2",
     "keyv": "^4.0.3",
     "moment": "^2.29.1",
-    "mongodb": "^3.6.4",
+    "mongodb": "^4.1.2",
     "node-fetch": "^2.6.1",
-    "opusscript": "^0.0.8",
     "random-puppy": "^1.1.0",
-    "topgg-autoposter": "^1.1.6",
-    "urban": "^0.3.2",
-    "weather-js": "^2.0.0"
+    "topgg-autoposter": "^2.0.0",
+    "urban": "^0.3.4",
+    "uuid": "^8.3.2",
+    "weather-js": "^2.0.0",
+    "google-translate": "^3.0.0"
   }
 }
