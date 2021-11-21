@@ -2,22 +2,52 @@
 
 const Util = require("discord.js");
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const {
+  Client,
+  Intents,
+  MessageSelectMenu,
+  MessageActionRow
+} = require("discord.js");
+const client = new Discord.Client({
+  presence: {
+    status: "dnd",
+    afk: false,
+    activities: [
+      {
+        name: "Type 'rh!help' for help! [BETA]"
+      }
+    ]
+  },
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MEMBERS,
+    Intents.FLAGS.GUILD_BANS,
+    Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+    Intents.FLAGS.GUILD_INTEGRATIONS,
+    Intents.FLAGS.GUILD_WEBHOOKS,
+    Intents.FLAGS.GUILD_INVITES,
+    Intents.FLAGS.GUILD_VOICE_STATES,
+    Intents.FLAGS.GUILD_PRESENCES,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_MESSAGE_TYPING,
+    Intents.FLAGS.DIRECT_MESSAGES,
+    Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+    Intents.FLAGS.DIRECT_MESSAGE_TYPING
+  ]
+});
+
 const fs = require("fs");
 const randomPuppy = require("random-puppy");
 const urban = require("urban");
-const Keyv = require("keyv");
-const prefixes = new Keyv("sqlite://db.sqlite");
 const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
 const customAnalytics = new cheweyBotAnalyticsAPI(
   process.env.CHEYWEYAPI,
   client
 );
+const translate = require("google-translate");
 const weather = require("weather-js");
-const Canvas = require("canvas");
-const { MongoClient } = require("mongodb");
-const MongoDBProvider = require("commando-provider-mongo").MongoDBProvider;
-const AutoPoster = require("topgg-autoposter");
+const { AutoPoster } = require("topgg-autoposter");
 const ap = AutoPoster(process.env.TOPGG, client);
 const fetch = require("node-fetch");
 const queue = new Map();
@@ -38,25 +68,16 @@ let cooldown = new Set();
 
 // Console Logging
 
-client.once("ready", () => {
-  console.log("Ready!");
+client.on("ready", () => {
+  console.log("Starting up...");
   console.log(
     `The bot is currently serving ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
   );
-  client.user
-    .setPresence({
-      activity: { name: "rh!help | hackerman14.tk | REBOOTED" },
-      status: "dnd"
-    })
-    .then(presence =>
-      console.log(`Activity is set to "${presence.activities[0].name}"!`)
-    )
-    .catch(console.error);
 });
-client.once("reconnecting", () => {
+client.on("reconnecting", () => {
   console.log("Reconnecting!");
 });
-client.once("disconnect", () => {
+client.on("disconnect", () => {
   console.log("Disconnect!");
 });
 client.on("warn", console.warn);
@@ -74,7 +95,7 @@ ap.on("error", e => {
 
 // Client Codes
 
-client.on("message", async message => {
+client.on("messageCreate", async message => {
   // Client Rules
 
   let msg = message.content.toLowerCase();
@@ -83,41 +104,22 @@ client.on("message", async message => {
   if (!message.content.startsWith(globalPrefix)) return;
   var args = message.content.split(" ").slice(1);
   const channel = message.channel;
-  
-  // Custom Prefix
+  let prefixArgs = message.content
+    .slice(globalPrefix.length)
+    .trim()
+    .split(/ +/g);
 
-  let gArgs;
-  if (message.guild) {
-    let prefix;
-
-    if (message.content.startsWith(globalPrefix)) {
-      prefix = globalPrefix;
-    } else {
-      // check the guild-level prefix
-      const guildPrefix = await prefixes.get(message.guild.id);
-      if (message.content.startsWith(guildPrefix)) prefix = guildPrefix;
-    }
-
-    // if we found a prefix, setup args; otherwise, this isn't a command
-    if (!prefix) return;
-    gArgs = message.content.slice(prefix.length).split(/\s+/);
-  } else {
-    // handle DMs
-    const slice = message.content.startsWith(globalPrefix)
-      ? globalPrefix.length
-      : 0;
-    gArgs = message.content.slice(slice).split(/\s+/);
-  }
+  // Prefix Setup
 
   // get the first space-delimited argument after the prefix as the command
-  const command = gArgs.shift().toLowerCase();
+  const command = prefixArgs.shift().toLowerCase();
 
   // Commands Cooldown & All Commands
 
   if (cooldown.has(message.author.id)) {
     message.channel.send({
       embed: {
-        color: Math.floor(Math.random() * 16777214) + 1,
+        color: "RANDOM",
         title: "**Command Cooldown**",
         description:
           "Dude you have to wait 1 seconds before you can do another command!",
@@ -134,74 +136,239 @@ client.on("message", async message => {
 
     if (message.channel.type == "dm") {
       message.author.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Anti-DM System**",
-          description: "You realize that I don't work in DMs...",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by" + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Anti-DM System**",
+            description: "You realize that I don't work in DMs...",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by" + owner
+            }
           }
-        }
+        ]
       });
     }
 
     // Commands
 
     if (command === "help") {
-      sendList(channel, getList);
-      return;
+      let help = {
+        color: "RANDOM",
+        title: "**Available Commands**",
+        description:
+          "Use the dropdown menu to select a category below to see some available commands!",
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by" + owner
+        }
+      };
+      let helpPanel = new MessageActionRow().addComponents(
+        new MessageSelectMenu()
+          .setCustomId("menu")
+          .setPlaceholder("Select a category...")
+          .addOptions([
+            {
+              label: "Basic Commands",
+              description:
+                "Some basic commands that allows you to check the bot!",
+              value: "basic"
+            },
+            {
+              label: "Fun Commands",
+              description:
+                "Some fun commands you can play with when you're bored!",
+              value: "fun"
+            },
+            {
+              label: "Misc Commands",
+              description: "Some other commands you use too!",
+              value: "misc"
+            }
+          ])
+      );
+      message.channel
+        .send({ embeds: [help], components: [helpPanel] })
+        .then(msg => {
+          const select = interaction => interaction.isSelectMenu();
+          const collector = msg.createMessageComponentCollector({
+            select
+          });
+
+          collector.on("collect", async collected => {
+            let value = collected.values[0];
+            collected.deferUpdate();
+
+            if (value === "basic") {
+              let basic = {
+                ccolor: "RANDOM",
+                title: ":information_source: **Basic Commands**",
+                fields: [
+                  {
+                    name: "`rh!help`",
+                    value: "Shows this command list!"
+                  },
+                  {
+                    name: "`rh!about`",
+                    value: "Shows you the info about the bot!"
+                  },
+                  {
+                    name: "`rh!uptime`",
+                    value: "Shows you the uptime of the bot!"
+                  },
+                  {
+                    name: "`rh!changelog`",
+                    value:
+                      "Shows you the change log of the bot with a specific date!"
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by" + owner
+                }
+              };
+              msg.edit({ embeds: [basic], components: [helpPanel] });
+            }
+            if (value === "fun") {
+              let fun = {
+                color: "RANDOM",
+                title: ":8ball: **Fun Commands**",
+                fields: [
+                  {
+                    name: "`rh!facts`",
+                    value: "Tells you a boring fact!"
+                  },
+                  {
+                    name: "`rh!skeppy`",
+                    value:
+                      "Tells you a random Skeppy quotes according to Wikitubia!"
+                  },
+                  {
+                    name: "`rh!8`",
+                    value:
+                      "Ask any yes/no question, and it will answer you something!"
+                  },
+                  {
+                    name: "`rh!gif`",
+                    value: "Sends you a random GIF!"
+                  },
+                  {
+                    name: "`rh!photo`",
+                    value:
+                      "Sends you a random HD photo with a random thumbnail!"
+                  },
+                  {
+                    name: "`rh!say <Message>`",
+                    value: "Says something what you say!"
+                  },
+                  {
+                    name: "`rh!meme`",
+                    value: "Tells you a meme from Subreddits!"
+                  },
+                  {
+                    name: "`rh!print`",
+                    value:
+                      "Say something, the bot will output your text as an image!"
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by" + owner
+                }
+              };
+              msg.edit({ embeds: [fun], components: [helpPanel] });
+            }
+            if (value === "misc") {
+              let misc = {
+                color: "RANDOM",
+                title: ":cd: **Misc Commands**",
+                fields: [
+                  {
+                    name: "`rh!ping`",
+                    value: "Replies you the respond time of the bot!"
+                  },
+                  {
+                    name: "`rh!user [Other Users]`",
+                    value: "Sends your/other's Discord profile information!"
+                  },
+                  {
+                    name: "`rh!server`",
+                    value: "Sends the server's detail"
+                  },
+                  {
+                    name: "`rh!urban <search/random> [query]`",
+                    value: "Search the words across the Urban Dictionary!"
+                  },
+                  {
+                    name: "`rh!covid-19`",
+                    value: "Tells you any global numbers of COVID-19 cases! :("
+                  },
+                  {
+                    name: "`rh!reload`",
+                    value: "Reboots the bot!"
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by" + owner
+                }
+              };
+              msg.edit({ embeds: [misc], components: [helpPanel] });
+            }
+          });
+        });
     }
 
     if (command === "about") {
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**About This Bot**",
-          description: "The information about this bot!",
-          thumbnail: {
-            url: client.user.displayAvatarURL
-          },
-          fields: [
-            {
-              name: "Bot Name",
-              value: "hackerman14"
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**About This Bot**",
+            description: "The information about this bot!",
+            thumbnail: {
+              url: client.user.displayAvatarURL
             },
-            {
-              name: "Bot Since",
-              value: "September 7, 2019"
-            },
-            {
-              name: "Bot Website",
-              value: "[https://hackerman14.tk](https://hackerman14.tk)"
-            },
-            {
-              name: "Creator",
-              value: "[" + owner + "](https://raymond-1227.github.io)"
-            },
-            {
-              name: "Host",
-              value: "[Glitch](https://glitch.com)"
-            },
-            {
-              name: "Always Online",
-              value:
-                "A few lines of codes in the index file (but doesn't make the bot really stay on 24/7)"
-            },
-            {
-              name: "Source Codes",
-              value: "[GitHub/hackerman14](https://github.com/hackerman14)"
-            },
-            {
-              name: "Library",
-              value: "[Discord.js](https://discord.js.org)"
+            fields: [
+              {
+                name: "Bot Name",
+                value: "hackerman14"
+              },
+              {
+                name: "Bot Since",
+                value: "September 7, 2019"
+              },
+              {
+                name: "Bot Website",
+                value: "[https://hackerman14.tk](https://hackerman14.tk/)"
+              },
+              {
+                name: "Creator",
+                value: "[" + owner + "](https://raymond-1227.github.io/)"
+              },
+              {
+                name: "Host",
+                value: "[Glitch](https://glitch.com/)"
+              },
+              {
+                name: "Always Online",
+                value: "Disabled (i'm too poor to buy boosted app plan)"
+              },
+              {
+                name: "Source Codes",
+                value: "[GitHub/hackerman14](https://github.com/hackerman14)"
+              },
+              {
+                name: "Library",
+                value: "[Discord.js](https://discord.js.org/) (v13)"
+              }
+            ],
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
             }
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
           }
-        }
+        ]
       });
     }
 
@@ -210,15 +377,17 @@ client.on("message", async message => {
         .then(res => res.json())
         .then(body => {
           message.channel.send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**Boring Facts**",
-              description: body.data,
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
+            embeds: [
+              {
+                color: "RANDOM",
+                title: "**Boring Facts**",
+                description: body.data,
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
               }
-            }
+            ]
           });
         });
     }
@@ -285,50 +454,56 @@ client.on("message", async message => {
       ];
       var randomAnswer = answers[Math.floor(Math.random() * answers.length)];
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Skeppy's Quotes or Memes**",
-          description: randomAnswer,
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Skeppy's Quotes or Memes**",
+            description: randomAnswer,
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
           }
-        }
+        ]
       });
     }
 
     if (command === "ping") {
       let m = await message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Lag Machine**",
-          description: "Ping?",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Lag Machine**",
+            description: "Ping?",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
           }
-        }
+        ]
       });
       m.edit({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Lag Machine**",
-          description: "Pong!",
-          fields: [
-            {
-              name: "Latency",
-              value: `${m.createdTimestamp - message.createdTimestamp}ms`
-            },
-            {
-              name: "API Latency",
-              value: `${Math.round(client.ws.ping)}ms`
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Lag Machine**",
+            description: "Pong!",
+            fields: [
+              {
+                name: "Latency",
+                value: `${m.createdTimestamp - message.createdTimestamp}ms`
+              },
+              {
+                name: "API Latency",
+                value: `${Math.round(client.ws.ping)}ms`
+              }
+            ],
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
             }
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
           }
-        }
+        ]
       });
     }
 
@@ -360,37 +535,41 @@ client.on("message", async message => {
 
       if (!args[0])
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**The Legendary 8 Ball**",
+              description: "You need to say something for the bot to response!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+
+      message.channel.send({
+        embeds: [
+          {
+            color: "RANDOM",
             title: "**The Legendary 8 Ball**",
-            description: "You need to say something for the bot to response!",
+            description: "This smart ball has something to tell you.",
+            fields: [
+              {
+                name: "Your Question",
+                value: sayMessage
+              },
+              {
+                name: "The 8 Ball's Big Words",
+                value: randomAnswer
+              }
+            ],
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
             }
           }
-        });
-
-      message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**The Legendary 8 Ball**",
-          description: "This smart ball has something to tell you.",
-          fields: [
-            {
-              name: "Your Question",
-              value: sayMessage
-            },
-            {
-              name: "The 8 Ball's Big Words",
-              value: randomAnswer
-            }
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
+        ]
       });
     }
 
@@ -399,71 +578,75 @@ client.on("message", async message => {
         .then(res => res.json())
         .then(body => {
           message.channel.send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**Random GIF**",
-              description: "Here's your GIF!",
-              timestamp: new Date(),
-              image: {
-                url: body.data.image_original_url
-              },
-              footer: {
-                text: "Made with ❤️ created by " + owner
+            embeds: [
+              {
+                color: "RANDOM",
+                title: "**Random GIF**",
+                description: "Here's your GIF!",
+                timestamp: new Date(),
+                image: {
+                  url: body.data.image_original_url
+                },
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
               }
-            }
+            ]
           });
         });
     }
 
     if (command === "sEmbed") {
       message.channel.send({
-        embed: {
-          color: 0x0099ff,
-          title: "Some title",
-          url: "https://discord.js.org",
-          author: {
-            name: "Some name",
-            icon_url: "https://i.imgur.com/wSTFkRM.png",
-            url: "https://discord.js.org"
-          },
-          description: "Some description here",
-          thumbnail: {
-            url: "https://i.imgur.com/wSTFkRM.png"
-          },
-          fields: [
-            {
-              name: "Regular field title",
-              value: "Some value here"
+        embeds: [
+          {
+            color: 0x0099ff,
+            title: "Some title",
+            url: "https://discord.js.org",
+            author: {
+              name: "Some name",
+              icon_url: "https://i.imgur.com/wSTFkRM.png",
+              url: "https://discord.js.org"
             },
-            {
-              name: "\u200b",
-              value: "\u200b"
+            description: "Some description here",
+            thumbnail: {
+              url: "https://i.imgur.com/wSTFkRM.png"
             },
-            {
-              name: "Inline field title",
-              value: "Some value here",
-              inline: true
+            fields: [
+              {
+                name: "Regular field title",
+                value: "Some value here"
+              },
+              {
+                name: "\u200b",
+                value: "\u200b"
+              },
+              {
+                name: "Inline field title",
+                value: "Some value here",
+                inline: true
+              },
+              {
+                name: "Inline field title",
+                value: "Some value here",
+                inline: true
+              },
+              {
+                name: "Inline field title",
+                value: "Some value here",
+                inline: true
+              }
+            ],
+            image: {
+              url: "https://i.imgur.com/wSTFkRM.png"
             },
-            {
-              name: "Inline field title",
-              value: "Some value here",
-              inline: true
-            },
-            {
-              name: "Inline field title",
-              value: "Some value here",
-              inline: true
+            timestamp: new Date(),
+            footer: {
+              text: "Some footer text here",
+              icon_url: "https://i.imgur.com/wSTFkRM.png"
             }
-          ],
-          image: {
-            url: "https://i.imgur.com/wSTFkRM.png"
-          },
-          timestamp: new Date(),
-          footer: {
-            text: "Some footer text here",
-            icon_url: "https://i.imgur.com/wSTFkRM.png"
           }
-        }
+        ]
       });
     }
 
@@ -471,39 +654,41 @@ client.on("message", async message => {
       var member = message.mentions.users.first() || message.author;
       var userCreated = member.createdAt.toString().split(" ");
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**User Information**",
-          description: "Here's the user information!",
-          thumbnail: {
-            url: member.avatarURL()
-          },
-          fields: [
-            {
-              name: "Username + Tag",
-              value: member.tag
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**User Information**",
+            description: "Here's the user information!",
+            thumbnail: {
+              url: member.avatarURL()
             },
-            {
-              name: "User ID",
-              value: member.id
-            },
-            {
-              name: "Account Since",
-              value:
-                userCreated[1] + " " + userCreated[2] + ", " + userCreated[3]
-            },
-            {
-              name: "Game Presence",
-              value: member.presence.activities[0]
-                ? member.presence.activities.state
-                : "none"
+            fields: [
+              {
+                name: "Username + Tag",
+                value: member.tag
+              },
+              {
+                name: "User ID",
+                value: member.id
+              },
+              {
+                name: "Account Since",
+                value:
+                  userCreated[1] + " " + userCreated[2] + ", " + userCreated[3]
+              },
+              {
+                name: "Game Presence",
+                value: member.presence.activities[0]
+                  ? member.presence.activities.state
+                  : "none"
+              }
+            ],
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
             }
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
           }
-        }
+        ]
       });
     }
 
@@ -527,82 +712,86 @@ client.on("message", async message => {
         southafrica: ":flag_za:  South Africa"
       };
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Server Information**",
-          description: "Here's the server information!",
-          thumbnail: {
-            url: message.guild.iconURL()
-          },
-          fields: [
-            {
-              name: "Server Name",
-              value: message.guild.name
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Server Information**",
+            description: "Here's the server information!",
+            thumbnail: {
+              url: message.guild.iconURL()
             },
-            {
-              name: "Server ID",
-              value: message.guild.id
-            },
-            {
-              name: "Server Since",
-              value:
-                serverCreated[1] +
-                " " +
-                serverCreated[2] +
-                ", " +
-                serverCreated[3]
-            },
-            {
-              name: "Server Owner",
-              value: message.guild.owner.user
-            },
-            {
-              name: "Server Owner's User ID",
-              value: message.guild.owner.id
-            },
-            {
-              name: "Server Region",
-              value: region[message.guild.region]
-            },
-            {
-              name: "Total Members",
-              value: message.guild.memberCount
-            },
-            {
-              name: "Total Channels",
-              value: message.guild.channels.cache.size
-            },
-            {
-              name: "Total Roles",
-              value: message.guild.roles.cache.size
-            },
-            {
-              name: "AFK Channel",
-              value: message.guild.afkChannel
+            fields: [
+              {
+                name: "Server Name",
+                value: message.guild.name
+              },
+              {
+                name: "Server ID",
+                value: message.guild.id
+              },
+              {
+                name: "Server Since",
+                value:
+                  serverCreated[1] +
+                  " " +
+                  serverCreated[2] +
+                  ", " +
+                  serverCreated[3]
+              },
+              {
+                name: "Server Owner",
+                value: `<message.guild.ownerId>`
+              },
+              {
+                name: "Server Owner's User ID",
+                value: message.guild.ownerId
+              },
+              {
+                name: "Server Region",
+                value: region[message.guild.region]
+              },
+              {
+                name: "Total Members",
+                value: message.guild.memberCount
+              },
+              {
+                name: "Total Channels",
+                value: message.guild.channels.cache.size
+              },
+              {
+                name: "Total Roles",
+                value: message.guild.roles.cache.size
+              },
+              {
+                name: "AFK Channel",
+                value: message.guild.afkChannel
+              }
+            ],
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
             }
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
           }
-        }
+        ]
       });
     }
 
     if (command === "say") {
-      const sayMessage = args.join(" ");
+      const sayMessage = args.join(" ").cleanContent;
       if (!args[0])
         return message.channel
           .send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**Action Copy Cat**",
-              description: "You need to say something for the bot to say!",
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
+            embeds: [
+              {
+                color: "RANDOM",
+                title: "**Action Copy Cat**",
+                description: "You need to say something for the bot to say!",
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
               }
-            }
+            ]
           })
           .then(msg => {
             msg.delete(10000);
@@ -630,18 +819,20 @@ client.on("message", async message => {
       const random = subReddits[Math.floor(Math.random() * subReddits.length)];
       const meme = await randomPuppy(random);
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Reddit Memes**",
-          description: `A meme from {/r/${random}}`,
-          timestamp: new Date(),
-          image: {
-            url: meme
-          },
-          footer: {
-            text: "Made with ❤️ created by " + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Reddit Memes**",
+            description: `A meme from {/r/${random}}`,
+            timestamp: new Date(),
+            image: {
+              url: meme
+            },
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
           }
-        }
+        ]
       });
     }
 
@@ -656,49 +847,51 @@ client.on("message", async message => {
           var current = result[0].current;
 
           message.channel.send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**Weather Forecast**",
-              description: `${current.skytext}`,
-              author: { name: `Weather for ${current.observationpoint}` },
-              thumbnail: current.imageUrl,
-              fields: [
-                {
-                  name: "Timezone",
-                  value: `UTC${current.timezone}`,
-                  inline: true
-                },
-                {
-                  name: "Degree Type",
-                  value: location.degreeType,
-                  inline: true
-                },
-                {
-                  name: "Temperature",
-                  value: `${current.temperature} Degrees`,
-                  inline: true
-                },
-                {
-                  name: "Feels Like",
-                  value: `${current.feelslike} Degrees`,
-                  inline: true
-                },
-                {
-                  name: "Winds",
-                  value: current.winddisplay,
-                  inline: true
-                },
-                {
-                  name: "Humidity",
-                  value: `${current.humidity}%`,
-                  inline: true
+            embeds: [
+              {
+                color: "RANDOM",
+                title: "**Weather Forecast**",
+                description: `${current.skytext}`,
+                author: { name: `Weather for ${current.observationpoint}` },
+                thumbnail: current.imageUrl,
+                fields: [
+                  {
+                    name: "Timezone",
+                    value: `UTC${current.timezone}`,
+                    inline: true
+                  },
+                  {
+                    name: "Degree Type",
+                    value: location.degreeType,
+                    inline: true
+                  },
+                  {
+                    name: "Temperature",
+                    value: `${current.temperature} Degrees`,
+                    inline: true
+                  },
+                  {
+                    name: "Feels Like",
+                    value: `${current.feelslike} Degrees`,
+                    inline: true
+                  },
+                  {
+                    name: "Winds",
+                    value: current.winddisplay,
+                    inline: true
+                  },
+                  {
+                    name: "Humidity",
+                    value: `${current.humidity}%`,
+                    inline: true
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
                 }
-              ],
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
               }
-            }
+            ]
           });
         };
     }
@@ -713,15 +906,17 @@ client.on("message", async message => {
       let roundedSeconds = Math.round(seconds);
       let uptime = `${days} days, ${hours} hours, ${minutes} minutes and ${roundedSeconds} seconds`;
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Time Tracker**",
-          description: `The bot has stayed on for ${uptime}!`,
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Time Tracker**",
+            description: `The bot has stayed on for ${uptime}!`,
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
           }
-        }
+        ]
       });
     }
 
@@ -730,15 +925,17 @@ client.on("message", async message => {
         .then(res => res.json())
         .then(body => {
           message.channel.send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**Dumb Jokes**",
-              description: body.data,
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
+            embeds: [
+              {
+                color: "RANDOM",
+                title: "**Dumb Jokes**",
+                description: body.data,
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
               }
-            }
+            ]
           });
         });
     }
@@ -746,29 +943,33 @@ client.on("message", async message => {
     if (command === "urban") {
       if (!message.channel.nsfw)
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Urban Dictionary**",
-            description:
-              "Due to NSFW topic definitions so please run this in a NSFW channel!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Urban Dictionary**",
+              description:
+                "Due to NSFW topic definitions so please run this in a NSFW channel!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
             }
-          }
+          ]
         });
 
       if (args < 1 || !["random", "search"].includes(args[0]))
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Urban Dictionary**",
-            description: "Please enter something in order to search!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Urban Dictionary**",
+              description: "Please enter something in order to search!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
             }
-          }
+          ]
         });
 
       let search = args[1] ? urban(args.slice(1).join(" ")) : urban.random();
@@ -776,15 +977,17 @@ client.on("message", async message => {
         search.first(res => {
           if (!res)
             return message.channel.send({
-              embed: {
-                color: Math.floor(Math.random() * 16777214) + 1,
-                title: "**Urban Dictionary**",
-                description: "No results found for this topic!",
-                timestamp: new Date(),
-                footer: {
-                  text: "Made with ❤️ created by " + owner
+              embeds: [
+                {
+                  color: "RANDOM",
+                  title: "**Urban Dictionary**",
+                  description: "No results found for this topic!",
+                  timestamp: new Date(),
+                  footer: {
+                    text: "Made with ❤️ created by " + owner
+                  }
                 }
-              }
+              ]
             });
 
           let {
@@ -798,7 +1001,7 @@ client.on("message", async message => {
           } = res;
 
           let urbanEmbed = new Discord.MessageEmbed({
-            color: Math.floor(Math.random() * 16777214) + 1,
+            color: "RANDOM",
             title: "**Urban Dictionary**",
             description: "Here's the definition!",
             thumbnail: {
@@ -840,197 +1043,100 @@ client.on("message", async message => {
               text: "Made with ❤️ created by " + owner
             }
           });
-          message.channel.send(urbanEmbed);
+          message.channel.send({ embeds: [urbanEmbed] });
         });
       } catch (e) {
         console.log(e);
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Urban Dictionary**",
-            description: "An error occured, please try again!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      }
-    }
-
-    if (command === "prefix") {
-      // if there's at least one argument, set the prefix
-      if (args.length) {
-        await prefixes.set(message.guild.id, args[0]);
-        return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Prefix Changer**",
-            description: `Successfully set prefix to \`${args[0]}\``,
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        });
-      }
-
-      return message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Prefix Changet**",
-          description: `Prefix is \`${(await prefixes.get(message.guild.id)) ||
-            globalPrefix}\``,
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    }
-
-    if (command === "covid-19") {
-      fetch("https://api.covid19api.com/summary")
-        .then(res => res.json())
-        .then(body => {
-          message.channel.send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**COVID-19 Report**",
-              description: "Here are some sad news :(",
-              fields: [
-                {
-                  name: "New Comfirmed Cases",
-                  value: body.Global.NewConfirmed
-                },
-                {
-                  name: "New Death Cases",
-                  value: body.Global.NewDeaths
-                },
-                {
-                  name: "New Recovered Cases",
-                  value: body.Global.NewRecovered
-                },
-                {
-                  name: "Total Comfirmed Cases",
-                  value: body.Global.TotalConfirmed
-                },
-                {
-                  name: "Total Death Cases",
-                  value: body.Global.TotalDeaths
-                },
-                {
-                  name: "Total Recovered Cases",
-                  value: body.Global.TotalRecovered
-                }
-              ],
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Urban Dictionary**",
+              description: "An error occured, please try again!",
               timestamp: new Date(),
               footer: {
                 text: "Made with ❤️ created by " + owner
               }
             }
-          });
+          ]
         });
+      }
     }
 
     if (command === "photo") {
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Random HD Photo**",
-          description: "Here's your HD photo!",
-          timestamp: new Date(),
-          image: {
-            url: "https://source.unsplash.com/random?sig=" + Math.random()
-          },
-          footer: {
-            text: "Made with ❤️ created by " + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Random HD Photo**",
+            description: "Here's your HD photo!",
+            timestamp: new Date(),
+            image: {
+              url: "https://source.unsplash.com/random?sig=" + Math.random()
+            },
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
           }
-        }
+        ]
       });
     }
 
     if (command === "changelog") {
       message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Bot Changelog**",
-          description: "Date: February 10, 2021",
-          timestamp: new Date(),
-          fields: [
-            {
-              name: "Added reboot command",
-              value: "lmao u can't use it"
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**Bot Changelog**",
+            description: "Date: November 22, 2021",
+            timestamp: new Date(),
+            fields: [
+              {
+                name: "Added translating command",
+                value: "Now you can translate text to English!"
+              },
+              {
+                name: "Brand new help command",
+                value:
+                  "Help command no longer depends on reaction roles but interaction dropdown!"
+              }
+            ],
+            footer: {
+              text: "Made with ❤️ created by " + owner
             }
-          ],
-          footer: {
-            text: "Made with ❤️ created by " + owner
           }
-        }
+        ]
       });
     }
 
     if (command === "owner") {
       if (message.author.id !== "410839910204047360")
         return message.channel.send({
-          embed: {
-            color: "#db564f",
+          embeds: [
+            {
+              color: "#db564f",
+              title: "**Bot Ownership Verification**",
+              description: "You're not the owner tho!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+      message.channel.send({
+        embeds: [
+          {
+            color: "#64ab80",
             title: "**Bot Ownership Verification**",
-            description: "You're not the owner tho!",
+            description:
+              "Congratulations, you're the owner of the bot! (Verified by Professor DumbGuy123)",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
             }
           }
-        });
-      message.channel.send({
-        embed: {
-          color: "#64ab80",
-          title: "**Bot Ownership Verification**",
-          description:
-            "Congratulations, you're the owner of the bot! (Verified by Professor DumbGuy123)",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
-      });
-    }
-
-    if (command === "print") {
-      const canvas = Canvas.createCanvas(700, 250);
-      const ctx = canvas.getContext("2d");
-
-      const background = await Canvas.loadImage("./wallpaper.jpg");
-      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-      ctx.strokeStyle = "#74037b";
-      ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-      ctx.beginPath();
-      ctx.arc(125, 125, 100, 0, Math.PI * 2, true);
-      ctx.closePath();
-      ctx.clip();
-
-      const attachment = new Discord.MessageAttachment(canvas.toBuffer());
-
-      channel.send(attachment);
-      message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Crappy Printing Machine**",
-          description: "Here's your beautiful text-to-image thing!",
-          timestamp: new Date(),
-          fields: [
-            {
-              name: "Preparing a canva thing",
-              value: "Will add an image manupulation stuff ok bye"
-            }
-          ],
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
+        ]
       });
     }
 
@@ -1044,33 +1150,37 @@ client.on("message", async message => {
       }
       if (!args[0])
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Text Encoder**",
+              description:
+                "You need to say something for me to encode it to binaries!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+      message.channel.send({
+        embeds: [
+          {
+            color: "RANDOM",
             title: "**Text Encoder**",
-            description:
-              "You need to say something for me to encode it to binaries!",
+            description: "Here's your encoded message!",
             timestamp: new Date(),
+            fields: [
+              {
+                name: "Binary Results",
+                value: output
+              }
+            ],
             footer: {
               text: "Made with ❤️ created by " + owner
             }
           }
-        });
-      message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Text Encoder**",
-          description: "Here's your encoded message!",
-          timestamp: new Date(),
-          fields: [
-            {
-              name: "Binary Results",
-              value: output
-            }
-          ],
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
+        ]
       });
     }
 
@@ -1078,46 +1188,52 @@ client.on("message", async message => {
       var toDecode = args.join(" ");
       if (!args[0])
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**Text Encoder**",
-            description:
-              "You need to say something for me to encode it into binary!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Text Encoder**",
+              description:
+                "You need to say something for me to encode it into binary!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
             }
-          }
+          ]
         });
       if (isNaN(args[0]))
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Text Encoder**",
+              description:
+                "You need to say the binary code for decode it into text!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+      message.channel.send({
+        embeds: [
+          {
+            color: "RANDOM",
             title: "**Text Encoder**",
-            description:
-              "You need to say the binary code for decode it into text!",
+            description: "Here's your encoded message!",
             timestamp: new Date(),
+            fields: [
+              {
+                name: "Binary Results",
+                value: parseInt(toDecode, 2).toString(10)
+              }
+            ],
             footer: {
               text: "Made with ❤️ created by " + owner
             }
           }
-        });
-      message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**Text Encoder**",
-          description: "Here's your encoded message!",
-          timestamp: new Date(),
-          fields: [
-            {
-              name: "Binary Results",
-              value: parseInt(toDecode, 2).toString(10)
-            }
-          ],
-          footer: {
-            text: "Made with ❤️ created by " + owner
-          }
-        }
+        ]
       });
     }
 
@@ -1126,15 +1242,17 @@ client.on("message", async message => {
       if (!args[0])
         return message.channel
           .send({
-            embed: {
-              color: Math.floor(Math.random() * 16777214) + 1,
-              title: "**Action Copy Cat**",
-              description: "You need to say something for the bot to say!",
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
+            embeds: [
+              {
+                color: "RANDOM",
+                title: "**Action Copy Cat**",
+                description: "You need to say something for the bot to say!",
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
               }
-            }
+            ]
           })
           .then(msg => {
             msg.delete(10000);
@@ -1145,30 +1263,112 @@ client.on("message", async message => {
       );
     }
 
-    if (command === "reload") {
-      if (message.author.id !== "410839910204047360")
+    if (command === "translate") {
+      const sayMessage = args.join(" ");
+      if (!args[0])
         return message.channel.send({
-          embed: {
-            color: Math.floor(Math.random() * 16777214) + 1,
-            title: "**iReboot**",
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Translate to English**",
+              description:
+                "You need to say something for the bot to translate!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+      translate(args.join(" "), { to: "en" }).then(res => {
+        message.channel.send({
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**Translate to English**",
+              description: "Here's your translation",
+              fields: [
+                {
+                  name: "Original Text",
+                  value: args
+                },
+                {
+                  name: "English Translation",
+                  value: res
+                }
+              ],
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+      });
+    }
+
+    if (command === "selfban") {
+      if (message.guild.id !== "633535718559580179")
+        return message.channel.send({
+          embeds: [
+            {
+              color: "#db564f",
+              title: "**Self Ban System**",
+              description: "This command only works in r/realme Community!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
+        });
+      message.channel.send({
+        embeds: [
+          {
+            color: "#64ab80",
+            title: "**Self Ban System**",
             description:
-              "Only the bot owner can perform this action you dumb item!",
+              "Successfully banned " + message.author.toString() + "***.***",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + owner
             }
           }
+        ]
+      });
+      message.author.send(
+        "You were banned from r/realme Community | No reasons provided"
+      );
+    }
+
+    if (command === "reload") {
+      if (message.author.id !== "410839910204047360")
+        return message.channel.send({
+          embeds: [
+            {
+              color: "RANDOM",
+              title: "**iReboot**",
+              description:
+                "Only the bot owner can perform this action you dumb item!",
+              timestamp: new Date(),
+              footer: {
+                text: "Made with ❤️ created by " + owner
+              }
+            }
+          ]
         });
       await message.channel.send({
-        embed: {
-          color: Math.floor(Math.random() * 16777214) + 1,
-          title: "**iReboot**",
-          description: "Bot is now rebooting!",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner
+        embeds: [
+          {
+            color: "RANDOM",
+            title: "**iReboot**",
+            description: "Bot is now rebooting!",
+            timestamp: new Date(),
+            footer: {
+              text: "Made with ❤️ created by " + owner
+            }
           }
-        }
+        ]
       });
       await client.destroy();
       return process.exit(0);
@@ -1181,195 +1381,4 @@ client.on("message", async message => {
   }
 });
 
-const embed1 = () =>
-  new Discord.MessageEmbed({
-    color: Math.floor(Math.random() * 16777214) + 1,
-    title: "**Commands List**",
-    description: "Here's all the available commands!",
-    fields: [
-      {
-        name: ":robot: Default Prefix",
-        value: globalPrefix,
-        inline: true
-      },
-      {
-        name: ":keyboard: Placeholder Requirements",
-        value: "`<>` = REQUIRED, `[]` = OPTIONAL",
-        inline: true
-      },
-      {
-        name: ":information_source: Basic Commands",
-        value: "Page 2"
-      },
-      {
-        name: ":8ball: Fun Commands",
-        value: "Page 3"
-      },
-      {
-        name: ":cd: Misc Conmmands",
-        value: "Page 4"
-      }
-    ],
-    timestamp: new Date(),
-    footer: {
-      text: "Page 1"
-    }
-  });
-
-const embed2 = () =>
-  new Discord.MessageEmbed({
-    color: Math.floor(Math.random() * 16777214) + 1,
-    title: ":information_source: **Basic Commands**",
-    fields: [
-      {
-        name: "`rh!help`",
-        value: "Shows this command list!"
-      },
-      {
-        name: "`rh!about`",
-        value: "Shows you the info about the bot!"
-      },
-      {
-        name: "`rh!uptime`",
-        value: "Shows you the uptime of the bot!"
-      },
-      {
-        name: "`rh!changelog`",
-        value: "Shows you the change log of the bot with a specific date!"
-      }
-    ],
-    timestamp: new Date(),
-    footer: {
-      text: "Page 2"
-    }
-  });
-
-const embed3 = () =>
-  new Discord.MessageEmbed({
-    color: Math.floor(Math.random() * 16777214) + 1,
-    title: ":8ball: **Fun Commands**",
-    fields: [
-      {
-        name: "`rh!facts`",
-        value: "Tells you a boring fact!"
-      },
-      {
-        name: "`rh!skeppy`",
-        value: "Tells you a random Skeppy quotes according to Wikitubia!"
-      },
-      {
-        name: "`rh!8`",
-        value: "Ask any yes/no question, and it will answer you something!"
-      },
-      {
-        name: "`rh!gif`",
-        value: "Sends you a random GIF!"
-      },
-      {
-        name: "`rh!photo`",
-        value: "Sends you a random HD photo with a random thumbnail!"
-      },
-      {
-        name: "`rh!say <Message>`",
-        value: "Says something what you say!"
-      },
-      {
-        name: "`rh!meme`",
-        value: "Tells you a meme from Subreddits!"
-      },
-      {
-        name: "`rh!print`",
-        value: "Say something, the bot will output your text as an image!"
-      }
-    ],
-    timestamp: new Date(),
-    footer: {
-      text: "Page 3"
-    }
-  });
-
-const embed4 = () =>
-  new Discord.MessageEmbed({
-    color: Math.floor(Math.random() * 16777214) + 1,
-    title: ":cd: **Misc Commands**",
-    fields: [
-      {
-        name: "`rh!ping`",
-        value: "Replies you the respond time of the bot!"
-      },
-      {
-        name: "`rh!user [Other Users]`",
-        value: "Sends your/other's Discord profile information!"
-      },
-      {
-        name: "`rh!server`",
-        value: "Sends the server's detail"
-      },
-      {
-        name: "`rh!urban <search/random> [query]`",
-        value: "Search the words across the Urban Dictionary!"
-      },
-      {
-        name: "`rh!covid-19`",
-        value: "Tells you any global numbers of COVID-19 cases! :("
-      },
-      {
-        name: "`rh!reload`",
-        value: "Reboots the bot!"
-      }
-    ],
-    timestamp: new Date(),
-    footer: {
-      text: "Page 4"
-    }
-  });
-
-const list = [embed1, embed2, embed3, embed4];
-
-function getList(i) {
-  return list[i]()
-    .setTimestamp()
-    .setFooter(`Page ${i + 1}`); // i+1 because we start at 0
-}
-
-function filter(reaction, user) {
-  return !user.bot && reactionArrow.includes(reaction.emoji.name); // check if the emoji is inside the list of emojis, and if the user is not a bot
-}
-
-function onCollect(emoji, message, i, getList) {
-  if (emoji.name === emojiPrevious && i > 0) {
-    message.edit(getList(--i));
-  } else if (emoji.name === emojiNext && i < list.length - 1) {
-    message.edit(getList(++i));
-  }
-  return i;
-}
-
-function createCollectorMessage(message, getList) {
-  let i = 0;
-  const collector = message.createReactionCollector(filter);
-  collector.on("collect", r => {
-    i = onCollect(r.emoji, message, i, getList);
-  });
-}
-
-function sendList(channel, getList) {
-  channel
-    .send(getList(0))
-    .then(msg => msg.react(emojiPrevious))
-    .then(msgReaction => msgReaction.message.react(emojiNext))
-    .then(msgReaction => createCollectorMessage(msgReaction.message, getList));
-}
-
 client.login(process.env.DISCORD);
-
-// Auto Ping
-
-let count = 0;
-setInterval(
-  () =>
-    require("node-fetch")(process.env.URL).then(() =>
-      console.log(`[${++count}] here i pinged ${process.env.URL}`)
-    ),
-  300000
-);
