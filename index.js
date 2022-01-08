@@ -14,7 +14,7 @@ const client = new Discord.Client({
     afk: false,
     activities: [
       {
-        name: "Type 'rh!help' for help! [BETA]"
+        name: "h!help | Still in beta!"
       }
     ]
   },
@@ -45,7 +45,6 @@ const customAnalytics = new cheweyBotAnalyticsAPI(
   process.env.CHEYWEYAPI,
   client
 );
-const translate = require("google-translate");
 const weather = require("weather-js");
 const { AutoPoster } = require("topgg-autoposter");
 const ap = AutoPoster(process.env.TOPGG, client);
@@ -61,7 +60,7 @@ app.get("/", (request, response) => {
   response.sendStatus(200);
 });
 app.listen(process.env.PORT);
-const globalPrefix = "rh!" || "Rh!" || "rH!" || "RH!";
+const globalPrefix = "h!" || "H!";
 const owner = "Raymond#2829";
 client.commands = new Discord.Collection();
 let cooldown = new Set();
@@ -71,8 +70,28 @@ let cooldown = new Set();
 client.on("ready", () => {
   console.log("Starting up...");
   console.log(
-    `The bot is currently serving ${client.users.cache.size} users, in ${client.guilds.cache.size} servers.`
+    `The bot is currently serving ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`
   );
+  const guildId = "457611176558460948";
+  const guild = client.guilds.cache.get(guildId);
+  let slashcmds;
+
+  if (guild) {
+    slashcmds = guild.commands;
+  } else {
+    slashcmds = client.application?.commands;
+  }
+
+  slashcmds?.create({
+    name: "help",
+    description: "get some free helps"
+  });
+  
+  slashcmds?.create({
+    name: "ping",
+    description: "it just works ok?"
+  });
+  
 });
 client.on("reconnecting", () => {
   console.log("Reconnecting!");
@@ -143,7 +162,7 @@ client.on("messageCreate", async message => {
             description: "You realize that I don't work in DMs...",
             timestamp: new Date(),
             footer: {
-              text: "Made with ❤️ created by" + owner
+              text: "Made with ❤️ created by " + owner
             }
           }
         ]
@@ -160,7 +179,7 @@ client.on("messageCreate", async message => {
           "Use the dropdown menu to select a category below to see some available commands!",
         timestamp: new Date(),
         footer: {
-          text: "Made with ❤️ created by" + owner
+          text: "Made with ❤️ created by " + owner
         }
       };
       let helpPanel = new MessageActionRow().addComponents(
@@ -224,7 +243,7 @@ client.on("messageCreate", async message => {
                 ],
                 timestamp: new Date(),
                 footer: {
-                  text: "Made with ❤️ created by" + owner
+                  text: "Made with ❤️ created by " + owner
                 }
               };
               msg.edit({ embeds: [basic], components: [helpPanel] });
@@ -273,7 +292,7 @@ client.on("messageCreate", async message => {
                 ],
                 timestamp: new Date(),
                 footer: {
-                  text: "Made with ❤️ created by" + owner
+                  text: "Made with ❤️ created by " + owner
                 }
               };
               msg.edit({ embeds: [fun], components: [helpPanel] });
@@ -310,7 +329,7 @@ client.on("messageCreate", async message => {
                 ],
                 timestamp: new Date(),
                 footer: {
-                  text: "Made with ❤️ created by" + owner
+                  text: "Made with ❤️ created by " + owner
                 }
               };
               msg.edit({ embeds: [misc], components: [helpPanel] });
@@ -777,7 +796,7 @@ client.on("messageCreate", async message => {
     }
 
     if (command === "say") {
-      const sayMessage = args.join(" ").cleanContent;
+      const sayMessage = args.join(" ");
       if (!args[0])
         return message.channel
           .send({
@@ -1092,10 +1111,6 @@ client.on("messageCreate", async message => {
             timestamp: new Date(),
             fields: [
               {
-                name: "Added translating command",
-                value: "Now you can translate text to English!"
-              },
-              {
                 name: "Brand new help command",
                 value:
                   "Help command no longer depends on reaction roles but interaction dropdown!"
@@ -1263,50 +1278,6 @@ client.on("messageCreate", async message => {
       );
     }
 
-    if (command === "translate") {
-      const sayMessage = args.join(" ");
-      if (!args[0])
-        return message.channel.send({
-          embeds: [
-            {
-              color: "RANDOM",
-              title: "**Translate to English**",
-              description:
-                "You need to say something for the bot to translate!",
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
-              }
-            }
-          ]
-        });
-      translate(args.join(" "), { to: "en" }).then(res => {
-        message.channel.send({
-          embeds: [
-            {
-              color: "RANDOM",
-              title: "**Translate to English**",
-              description: "Here's your translation",
-              fields: [
-                {
-                  name: "Original Text",
-                  value: args
-                },
-                {
-                  name: "English Translation",
-                  value: res
-                }
-              ],
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
-              }
-            }
-          ]
-        });
-      });
-    }
-
     if (command === "selfban") {
       if (message.guild.id !== "633535718559580179")
         return message.channel.send({
@@ -1341,44 +1312,255 @@ client.on("messageCreate", async message => {
       );
     }
 
-    if (command === "reload") {
-      if (message.author.id !== "410839910204047360")
-        return message.channel.send({
-          embeds: [
-            {
-              color: "RANDOM",
-              title: "**iReboot**",
-              description:
-                "Only the bot owner can perform this action you dumb item!",
-              timestamp: new Date(),
-              footer: {
-                text: "Made with ❤️ created by " + owner
-              }
-            }
-          ]
-        });
-      await message.channel.send({
-        embeds: [
-          {
-            color: "RANDOM",
-            title: "**iReboot**",
-            description: "Bot is now rebooting!",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner
-            }
-          }
-        ]
-      });
-      await client.destroy();
-      return process.exit(0);
-    }
+    // if (command === "reload" || "reboot" || "refresh") {
+    //   if (message.author.id !== "410839910204047360")
+    //     return message.channel.send({
+    //       embeds: [
+    //         {
+    //           color: "RANDOM",
+    //           title: "**iReboot**",
+    //           description:
+    //             "Only the bot owner can perform this action!",
+    //           timestamp: new Date(),
+    //           footer: {
+    //             text: "Made with ❤️ created by " + owner
+    //           }
+    //         }
+    //       ]
+    //     });
+    //   await message.channel.send({
+    //     embeds: [
+    //       {
+    //         color: "RANDOM",
+    //         title: "**iReboot**",
+    //         description: "Bot is now rebooting!",
+    //         timestamp: new Date(),
+    //         footer: {
+    //           text: "Made with ❤️ created by " + owner
+    //         }
+    //       }
+    //     ]
+    //   });
+    //   await client.destroy();
+    //   return process.exit(0);
+    // }
 
     cooldown.add(message.author.id);
     setTimeout(() => {
       cooldown.delete(message.author.id);
     }, 1000);
   }
+});
+
+client.on("interactionCreate", async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName, options } = interaction;
+
+  if (commandName === "ping") {
+    let m = await interaction.reply({
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Lag Machine**",
+          description: "Ping?",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      ]
+    });
+    interaction.editReply({
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Lag Machine**",
+          description: "Pong!",
+          fields: [
+            {
+              name: "Latency",
+              value: `${m.Date() - interaction.createdTimestamp}ms`
+            },
+            {
+              name: "API Latency",
+              value: `${Math.round(client.ws.ping)}ms`
+            }
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner
+          }
+        }
+      ]
+    });
+  }
+  
+  if (commandName === "help") {
+      let help = {
+        color: "RANDOM",
+        title: "**Available Commands**",
+        description:
+          "Use the dropdown menu to select a category below to see some available commands!",
+        timestamp: new Date(),
+        footer: {
+          text: "Made with ❤️ created by " + owner
+        }
+      };
+      let helpPanel = new MessageActionRow().addComponents(
+        new MessageSelectMenu()
+          .setCustomId("menu")
+          .setPlaceholder("Select a category...")
+          .addOptions([
+            {
+              label: "Basic Commands",
+              description:
+                "Some basic commands that allows you to check the bot!",
+              value: "basic"
+            },
+            {
+              label: "Fun Commands",
+              description:
+                "Some fun commands you can play with when you're bored!",
+              value: "fun"
+            },
+            {
+              label: "Misc Commands",
+              description: "Some other commands you use too!",
+              value: "misc"
+            }
+          ])
+      );
+      interaction.reply({ embeds: [help], components: [helpPanel] })
+        .then(msg => {
+          const select = interaction => interaction.isSelectMenu();
+          const collector = msg.createMessageComponentCollector({
+            select
+          });
+
+          collector.on("collect", async collected => {
+            let value = collected.values[0];
+            collected.deferUpdate();
+
+            if (value === "basic") {
+              let basic = {
+                ccolor: "RANDOM",
+                title: ":information_source: **Basic Commands**",
+                fields: [
+                  {
+                    name: "`rh!help`",
+                    value: "Shows this command list!"
+                  },
+                  {
+                    name: "`rh!about`",
+                    value: "Shows you the info about the bot!"
+                  },
+                  {
+                    name: "`rh!uptime`",
+                    value: "Shows you the uptime of the bot!"
+                  },
+                  {
+                    name: "`rh!changelog`",
+                    value:
+                      "Shows you the change log of the bot with a specific date!"
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
+              };
+              msg.editReply({ embeds: [basic], components: [helpPanel] });
+            }
+            if (value === "fun") {
+              let fun = {
+                color: "RANDOM",
+                title: ":8ball: **Fun Commands**",
+                fields: [
+                  {
+                    name: "`rh!facts`",
+                    value: "Tells you a boring fact!"
+                  },
+                  {
+                    name: "`rh!skeppy`",
+                    value:
+                      "Tells you a random Skeppy quotes according to Wikitubia!"
+                  },
+                  {
+                    name: "`rh!8`",
+                    value:
+                      "Ask any yes/no question, and it will answer you something!"
+                  },
+                  {
+                    name: "`rh!gif`",
+                    value: "Sends you a random GIF!"
+                  },
+                  {
+                    name: "`rh!photo`",
+                    value:
+                      "Sends you a random HD photo with a random thumbnail!"
+                  },
+                  {
+                    name: "`rh!say <Message>`",
+                    value: "Says something what you say!"
+                  },
+                  {
+                    name: "`rh!meme`",
+                    value: "Tells you a meme from Subreddits!"
+                  },
+                  {
+                    name: "`rh!print`",
+                    value:
+                      "Say something, the bot will output your text as an image!"
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
+              };
+              msg.editReply({ embeds: [fun], components: [helpPanel] });
+            }
+            if (value === "misc") {
+              let misc = {
+                color: "RANDOM",
+                title: ":cd: **Misc Commands**",
+                fields: [
+                  {
+                    name: "`rh!ping`",
+                    value: "Replies you the respond time of the bot!"
+                  },
+                  {
+                    name: "`rh!user [Other Users]`",
+                    value: "Sends your/other's Discord profile information!"
+                  },
+                  {
+                    name: "`rh!server`",
+                    value: "Sends the server's detail"
+                  },
+                  {
+                    name: "`rh!urban <search/random> [query]`",
+                    value: "Search the words across the Urban Dictionary!"
+                  },
+                  {
+                    name: "`rh!covid-19`",
+                    value: "Tells you any global numbers of COVID-19 cases! :("
+                  },
+                  {
+                    name: "`rh!reload`",
+                    value: "Reboots the bot!"
+                  }
+                ],
+                timestamp: new Date(),
+                footer: {
+                  text: "Made with ❤️ created by " + owner
+                }
+              };
+              msg.editReply({ embeds: [misc], components: [helpPanel] });
+            }
+          });
+        });
+    }
 });
 
 client.login(process.env.DISCORD);
