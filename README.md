@@ -1,3 +1,3 @@
-### hackerman14 bot
+### hackerman14 Beta
 
-Please visit [TOP.gg bot page](https://top.gg/bot/619613322903420929) for more information.
+Now on command handler!
