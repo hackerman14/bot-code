@@ -7,7 +7,8 @@ module.exports = {
     .setName("ping")
     .setDescription("Replies with pong!"),
   async execute(interaction) {
-    const { client } = interaction
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     await interaction.reply({
         embeds: [
           {
@@ -39,7 +40,7 @@ module.exports = {
             ],
             timestamp: new Date(),
             footer: {
-              text: "Made with ❤️ created by " + owner,
+              text: "Made with ❤️ created by " + botOwner,
             },
           },
         ],

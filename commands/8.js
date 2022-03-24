@@ -2,12 +2,12 @@ const { client } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const wait = require("node:timers/promises").setTimeout;
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("8")
-    .setDescription("Ask any yes/no question, and it will answer you something!")
+    .setDescription(
+      "Ask any yes/no question, and it will answer you something!"
+    )
     .addStringOption((option) =>
       option
         .setName("question")
@@ -16,6 +16,8 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    const { client } = interaction;
+    let botOwner = client.users.cache.get("410839910204047360").tag;
     var answers = [
       "It is certain.",
       "It is decidedly so.",
@@ -59,7 +61,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

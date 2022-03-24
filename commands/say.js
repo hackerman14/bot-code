@@ -13,6 +13,6 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    interaction.reply(interaction.options.getString("something"));
+    interaction.reply(interaction.options.getString("something").cleanContent);
   },
 };

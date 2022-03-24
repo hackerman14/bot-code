@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("discordtips")
     .setDescription('Tells you a random Discord "Did you know" text upon the app startup!'),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     var tips = [
       "Discord's official birthday is May 13, 2015.",
       "`CTRL` `K` / `CMD` `K` to quickly find a previous conversation or channel.",
@@ -45,7 +45,7 @@ module.exports = {
           description: randomTip,
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

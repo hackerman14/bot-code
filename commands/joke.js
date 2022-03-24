@@ -1,13 +1,13 @@
 const fetch = require("node-fetch");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("joke")
     .setDescription("Tells you a joke!"),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     fetch("https://official-joke-api.appspot.com/jokes/random")
       .then((res) => res.json())
       .then((body) => {
@@ -19,7 +19,7 @@ module.exports = {
               description: body.data,
               timestamp: new Date(),
               footer: {
-                text: "Made with ❤️ created by " + owner,
+                text: "Made with ❤️ created by " + botOwner,
               },
             },
           ],

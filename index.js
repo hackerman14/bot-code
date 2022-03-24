@@ -1,12 +1,18 @@
+// Core codes
+
 const fs = require("node:fs");
-const {
-  Client,
-  ClientUser,
-  Collection,
-  Intents,
-} = require("discord.js");
+const { Client, ClientUser, Collection, Intents } = require("discord.js");
 
 const client = new Client({
+  presence: {
+    status: "dnd",
+    afk: false,
+    activities: [
+      {
+        name: "/help | Now in slash commands!",
+      },
+    ],
+  },
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILDS,
@@ -24,6 +30,7 @@ const client = new Client({
     Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
     Intents.FLAGS.DIRECT_MESSAGE_TYPING,
   ],
+  partials: ["CHANNEL", "MESSAGE"],
 });
 
 client.commands = new Collection();
@@ -38,6 +45,9 @@ for (const file of commandFiles) {
 
 client.once("ready", () => {
   console.log("Ready!");
+  console.log(
+    `The bot is currently serving ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`
+  );
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -58,6 +68,31 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
+client.on("messageCreate", async (message) => {
+  const wait = require("node:timers/promises").setTimeout;
+  const botOwner = client.users.cache.get("410839910204047360").tag;
+  if (message.author.bot) return;
+  if (message.channel.type == "DM") {
+    await message.channel.sendTyping();
+    await wait(1000);
+    await message.reply({
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Bruh Moment**",
+          description: "I don't work in DMs!",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + botOwner,
+          },
+        },
+      ],
+    });
+  }
+});
+
+// Other codes
+
 const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
 const customAnalytics = new cheweyBotAnalyticsAPI(
   process.env.CHEYWEYAPI,
@@ -66,5 +101,8 @@ const customAnalytics = new cheweyBotAnalyticsAPI(
 
 const { AutoPoster } = require("topgg-autoposter");
 const ap = AutoPoster(process.env.TOPGG, client);
+ap.on("posted", () => {
+  console.log("Posted stats to Top.gg!");
+});
 
 client.login(process.env.DISCORD);

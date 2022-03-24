@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("changelog")
     .setDescription("Check what changes are made to the bot!"),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     interaction.reply({
       embeds: [
         {
@@ -32,7 +32,7 @@ module.exports = {
             },
           ],
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

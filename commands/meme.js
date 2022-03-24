@@ -1,13 +1,13 @@
 const randomPuppy = require("random-puppy");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("meme")
     .setDescription("Replies with pong!"),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     let subReddits = [
       "dankmeme",
       "memes",
@@ -34,7 +34,7 @@ module.exports = {
             url: meme,
           },
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

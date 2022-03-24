@@ -1,7 +1,5 @@
-const moment = require("moment")
+const moment = require("moment");
 const { SlashCommandBuilder } = require("@discordjs/builders");
-
-let owner = "Raymond#2829";
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,23 +7,24 @@ module.exports = {
     .setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     interaction.reply({
       embeds: [
         {
           color: "RANDOM",
           title: "**About This Bot**",
           description: "The information about this bot!",
-          thumbnail: {
-            url: client.user.displayAvatarURL,
-          },
+          // thumbnail: {
+          //   url: client.user.displayAvatarURL,
+          // },
           fields: [
             {
               name: "Bot Version",
-              value: "hackerman14 (Private Beta)",
+              value: "hackerman14 (Stable)",
             },
             {
               name: "Bot Since",
-              value: `<t:${client.user.createdTimestamp}:R>`,
+              value: `<t:${parseInt(client.user.createdTimestamp / 1000)}:R>`,
             },
             {
               name: "Bot Website",
@@ -33,7 +32,7 @@ module.exports = {
             },
             {
               name: "Creator",
-              value: "[" + owner + "](https://raymond-1227.github.io/)",
+              value: "[" + botOwner + "](https://raymond-1227.github.io/)",
             },
             {
               name: "Host",
@@ -41,7 +40,7 @@ module.exports = {
             },
             {
               name: "Always Online",
-              value: "Disabled (i'm too poor to buy boosted app plan)",
+              value: "`Disabled` (i'm too poor to buy boosted app plan)",
             },
             {
               name: "Source Codes",
@@ -54,7 +53,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

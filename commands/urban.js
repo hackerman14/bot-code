@@ -1,8 +1,6 @@
 const axios = require("axios");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("urban")
@@ -16,6 +14,8 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     let search = interaction.options.getString("word_or_phrase");
     let link = "https://api.urbandictionary.com/v0/define?term=";
     let fetch = await axios(link + encodeURI(search));
@@ -31,7 +31,7 @@ module.exports = {
               "Due to NSFW topic definitions so please run this command in an age restricted channel!",
             timestamp: new Date(),
             footer: {
-              text: "Made with ❤️ created by " + owner,
+              text: "Made with ❤️ created by " + botOwner,
             },
           },
         ],
@@ -47,7 +47,7 @@ module.exports = {
               "What you're looking for doesn't exist on Urban Dictionary!",
             timestamp: new Date(),
             footer: {
-              text: "Made with ❤️ created by " + owner,
+              text: "Made with ❤️ created by " + botOwner,
             },
           },
         ],
@@ -90,7 +90,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

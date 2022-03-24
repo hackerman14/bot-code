@@ -1,13 +1,13 @@
 const fetch = require("node-fetch");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("gif")
     .setDescription("Sends you a random GIF!"),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     fetch(process.env.GIPHY)
       .then((res) => res.json())
       .then((body) => {
@@ -22,7 +22,7 @@ module.exports = {
                 url: body.data.images.original.url,
               },
               footer: {
-                text: "Made with ❤️ created by " + owner,
+                text: "Made with ❤️ created by " + botOwner,
               },
             },
           ],

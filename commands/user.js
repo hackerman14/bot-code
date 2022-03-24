@@ -1,8 +1,6 @@
 const moment = require("moment");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("user")
@@ -14,6 +12,8 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     let member = await interaction.options.getUser("user").fetch(true);
     interaction.reply({
       embeds: [
@@ -40,7 +40,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

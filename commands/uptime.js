@@ -1,13 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("uptime")
     .setDescription("Check how long the bot has stayed on!"),
   async execute(interaction) {
     const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     let totalSeconds = client.uptime / 1000;
     let days = Math.floor(totalSeconds / 86400);
     let hours = Math.floor(totalSeconds / 3600);
@@ -24,7 +23,7 @@ module.exports = {
           description: `The bot has stayed on for ${uptime}!`,
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

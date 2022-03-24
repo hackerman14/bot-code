@@ -1,13 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("server")
     .setDescription("Look up the current Discord server information!"),
   async execute(interaction) {
-    const { guild } = interaction;
+    const { client, guild } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     const {
       createdTimestamp,
       ownerId,
@@ -114,7 +113,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],

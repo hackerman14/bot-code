@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("skeppy")
     .setDescription("Tells you a random Skeppy quotes according to Wikitubia!"),
   async execute(interaction) {
+    const { client } = interaction;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     var quotes = [
       "like or die tmr",
       "YOOO how's it going guys! welkom back to another video!",
@@ -76,7 +76,7 @@ module.exports = {
           description: randomQuote,
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + owner,
+            text: "Made with ❤️ created by " + botOwner,
           },
         },
       ],
