@@ -7,11 +7,36 @@ module.exports = {
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         {
           color: "RANDOM",
           title: "**Bot Changelog**",
+          description: "Date: March 27, 2022",
+          timestamp: new Date(),
+          fields: [
+            {
+              name: "New command",
+              value:
+                "Added `/covid` command (I don't even know when I accidentally removed this...)",
+            },
+            {
+              name: "Command enhancements",
+              value:
+                "A few commands error have been patched, will continue to add & fix more commands!",
+            },
+          ],
+          footer: {
+            text: "Made with ❤️ created by " + botOwner,
+          },
+        },
+      ],
+    });
+    await interaction.followUp({
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Previous Bot Changelog**",
           description: "Date: March 23, 2022",
           timestamp: new Date(),
           fields: [

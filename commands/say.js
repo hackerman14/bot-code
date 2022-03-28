@@ -1,3 +1,4 @@
+const { Util } = require("discord.js")
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 let owner = "Raymond#2829";
@@ -5,7 +6,7 @@ let owner = "Raymond#2829";
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("say")
-    .setDescription("Replies with pong!")
+    .setDescription("The copy fax machine!")
     .addStringOption((option) =>
       option
         .setName("something")
@@ -13,6 +14,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    interaction.reply(interaction.options.getString("something").cleanContent);
+    interaction.reply(Util.cleanContent(interaction.options.getString("something"), interaction));
+    
   },
 };

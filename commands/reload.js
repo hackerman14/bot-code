@@ -2,32 +2,32 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("owner")
-    .setDescription("Check if you own the hackerman14 bot!"),
+    .setName("reload")
+    .setDescription("Restarts the bot! (Bot developer exclusive)"),
   async execute(interaction) {
     const { client } = interaction;
-    let botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get("410839910204047360").tag;
     if (interaction.user.id !== "410839910204047360")
       return interaction.reply({
         embeds: [
           {
-            color: "#db564f",
-            title: "**Bot Ownership Verification**",
-            description: "You don't own the bot!",
+            color: "RANDOM",
+            title: "**iReboot**",
+            description:
+              "Only the bot owner can perform this action you dumb item!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + botOwner,
             },
           },
-        ],
+        ], ephemeral: true,
       });
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         {
-          color: "#64ab80",
-          title: "**Bot Ownership Verification**",
-          description:
-            "Congratulations, you're the owner of the bot! (Verified by Professor DumbGuy123)",
+          color: "RANDOM",
+          title: "**iReboot**",
+          description: "Bot is now rebooting!",
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + botOwner,
@@ -35,5 +35,7 @@ module.exports = {
         },
       ],
     });
+    await client.destroy();
+    return process.exit(0);
   },
 };

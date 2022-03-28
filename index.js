@@ -2,7 +2,6 @@
 
 const fs = require("node:fs");
 const { Client, ClientUser, Collection, Intents } = require("discord.js");
-
 const client = new Client({
   presence: {
     status: "dnd",
@@ -10,6 +9,7 @@ const client = new Client({
     activities: [
       {
         name: "/help | Now in slash commands!",
+        url: "https://www.twitch.tv/monstercat",
       },
     ],
   },
@@ -72,15 +72,17 @@ client.on("messageCreate", async (message) => {
   const wait = require("node:timers/promises").setTimeout;
   const botOwner = client.users.cache.get("410839910204047360").tag;
   if (message.author.bot) return;
+
   if (message.channel.type == "DM") {
+    await wait(500);
     await message.channel.sendTyping();
     await wait(1000);
-    await message.reply({
+    await message.channel.send({
       embeds: [
         {
           color: "RANDOM",
-          title: "**Bruh Moment**",
-          description: "I don't work in DMs!",
+          title: "**Hello!**",
+          description: "Be aware of some commands don't work in DMs!",
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + botOwner,
@@ -89,9 +91,46 @@ client.on("messageCreate", async (message) => {
       ],
     });
   }
+  if (message.content.includes("<@619613322903420929>")) {
+    message.channel.send({
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Need Command Help?**",
+          description:
+            "Type `/` in the message box and select my avatar on the sidebar to check all my available commands!",
+          fields: [
+            {
+              name: "Commands not showing up?",
+              value:
+                "Kick the bot first, then re-invite the bot to the server! \n Be sure to at least give the bot `View Channels`, `Send Messages`, and most importantly `Use Application Commands` via `Server Settings > Roles > hackerman14 (The role name is called it by default)`",
+            },
+            {
+              name: "Have other questions?",
+              value:
+                "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
+            },
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + botOwner,
+          },
+        },
+      ],
+      ephemeral: true,
+    });
+  }
 });
 
 // Other codes
+
+const moment = require("moment");
+const express = require("express");
+const app = express();
+app.get("/", (request, response) => {
+  console.log(moment(Date.now()).format("LLLL") + " Ping Received");
+  response.sendStatus(200);
+});
 
 const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
 const customAnalytics = new cheweyBotAnalyticsAPI(

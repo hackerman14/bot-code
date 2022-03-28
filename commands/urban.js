@@ -73,7 +73,7 @@ module.exports = {
           color: "RANDOM",
           title: "**Urban Dictionary**",
           description:
-            "What you're looking for doesn't exist on Urban Dictionary!",
+            "Here's the definition!",
           fields: [
             {
               name: "Word / Phrase",

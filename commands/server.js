@@ -18,6 +18,8 @@ module.exports = {
       stickers,
     } = guild;
 
+    if (!guild) return;
+
     if (typeof description === "string") {
       var desc = description;
     } else {
