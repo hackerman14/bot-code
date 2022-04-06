@@ -36,11 +36,11 @@ module.exports = {
             },
             {
               name: "Host",
-              value: "[Glitch](https://glitch.com/)",
+              value: "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
             },
             {
               name: "Always Online",
-              value: "`Disabled` (i'm too poor to buy boosted app plan)",
+              value: "Enabled",
             },
             {
               name: "Source Codes",

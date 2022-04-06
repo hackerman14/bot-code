@@ -9,7 +9,6 @@ const client = new Client({
     activities: [
       {
         name: "/help | Now in slash commands!",
-        url: "https://www.twitch.tv/monstercat",
       },
     ],
   },
@@ -32,6 +31,7 @@ const client = new Client({
   ],
   partials: ["CHANNEL", "MESSAGE"],
 });
+require("dotenv").config();
 
 client.commands = new Collection();
 const commandFiles = fs
@@ -91,7 +91,7 @@ client.on("messageCreate", async (message) => {
       ],
     });
   }
-  if (message.content.includes("<@619613322903420929>")) {
+  if (message.content.includes("<@!619613322903420929>")) {
     message.channel.send({
       embeds: [
         {

@@ -14,7 +14,7 @@ module.exports = {
             color: "RANDOM",
             title: "**iReboot**",
             description:
-              "Only the bot owner can perform this action you dumb item!",
+              "Only the bot owner can perform this action!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + botOwner,

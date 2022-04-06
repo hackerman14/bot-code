@@ -12,13 +12,13 @@ module.exports = {
         {
           color: "RANDOM",
           title: "**Bot Changelog**",
-          description: "Date: March 27, 2022",
+          description: "Date: March 28, 2022",
           timestamp: new Date(),
           fields: [
             {
-              name: "New command",
+              name: "New bot hosting",
               value:
-                "Added `/covid` command (I don't even know when I accidentally removed this...)",
+                "Changed hosting from Glitch to Oracle Cloud Infrastructure, should now run 24/7!",
             },
             {
               name: "Command enhancements",
@@ -37,23 +37,18 @@ module.exports = {
         {
           color: "RANDOM",
           title: "**Previous Bot Changelog**",
-          description: "Date: March 23, 2022",
+          description: "Date: March 28, 2022",
           timestamp: new Date(),
           fields: [
             {
-              name: "COMMAND HANDLER! (even in slash commands woohoo)",
-              value:
-                "Prefix calling (formerly known as `h!`) has now been deprecated for the slash commands handler!",
-            },
-            {
               name: "New command",
               value:
-                "`/discordtips` shows all Discord app startup pro tips randomly!",
+                "Added `/hack` command (it's just a Dank Memer `hack` command but I made it better)",
             },
             {
-              name: "Known issues",
+              name: "Command enhancements",
               value:
-                "Will be fixing commands like `/uptime` or `/server` later! Stay tuned!",
+                "A few commands error have been patched, will continue to add & fix more commands!",
             },
           ],
           footer: {
