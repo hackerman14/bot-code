@@ -1,10 +1,11 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("ban")
     .setDescription(
-      "Ban people (r/realme Community Discord & bot developer exclusive)"
+      "Fake bans people (r/realme Community Discord & bot developer exclusive)"
     )
     .addUserOption((option) =>
       option
@@ -19,11 +20,12 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const { client } = interaction;
+    const { client, guild } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
-    let emoji = client.emojis.cache.get("955822873245790238");
-    let member = await interaction.options.getUser("user").fetch(true);
+    let user = await interaction.options.getUser("user").fetch(true);
+    let member = await interaction.options.getMember("user");
     let reason = interaction.options.getString("reason");
+    let role = await guild.roles.fetch("964481713269002251");
     if (interaction.guild.id !== "633535718559580179")
       return interaction.reply({
         embeds: [
@@ -31,7 +33,7 @@ module.exports = {
             color: "#db574f",
             title: "**Fake Ban System**",
             description:
-              "This command is exclusively on the r/realme Community Discord!",
+              "This command is exclusively on [r/realme Community](https://discord.gg/wJYkea7Rdv)!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + botOwner,
@@ -41,13 +43,13 @@ module.exports = {
         ephemeral: true,
       });
 
-    if (interaction.user.id !== "410839910204047360")
+    if (!interaction.member.permissions.has("BAN_MEMBERS"))
       return interaction.reply({
         embeds: [
           {
             color: "#db574f",
             title: "**Fake Ban System**",
-            description: "Only the bot owner can perform this action!",
+            description: "Only the moderators can perform this action!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + botOwner,
@@ -56,16 +58,15 @@ module.exports = {
         ],
         ephemeral: true,
       });
-
-    interaction.reply({
+    await interaction.reply({
       embeds: [
         {
           color: "#68b386",
-          description: `<:hSuccess:956980119086465124> ***${member.tag} was banned*** | ${reason}`,
+          description: `<:hSuccess:956980119086465124> ***${user.tag} was banned*** | ${reason}`,
         },
       ],
     });
-    member.send({
+    await user.send({
       embeds: [
         {
           color: "#db574f",
@@ -73,5 +74,26 @@ module.exports = {
         },
       ],
     });
+    await user.send({
+      embeds: [
+        {
+          color: "#db574f",
+          description: `Just kidding, this isn't an actual ban.`,
+        },
+      ],
+    });
+    if (user.nickname === null) {
+      await member.roles.add(role);
+      await wait(5000);
+      await member.roles.remove(role);
+    }
+    if (user.nickname !== null) {
+      let originalNickname = member.nickname;
+      await member.setNickname("");
+      await member.roles.add(role);
+      await wait(5000);
+      await member.roles.remove(role);
+      await member.setNickname(originalNickname);
+    }
   },
 };

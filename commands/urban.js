@@ -72,8 +72,7 @@ module.exports = {
         {
           color: "RANDOM",
           title: "**Urban Dictionary**",
-          description:
-            "Here's the definition!",
+          description: "Here's the definition!",
           fields: [
             {
               name: "Word / Phrase",
@@ -95,5 +94,6 @@ module.exports = {
         },
       ],
     });
+    console.log(fetch);
   },
 };

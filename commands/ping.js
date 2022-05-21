@@ -10,40 +10,40 @@ module.exports = {
     const { client } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
     await interaction.reply({
-        embeds: [
-          {
-            color: "RANDOM",
-            title: "**Lag Machine**",
-            description: "Ping?",
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + owner,
-            },
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Lag Machine**",
+          description: "Ping?",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner,
           },
-        ],
-      });
-      await interaction.editReply({
-        embeds: [
-          {
-            color: "RANDOM",
-            title: "**Lag Machine**",
-            description: "Pong!",
-            fields: [
-              {
-                name: "Latency",
-                value: `${Math.abs(Date.now() - interaction.createdTimestamp)}ms`,
-              },
-              {
-                name: "API Latency",
-                value: `${Math.round(client.ws.ping)}ms`,
-              },
-            ],
-            timestamp: new Date(),
-            footer: {
-              text: "Made with ❤️ created by " + botOwner,
+        },
+      ],
+    });
+    await interaction.editReply({
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Lag Machine**",
+          description: "Pong!",
+          fields: [
+            {
+              name: "Latency",
+              value: `${Math.abs(Date.now() - interaction.createdTimestamp)}ms`,
             },
+            {
+              name: "API Latency",
+              value: `${Math.round(client.ws.ping)}ms`,
+            },
+          ],
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + botOwner,
           },
-        ],
-      });
+        },
+      ],
+    });
   },
 };

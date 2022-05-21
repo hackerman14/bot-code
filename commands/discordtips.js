@@ -3,7 +3,9 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("discordtips")
-    .setDescription('Tells you a random Discord "Did you know" text upon the app startup!'),
+    .setDescription(
+      'Tells you a random Discord "Did you know" text upon the app startup!'
+    ),
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
@@ -34,7 +36,6 @@ module.exports = {
       "Our old Partener mascot was an elf named Springle. He recently retired.",
       "You can type /nick to quickly change your nickname in a server.",
       "Right click to pin messages in a channel or DM to save them for later.",
-      
     ];
     var randomTip = tips[Math.floor(Math.random() * tips.length)];
     interaction.reply({

@@ -20,26 +20,25 @@ module.exports = {
               fields: [
                 {
                   name: "New Comfirmed Cases",
-                  value: body.Global.NewConfirmed.toString()
+                  value: body.Global.NewConfirmed.toString(),
                 },
                 {
                   name: "New Death Cases",
-                  value: body.Global.NewDeaths.toString()
+                  value: body.Global.NewDeaths.toString(),
                 },
                 {
                   name: "Total Comfirmed Cases",
-                  value: body.Global.TotalConfirmed.toString()
+                  value: body.Global.TotalConfirmed.toString(),
                 },
                 {
                   name: "Total Death Cases",
-                  value: body.Global.TotalDeaths.toString()
+                  value: body.Global.TotalDeaths.toString(),
                 },
               ],
               timestamp: new Date(),
               footer: {
-                text: "Made with ❤️ created by " + botOwner
-              }
-            
+                text: "Made with ❤️ created by " + botOwner,
+              },
             },
           ],
         });

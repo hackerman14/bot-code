@@ -1,4 +1,4 @@
-const { Util } = require("discord.js")
+const { Util } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 let owner = "Raymond#2829";
@@ -14,7 +14,8 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    interaction.reply(Util.cleanContent(interaction.options.getString("something"), interaction));
-    
+    interaction.reply(
+      Util.cleanContent(interaction.options.getString("something"), interaction)
+    );
   },
 };

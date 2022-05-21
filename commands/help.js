@@ -17,8 +17,9 @@ module.exports = {
           fields: [
             {
               name: "Have any questions?",
-              value: "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)"
-            }
+              value:
+                "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
+            },
           ],
           timestamp: new Date(),
           footer: {

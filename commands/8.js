@@ -1,4 +1,3 @@
-const { client } = require("discord.js");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const wait = require("node:timers/promises").setTimeout;
 

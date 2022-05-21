@@ -1,4 +1,3 @@
-const moment = require("moment");
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
@@ -36,15 +35,16 @@ module.exports = {
             },
             {
               name: "Host",
-              value: "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
+              value:
+                "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
             },
             {
               name: "Always Online",
               value: "Enabled",
             },
             {
-              name: "Source Codes",
-              value: "[GitHub/hackerman14](https://github.com/hackerman14)",
+              name: "Open Source (Github)",
+              value: "[hackerman14](https://github.com/hackerman14/bot-codes)",
             },
             {
               name: "Library",

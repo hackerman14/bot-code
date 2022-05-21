@@ -13,14 +13,14 @@ module.exports = {
           {
             color: "RANDOM",
             title: "**iReboot**",
-            description:
-              "Only the bot owner can perform this action!",
+            description: "Only the bot owner can perform this action!",
             timestamp: new Date(),
             footer: {
               text: "Made with ❤️ created by " + botOwner,
             },
           },
-        ], ephemeral: true,
+        ],
+        ephemeral: true,
       });
     await interaction.reply({
       embeds: [
@@ -34,6 +34,7 @@ module.exports = {
           },
         },
       ],
+      ephemeral: true,
     });
     await client.destroy();
     return process.exit(0);
