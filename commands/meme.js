@@ -4,7 +4,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("meme")
-    .setDescription("Replies with pong!"),
+    .setDescription("Retrieves a random meme from the internet!"),
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
@@ -28,7 +28,7 @@ module.exports = {
         {
           color: "RANDOM",
           title: "**Reddit Memes**",
-          description: `A meme from {/r/${random}}`,
+          description: `A meme from **r/${random}**`,
           timestamp: new Date(),
           image: {
             url: meme,
