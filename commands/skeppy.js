@@ -22,7 +22,7 @@ module.exports = {
       "french man",
       "the bisectors of the perpendicularity of the vectors",
       "uh oh spaghettio",
-      "...it’s ‘cause everyone knows I’m a dog",
+      "...it's 'cause everyone knows I'm a dog",
       "shut up halo",
       "oh shoot there's a mod on",
       "*eagle loud screaming especially when he eats the spicy sauce*",
@@ -72,11 +72,11 @@ module.exports = {
       embeds: [
         {
           color: "RANDOM",
-          title: "**Skeppy Memes**",
+          title: "**Skeppy Meme**",
           description: randomQuote,
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

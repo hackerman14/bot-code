@@ -34,7 +34,7 @@ module.exports = {
             url: meme,
           },
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

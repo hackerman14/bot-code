@@ -27,7 +27,7 @@ module.exports = {
       "A red mic icon means that person has been muted by a server admin.",
       "`SHIFT` `ENTER` to make a new line without sending your message.",
       "You can play our versione of the Snake game on our 404 page by pressing a ~secret~ button.",
-      "Hover a GIF and click the star to save it to your) favorites.",
+      "Hover a GIF and click the star to save it to your favorites.",
       "`SHIFT` `ALT` `↑` or `↓` will navigate between unread channels.",
       "The charcter on our 404 page is a robot hamster named Nelly.",
       "Highlight text in your chat bar to bold, use iltalics, and more.",
@@ -46,7 +46,7 @@ module.exports = {
           description: randomTip,
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

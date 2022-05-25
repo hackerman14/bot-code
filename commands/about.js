@@ -13,9 +13,9 @@ module.exports = {
           color: "RANDOM",
           title: "**About This Bot**",
           description: "The information about this bot!",
-          // thumbnail: {
-          //   url: client.user.displayAvatarURL,
-          // },
+          thumbnail: {
+            url: client.user.displayAvatarURL,
+          },
           fields: [
             {
               name: "Bot Version",
@@ -31,7 +31,7 @@ module.exports = {
             },
             {
               name: "Creator",
-              value: "[" + botOwner + "](https://raymond-1227.github.io/)",
+              value: `[${botOwner}](https://raymond-1227.github.io/)`,
             },
             {
               name: "Host",
@@ -39,21 +39,17 @@ module.exports = {
                 "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
             },
             {
-              name: "Always Online",
-              value: "Enabled",
-            },
-            {
-              name: "Open Source (Github)",
-              value: "[hackerman14](https://github.com/hackerman14/bot-codes)",
+              name: "Open Source",
+              value: "[hackerman14/bot-codes](https://github.com/hackerman14/bot-codes)",
             },
             {
               name: "Library",
-              value: "[Discord.js](https://discord.js.org/) (v13.6.0)",
+              value: "[Discord.js](https://discord.js.org/) (v13.7.0)",
             },
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

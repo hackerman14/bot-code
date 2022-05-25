@@ -20,12 +20,6 @@ module.exports = {
 
     if (!guild) return;
 
-    if (typeof description === "string") {
-      var desc = description;
-    } else {
-      var desc = "(None)";
-    }
-
     interaction.reply({
       embeds: [
         {
@@ -42,7 +36,7 @@ module.exports = {
             },
             {
               name: "Description",
-              value: desc,
+              value: desc || "(None)",
             },
             {
               name: "Owner",
@@ -115,7 +109,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

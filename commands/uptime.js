@@ -23,7 +23,7 @@ module.exports = {
           description: `The bot has stayed on for ${uptime}!`,
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

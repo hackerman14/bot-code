@@ -19,7 +19,7 @@ module.exports = {
               description: body.data,
               timestamp: new Date(),
               footer: {
-                text: "Made with ❤️ created by " + botOwner,
+                text: `Made with ❤️ created by ${botOwner}`,
               },
             },
           ],

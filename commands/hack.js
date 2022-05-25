@@ -28,7 +28,7 @@ module.exports = {
     }
 
     function randomEmail() {
-      var text = ["123", "lol", "xd", "haha"];
+      var text = ["123", "lol", "xd", "haha", "yt", "alt"];
       var randomText = text[Math.floor(Math.random() * text.length)];
       var emailSuffix = [
         "hotmail.com",
@@ -41,12 +41,12 @@ module.exports = {
       ];
       var randomEmailSuffix =
         emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
-      var result = `${member.username}${randomText}@${randomEmailSuffix}`;
+      var result = `${member.username.toLowerCase()}${randomText}@${randomEmailSuffix}`;
       return result;
     }
 
     function randomPhrase() {
-      var phrase = ["iirc", "lol", "xd", "haha", "you sux", "69420"];
+      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420"];
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
@@ -59,6 +59,8 @@ module.exports = {
         "imagine using macos",
         "windows user L",
         "arch linux best",
+        "pineapple pizza supermacy",
+        "stop harassing my girl"
       ];
       var result = message[Math.floor(Math.random() * message.length)];
       return result;
@@ -82,15 +84,15 @@ module.exports = {
 
     function randomBrowser() {
       var browser = [
-        "Chrome",
-        "Firefox",
-        "Safari",
-        "Edge",
-        "Opera",
         "Brave",
+        "Chrome",
+        "Edge",
+        "Firefox",
         "Internet Explorer",
-        "Vivaldi",
+        "Opera",
+        "Safari",
         "Tor Browser",
+        "Vivaldi",
       ];
       var result = browser[Math.floor(Math.random() * browser.length)];
       return result;
@@ -163,7 +165,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -189,7 +191,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -217,7 +219,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -246,7 +248,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -276,7 +278,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -307,7 +309,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -339,7 +341,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -372,7 +374,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -406,7 +408,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -441,7 +443,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -477,7 +479,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -514,7 +516,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -552,7 +554,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -591,7 +593,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -639,7 +641,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -688,7 +690,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -738,7 +740,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -789,7 +791,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -844,7 +846,7 @@ module.exports = {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

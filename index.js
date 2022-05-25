@@ -1,7 +1,13 @@
 // Core codes
 
 const fs = require("node:fs");
-const { Client, ClientUser, Collection, Intents } = require("discord.js");
+const {
+  Client,
+  ClientUser,
+  Collection,
+  Intents,
+  DiscordAPIError,
+} = require("discord.js");
 const client = new Client({
   presence: {
     status: "dnd",
@@ -27,6 +33,16 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
+const dmNotice = {
+  color: "RANDOM",
+  title: "**Hello!**",
+  description: "Be aware that **commands are disabled** in DMs!",
+  timestamp: new Date(),
+  footer: {
+    text: "Made with ❤️ created by Raymond#2829",
+  },
+};
+
 client.once("ready", () => {
   console.log("Ready!");
   console.log(
@@ -35,18 +51,29 @@ client.once("ready", () => {
 });
 
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) return;
-
   const command = client.commands.get(interaction.commandName);
-
+  if (!interaction.isCommand()) return;
+  if (!interaction.guild) {
+    interaction.reply({ embeds: [dmNotice] });
+  }
   if (!command) return;
-
   try {
     await command.execute(interaction);
   } catch (error) {
     console.error(error);
     await interaction.reply({
-      content: "There was an error while executing this command!",
+      embeds: [
+        {
+          color: "RANDOM",
+          title: "**Error Occurred**",
+          description: "There was an error while executing this command!\n`" + error + "`",
+          timestamp: new Date(),
+          footer: {
+            text: "Made with ❤️ created by " + owner,
+          },
+        },
+      ],
+      content: "",
       ephemeral: true,
     });
   }
@@ -54,29 +81,15 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on("messageCreate", async (message) => {
   const wait = require("node:timers/promises").setTimeout;
-  const botOwner = client.users.cache.get("410839910204047360").tag;
   if (message.author.bot) return;
-
   if (message.channel.type == "DM") {
     await wait(500);
     await message.channel.sendTyping();
     await wait(1000);
-    await message.channel.send({
-      embeds: [
-        {
-          color: "RANDOM",
-          title: "**Hello!**",
-          description: "Be aware of some commands don't work in DMs!",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + botOwner,
-          },
-        },
-      ],
-    });
+    await message.channel.send({ embeds: [dmNotice] });
   }
-  if (message.content.includes("<@!619613322903420929>")) {
-    message.channel.send({
+  if (message.content.includes("<@619613322903420929>")) {
+    message.reply({
       embeds: [
         {
           color: "RANDOM",
@@ -97,11 +110,10 @@ client.on("messageCreate", async (message) => {
           ],
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: "Made with ❤️ created by Raymond#2829",
           },
         },
       ],
-      ephemeral: true,
     });
   }
 });

@@ -13,10 +13,10 @@ module.exports = {
           {
             color: "#db564f",
             title: "**Bot Ownership Verification**",
-            description: "You don't own the bot!",
+            description: "Well sadly you don't own the bot... :/",
             timestamp: new Date(),
             footer: {
-              text: "Made with ❤️ created by " + botOwner,
+              text: `Made with ❤️ created by ${botOwner}`,
             },
           },
         ],
@@ -26,11 +26,10 @@ module.exports = {
         {
           color: "#64ab80",
           title: "**Bot Ownership Verification**",
-          description:
-            "Congratulations, you're the owner of the bot! (Verified by Professor DumbGuy123)",
+          description: "Congratulations, you own the bot! WOOHOO!11!!!11!!",
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

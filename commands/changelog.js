@@ -12,22 +12,21 @@ module.exports = {
         {
           color: "RANDOM",
           title: "**Bot Changelog**",
-          description: "Date: March 28, 2022",
+          description: "Date: May 25, 2022",
           timestamp: new Date(),
           fields: [
             {
-              name: "New bot hosting",
+              name: "New commands",
               value:
-                "Changed hosting from Glitch to Oracle Cloud Infrastructure, should now run 24/7!",
+                "Added `/selfpunish` and `/fuckoff` for fun (`/fuckoff` is only available for users who can kick members)",
             },
             {
               name: "Command enhancements",
-              value:
-                "A few commands error have been patched, will continue to add & fix more commands!",
+              value: "A few commands error have been fixed and code improved!",
             },
           ],
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
@@ -52,7 +51,7 @@ module.exports = {
             },
           ],
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

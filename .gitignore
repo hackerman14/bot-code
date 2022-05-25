@@ -18,3 +18,4 @@ ehthumbs.db
 *.swp
 ._*
 .env
+/node_modules

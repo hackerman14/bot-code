@@ -22,7 +22,7 @@ module.exports = {
                 url: body.data.images.original.url,
               },
               footer: {
-                text: "Made with ❤️ created by " + botOwner,
+                text: `Made with ❤️ created by ${botOwner}`,
               },
             },
           ],

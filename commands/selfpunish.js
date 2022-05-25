@@ -3,15 +3,15 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("selfpunish")
-    .setDescription("Punish yourself! (fake Dyno bot punishments)")
+    .setDescription("Dyno punishments replica but to fake punish yourself!")
     .addStringOption((option) =>
       option
         .setName("type")
         .setDescription("Select a type you want to be punished")
-        .addChoice("Warn", "warn")
-        .addChoice("Mute", "mute")
-        .addChoice("Kick", "kick")
-        .addChoice("Ban", "ban")
+        .addChoices({ name: "Warn", value: "warn" })
+        .addChoices({ name: "Mute", value: "mute" })
+        .addChoices({ name: "Kick", value: "kick" })
+        .addChoices({ name: "Ban", value: "ban" })
         .setRequired(true)
     )
     .addStringOption((option) =>

@@ -19,7 +19,7 @@ module.exports = {
             url: "https://source.unsplash.com/random?sig=" + Math.random(),
           },
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],

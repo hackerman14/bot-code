@@ -16,7 +16,7 @@ module.exports = {
             description: "Only the bot owner can perform this action!",
             timestamp: new Date(),
             footer: {
-              text: "Made with ❤️ created by " + botOwner,
+              text: `Made with ❤️ created by ${botOwner}`,
             },
           },
         ],
@@ -30,7 +30,7 @@ module.exports = {
           description: "Bot is now rebooting!",
           timestamp: new Date(),
           footer: {
-            text: "Made with ❤️ created by " + botOwner,
+            text: `Made with ❤️ created by ${botOwner}`,
           },
         },
       ],
