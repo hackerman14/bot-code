@@ -7,9 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "engines": {
-    "node": "16.15.0"
-  },
   "author": "Raymond Hsu",
   "license": "MIT",
   "dependencies": {

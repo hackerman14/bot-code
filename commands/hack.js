@@ -41,7 +41,12 @@ module.exports = {
       ];
       var randomEmailSuffix =
         emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
-      var result = `${member.username.toLowerCase()}${randomText}@${randomEmailSuffix}`;
+
+      if ((/\d/.test(member.username)) === true){
+        var result = `${member.username.toLowerCase()}@${randomEmailSuffix}`;
+      } else {
+        var result = `${member.username.toLowerCase()}${randomText}@${randomEmailSuffix}`;
+      }
       return result;
     }
 
@@ -118,11 +123,13 @@ module.exports = {
       return Math.floor(Math.random() * (max - min) + min);
     }
 
+    // For nerds: IPv4 have digits between 0 and 255,
+    // so there wouldn't be issues about IPs if I use all digits about 255.
     const randomIP = `${randomNumber(256, 999)}.${randomNumber(
       256,
       999
     )}.${randomNumber(256, 999)}.${randomNumber(256, 999)}`;
-
+    
     const title = "**The Ultimate Hacker**";
     const description = `Target: ${member}`;
     const fieldName = "Console Log";

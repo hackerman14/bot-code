@@ -14,7 +14,7 @@ const client = new Client({
     afk: false,
     activities: [
       {
-        name: "/help | Now in slash commands!",
+        name: "/help | I'm really bored.",
       },
     ],
   },
