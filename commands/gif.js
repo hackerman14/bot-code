@@ -8,7 +8,7 @@ module.exports = {
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
-    fetch(`http://api.giphy.com/v1/gifs/random?api_key="${process.env.GIPHY}"`)
+    fetch(`http://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY}&rating=g`)
       .then((res) => res.json())
       .then((body) => {
         interaction.reply({
