@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,30 +17,28 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("reason")
-        .setDescription("Reason why you are banning the user")
+        .setDescription("Reason why you are punishing yourself")
         .setRequired(true)
     ),
 
   async execute(interaction) {
-    const { client, guild } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const { guild } = interaction;
     let choice = interaction.options.getString("type");
     let reason = interaction.options.getString("reason");
-    let emoji = client.emojis.cache.get("955822873245790238");
     let member = interaction.user;
     if (choice === "warn") {
       interaction.reply({
         embeds: [
           {
-            color: "#68b386",
-            description: `<:hSuccess:956980119086465124> ***${member.tag} has been warned. || ${reason}***`,
+            color: 0x43b582,
+            description: `<:botSuccess:956980119086465124> ***${member.tag} has been warned. || ${reason}***`,
           },
         ],
       });
       member.send({
         embeds: [
           {
-            color: "#db574f",
+            color: 0xf04a47,
             description: `You were warned in ${guild.name} for: ${reason}`,
           },
         ],
@@ -49,15 +47,15 @@ module.exports = {
       interaction.reply({
         embeds: [
           {
-            color: "#68b386",
-            description: `<:hSuccess:956980119086465124> ***${member.tag} was muted*** | ${reason}`,
+            color: 0x43b582,
+            description: `<:botSuccess:956980119086465124> ***${member.tag} was muted*** | ${reason}`,
           },
         ],
       });
       member.send({
         embeds: [
           {
-            color: "#db574f",
+            color: 0xf04a47,
             description: `You were muted in ${guild.name} | ${reason}`,
           },
         ],
@@ -66,15 +64,15 @@ module.exports = {
       interaction.reply({
         embeds: [
           {
-            color: "#68b386",
-            description: `<:hSuccess:956980119086465124> ***${member.tag} was kicked*** | ${reason}`,
+            color: 0x43b582,
+            description: `<:botSuccess:956980119086465124> ***${member.tag} was kicked*** | ${reason}`,
           },
         ],
       });
       member.send({
         embeds: [
           {
-            color: "#db574f",
+            color: 0xf04a47,
             description: `You were kicked from ${guild.name} | ${reason}`,
           },
         ],
@@ -83,15 +81,15 @@ module.exports = {
       interaction.reply({
         embeds: [
           {
-            color: "#68b386",
-            description: `<:hSuccess:956980119086465124> ***${member.tag} was banned*** | ${reason}`,
+            color: 0x43b582,
+            description: `<:botSuccess:956980119086465124> ***${member.tag} was banned*** | ${reason}`,
           },
         ],
       });
       member.send({
         embeds: [
           {
-            color: "#db574f",
+            color: 0xf04a47,
             description: `You were banned from ${guild.name} | ${reason}`,
           },
         ],

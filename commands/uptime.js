@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,7 +18,7 @@ module.exports = {
     interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Time Tracker**",
           description: `The bot has stayed on for ${uptime}!`,
           timestamp: new Date(),

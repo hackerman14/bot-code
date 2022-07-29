@@ -1,5 +1,5 @@
 const wait = require("node:timers/promises").setTimeout;
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -161,7 +161,7 @@ module.exports = {
     await interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -182,7 +182,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -208,7 +208,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -236,7 +236,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -265,7 +265,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -295,7 +295,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -326,7 +326,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -358,7 +358,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -391,7 +391,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -425,7 +425,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -460,7 +460,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -496,7 +496,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -533,7 +533,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -571,7 +571,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -610,7 +610,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -658,7 +658,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -707,7 +707,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -757,7 +757,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [
@@ -807,7 +807,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: title,
           description: description,
           fields: [

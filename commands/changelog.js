@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,15 +10,15 @@ module.exports = {
     await interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: May 25, 2022",
+          description: "Date: July 20, 2022",
           timestamp: new Date(),
           fields: [
             {
-              name: "New commands",
+              name: "discord.js v14!",
               value:
-                "Added `/selfpunish` and `/fuckoff` for fun (`/fuckoff` is only available for users who can kick members)",
+                "Implenmented the new discord.js v14!",
             },
             {
               name: "Command enhancements",
@@ -34,15 +34,15 @@ module.exports = {
     await interaction.followUp({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Previous Bot Changelog**",
-          description: "Date: March 28, 2022",
+          description: "Date: May 21, 2022",
           timestamp: new Date(),
           fields: [
             {
               name: "New command",
               value:
-                "Added `/hack` command (it's just a Dank Memer `hack` command but I made it better)",
+                "Added `/selfpunish` command to punish yourself!",
             },
             {
               name: "Command enhancements",

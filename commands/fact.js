@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,7 +14,7 @@ module.exports = {
         interaction.reply({
           embeds: [
             {
-              color: "RANDOM",
+              color: 0x0ccab6,
               title: "**Boring Facts**",
               description: body.data,
               timestamp: new Date(),

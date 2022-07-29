@@ -1,5 +1,5 @@
-const { MessageActionRow, MessageButton } = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,8 +8,8 @@ module.exports = {
   async execute(interaction) {
     const { client, guild } = interaction;
     const botOwner = client.users.cache.get("410839910204047360").tag;
-    const cancelAction = new MessageActionRow().addComponents(
-      new MessageButton()
+    const cancelAction = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
         .setCustomId("cancel")
         .setLabel("Cancel")
         .setStyle("DANGER")
@@ -32,7 +32,7 @@ module.exports = {
     await interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**You Hate Me™**",
           description:
             "Sorry to see you go, the bot will leave within 60 seconds after executing the command.\n**To cancel the action, click on the button below.**",
@@ -55,7 +55,7 @@ module.exports = {
         await i.update({
           embeds: [
             {
-              color: "RANDOM",
+              color: 0x0ccab6,
               title: "**You Hate Me™**",
               description: "Action cancelled!",
               timestamp: new Date(),
@@ -77,7 +77,7 @@ module.exports = {
         interaction.editReply({
           embeds: [
             {
-              color: "RANDOM",
+              color: 0x0ccab6,
               title: "**You Hate Me™**",
               description:
                 "Thank you for using hackerman14 bot, have a nice day!",

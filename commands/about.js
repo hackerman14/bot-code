@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,7 +10,7 @@ module.exports = {
     interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**About This Bot**",
           description: "The information about this bot!",
           thumbnail: {
@@ -19,7 +19,7 @@ module.exports = {
           fields: [
             {
               name: "Bot Version",
-              value: "hackerman14 (Stable)",
+              value: "hackerman14 (Beta)",
             },
             {
               name: "Bot Since",
@@ -44,7 +44,7 @@ module.exports = {
             },
             {
               name: "Library",
-              value: "[Discord.js](https://discord.js.org/) (v13.7.0)",
+              value: "[Discord.js](https://discord.js.org/)",
             },
           ],
           timestamp: new Date(),

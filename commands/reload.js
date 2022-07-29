@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -11,7 +11,7 @@ module.exports = {
       return interaction.reply({
         embeds: [
           {
-            color: "RANDOM",
+            color: 0x0ccab6,
             title: "**iReboot**",
             description: "Only the bot owner can perform this action!",
             timestamp: new Date(),
@@ -25,7 +25,7 @@ module.exports = {
     await interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**iReboot**",
           description: "Bot is now rebooting!",
           timestamp: new Date(),

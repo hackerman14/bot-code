@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
@@ -45,7 +45,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**The Legendary 8 Ball**",
           description: "This smart ball has something to tell you.",
           fields: [

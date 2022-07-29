@@ -1,5 +1,5 @@
 const { Util } = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 let owner = "Raymond#2829";
 

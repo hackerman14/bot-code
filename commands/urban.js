@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -25,7 +25,7 @@ module.exports = {
       return interaction.reply({
         embeds: [
           {
-            color: "RANDOM",
+            color: 0x0ccab6,
             title: "**Urban Dictionary**",
             description:
               "Due to NSFW topic definitions so please run this command in an age restricted channel!",
@@ -41,7 +41,7 @@ module.exports = {
       return interaction.reply({
         embeds: [
           {
-            color: "RANDOM",
+            color: 0x0ccab6,
             title: "**Urban Dictionary**",
             description:
               "What you're looking for doesn't exist on Urban Dictionary!",
@@ -70,7 +70,7 @@ module.exports = {
     interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Urban Dictionary**",
           description: "Here's the definition!",
           fields: [

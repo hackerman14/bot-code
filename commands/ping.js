@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 let owner = "Raymond#2829";
 
@@ -12,7 +12,7 @@ module.exports = {
     await interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Lag Machine**",
           description: "Ping?",
           timestamp: new Date(),
@@ -25,7 +25,7 @@ module.exports = {
     await interaction.editReply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Lag Machine**",
           description: "Pong!",
           fields: [

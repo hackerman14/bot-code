@@ -1,5 +1,5 @@
 const randomPuppy = require("random-puppy");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -26,7 +26,7 @@ module.exports = {
     interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Reddit Memes**",
           description: `A meme from **r/${random}**`,
           timestamp: new Date(),

@@ -1,12 +1,12 @@
 // Core codes
 
 const fs = require("node:fs");
+const path = require("node:path");
 const {
   Client,
-  ClientUser,
   Collection,
-  Intents,
-  DiscordAPIError,
+  GatewayIntentBits,
+  Partials,
 } = require("discord.js");
 const client = new Client({
   presence: {
@@ -14,27 +14,29 @@ const client = new Client({
     afk: false,
     activities: [
       {
-        name: "/help | I'm really bored.",
+        name: "/help | Hello, discord.js v14!",
       },
     ],
   },
-  intents: 98045,
-  partials: ["CHANNEL", "MESSAGE"],
+  intents: [GatewayIntentBits.Guilds],
+  partials: [Partials.Channel],
 });
 require("dotenv").config();
 
 client.commands = new Collection();
+const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
   .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const filePath = path.join(commandsPath, file);
+  const command = require(filePath);
   client.commands.set(command.data.name, command);
 }
 
 const dmNotice = {
-  color: "RANDOM",
+  color: 0x0ccab6,
   title: "**Hello!**",
   description: "Be aware that **commands are disabled** in DMs!",
   timestamp: new Date(),
@@ -50,12 +52,17 @@ client.once("ready", () => {
   );
 });
 
+client.on("error", (err) => {
+  client.destroy();
+  process.exit(0);
+});
+
 client.on("interactionCreate", async (interaction) => {
   const command = client.commands.get(interaction.commandName);
-  if (!interaction.isCommand()) return;
-  if (!interaction.guild) {
-    interaction.reply({ embeds: [dmNotice] });
-  }
+  if (!interaction.isChatInputCommand()) return;
+  // if (!interaction.guild) {
+  //   interaction.reply({ embeds: [dmNotice] });
+  // }
   if (!command) return;
   try {
     await command.execute(interaction);
@@ -64,9 +71,10 @@ client.on("interactionCreate", async (interaction) => {
     await interaction.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Error Occurred**",
-          description: "There was an error while executing this command!\n`" + error + "`",
+          description:
+            "There was an error while executing this command!\n`" + error + "`",
           timestamp: new Date(),
           footer: {
             text: "Made with ❤️ created by " + owner,
@@ -92,7 +100,7 @@ client.on("messageCreate", async (message) => {
     message.reply({
       embeds: [
         {
-          color: "RANDOM",
+          color: 0x0ccab6,
           title: "**Need Command Help?**",
           description:
             "Type `/` in the message box and select my avatar on the sidebar to check all my available commands!",
