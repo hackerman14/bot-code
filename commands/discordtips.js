@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     var tips = [
       "Discord's official birthday is May 13, 2015.",
       "`CTRL` `K` / `CMD` `K` to quickly find a previous conversation or channel.",
@@ -44,7 +45,7 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Discord Tips**",
           description: randomTip,
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

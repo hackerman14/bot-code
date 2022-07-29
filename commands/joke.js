@@ -1,5 +1,6 @@
-const fetch = require("node-fetch");
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
+const fetch = require("node-fetch");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,7 +8,7 @@ module.exports = {
     .setDescription("Tells you a joke!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     fetch("https://official-joke-api.appspot.com/jokes/random")
       .then((res) => res.json())
       .then((body) => {
@@ -17,7 +18,7 @@ module.exports = {
               color: 0x0ccab6,
               title: "**Dumb Jokes**",
               description: body.data,
-              timestamp: new Date(),
+              timestamp: new Date().toISOString(),
               footer: {
                 text: `Made with ❤️ created by ${botOwner}`,
               },

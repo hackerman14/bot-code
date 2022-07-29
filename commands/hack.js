@@ -1,3 +1,4 @@
+require("dotenv").config();
 const wait = require("node:timers/promises").setTimeout;
 const { SlashCommandBuilder } = require("discord.js");
 
@@ -13,7 +14,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     let member = await interaction.options.getUser("user").fetch(true);
 
     function randomPassword() {
@@ -170,7 +171,7 @@ module.exports = {
               value: [`\`\`\``, `[${time1}] ${log1}`, `\`\`\``].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -196,7 +197,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -224,7 +225,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -253,7 +254,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -283,7 +284,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -314,7 +315,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -346,7 +347,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -379,7 +380,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -413,7 +414,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -448,7 +449,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -484,7 +485,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -521,7 +522,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -559,7 +560,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -598,7 +599,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -646,7 +647,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -695,7 +696,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -745,7 +746,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -796,7 +797,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -851,7 +852,7 @@ module.exports = {
                 "This is 100% a joke command that doesn't even hack people...",
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

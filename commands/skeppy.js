@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     .setDescription("Tells you a random Skeppy quotes according to Wikitubia!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     var quotes = [
       "like or die tmr",
       "YOOO how's it going guys! welkom back to another video!",
@@ -74,7 +75,7 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Skeppy Meme**",
           description: randomQuote,
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

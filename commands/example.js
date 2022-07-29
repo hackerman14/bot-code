@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -48,7 +49,7 @@ module.exports = {
           image: {
             url: "https://i.imgur.com/wSTFkRM.png",
           },
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: "Some footer text here",
             icon_url: "https://i.imgur.com/wSTFkRM.png",

@@ -1,13 +1,15 @@
-const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
-const { SlashCommandBuilder } = require("discord.js");
+require("dotenv").config();
+const { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("fuckoff")
-    .setDescription("A fancy way to kick this bot! >:("),
+    .setDescription("A fancy way to kick this bot! >:(")
+    .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+    .setDMPermission(false),
   async execute(interaction) {
     const { client, guild } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     const cancelAction = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("cancel")
@@ -21,7 +23,7 @@ module.exports = {
             color: "#db574f",
             title: "**You Hate Me™**",
             description: "Only the moderators can perform this action!",
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             footer: {
               text: `Made with ❤️ created by ${botOwner}`,
             },
@@ -36,7 +38,7 @@ module.exports = {
           title: "**You Hate Me™**",
           description:
             "Sorry to see you go, the bot will leave within 60 seconds after executing the command.\n**To cancel the action, click on the button below.**",
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
@@ -58,7 +60,7 @@ module.exports = {
               color: 0x0ccab6,
               title: "**You Hate Me™**",
               description: "Action cancelled!",
-              timestamp: new Date(),
+              timestamp: new Date().toISOString(),
               footer: {
                 text: `Made with ❤️ created by ${botOwner}`,
               },
@@ -81,7 +83,7 @@ module.exports = {
               title: "**You Hate Me™**",
               description:
                 "Thank you for using hackerman14 bot, have a nice day!",
-              timestamp: new Date(),
+              timestamp: new Date().toISOString(),
               footer: {
                 text: `Made with ❤️ created by ${botOwner}`,
               },

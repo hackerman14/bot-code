@@ -1,3 +1,4 @@
+require("dotenv").config();
 const randomPuppy = require("random-puppy");
 const { SlashCommandBuilder } = require("discord.js");
 
@@ -7,7 +8,7 @@ module.exports = {
     .setDescription("Retrieves a random meme from the internet!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     let subReddits = [
       "dankmeme",
       "memes",
@@ -29,7 +30,7 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Reddit Memes**",
           description: `A meme from **r/${random}**`,
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           image: {
             url: meme,
           },

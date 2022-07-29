@@ -5,12 +5,12 @@ let owner = "Raymond#2829";
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("say")
-    .setDescription("The copy fax machine!")
+    .setName("quote")
+    .setDescription("Turn your words into a quote!")
     .addStringOption((option) =>
       option
         .setName("something")
-        .setDescription("Type the word you want the bot to say")
+        .setDescription("Type the word you want the bot to quote")
         .setRequired(true)
     ),
   async execute(interaction) {

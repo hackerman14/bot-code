@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     .setDescription("How to check my available commands!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     interaction.reply({
       embeds: [
         {
@@ -21,7 +22,7 @@ module.exports = {
                 "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

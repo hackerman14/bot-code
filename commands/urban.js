@@ -1,5 +1,6 @@
-const axios = require("axios");
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
+const axios = require("axios");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,7 +16,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     let search = interaction.options.getString("word_or_phrase").replace(" ", "+");
     let link = "https://api.urbandictionary.com/v0/define?term=";
     let fetch = await axios(link + encodeURI(search));
@@ -29,7 +30,7 @@ module.exports = {
             title: "**Urban Dictionary**",
             description:
               "Due to NSFW topic definitions so please run this command in an age restricted channel!",
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             footer: {
               text: `Made with ❤️ created by ${botOwner}`,
             },
@@ -45,7 +46,7 @@ module.exports = {
             title: "**Urban Dictionary**",
             description:
               "What you're looking for doesn't exist on Urban Dictionary!",
-            timestamp: new Date(),
+            timestamp: new Date().toISOString(),
             footer: {
               text: `Made with ❤️ created by ${botOwner}`,
             },
@@ -87,7 +88,7 @@ module.exports = {
               value: example,
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

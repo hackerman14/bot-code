@@ -1,12 +1,14 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("server")
-    .setDescription("Look up the current Discord server information!"),
+    .setDescription("Look up the current Discord server information!")
+    .setDMPermission(false),
   async execute(interaction) {
     const { client, guild } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     const {
       createdTimestamp,
       ownerId,
@@ -107,7 +109,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

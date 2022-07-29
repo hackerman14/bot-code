@@ -1,5 +1,6 @@
-const fetch = require("node-fetch");
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
+const fetch = require("node-fetch");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,7 +8,7 @@ module.exports = {
     .setDescription("Sends you a random GIF!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     fetch(`http://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY}&rating=g`)
       .then((res) => res.json())
       .then((body) => {
@@ -17,7 +18,7 @@ module.exports = {
               color: 0x0ccab6,
               title: "**Random GIF**",
               description: "Here's your GIF!",
-              timestamp: new Date(),
+              timestamp: new Date().toISOString(),
               image: {
                 url: body.data.images.original.url,
               },

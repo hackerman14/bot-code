@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
     ),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     let member = await interaction.options.getUser("user").fetch(true);
     interaction.reply({
       embeds: [
@@ -37,7 +38,7 @@ module.exports = {
               value: `<t:${parseInt(member.createdTimestamp / 1000)}:R>`,
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -6,14 +7,14 @@ module.exports = {
     .setDescription("Check what changes are made to the bot!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     await interaction.reply({
       embeds: [
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
           description: "Date: July 20, 2022",
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           fields: [
             {
               name: "discord.js v14!",
@@ -37,7 +38,7 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Previous Bot Changelog**",
           description: "Date: May 21, 2022",
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           fields: [
             {
               name: "New command",

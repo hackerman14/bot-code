@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { PermissionFlagsBits } = require("discord.js");
+require("dotenv").config();
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
@@ -7,6 +7,7 @@ module.exports = {
     .setName("ban")
     .setDescription("Fake bans people!")
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+    .setDMPermission(false)
     .addUserOption((option) =>
       option
         .setName("user")

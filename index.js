@@ -11,7 +11,6 @@ const {
 const client = new Client({
   presence: {
     status: "dnd",
-    afk: false,
     activities: [
       {
         name: "/help | Hello, discord.js v14!",
@@ -22,6 +21,8 @@ const client = new Client({
   partials: [Partials.Channel],
 });
 require("dotenv").config();
+
+// Commands Handler
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, "commands");
@@ -35,95 +36,27 @@ for (const file of commandFiles) {
   client.commands.set(command.data.name, command);
 }
 
-const dmNotice = {
-  color: 0x0ccab6,
-  title: "**Hello!**",
-  description: "Be aware that **commands are disabled** in DMs!",
-  timestamp: new Date(),
-  footer: {
-    text: "Made with ❤️ created by Raymond#2829",
-  },
-};
+// Events Handler
 
-client.once("ready", () => {
-  console.log("Ready!");
-  console.log(
-    `The bot is currently serving ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`
-  );
-});
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs
+  .readdirSync(eventsPath)
+  .filter((file) => file.endsWith(".js"));
+
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
+}
 
 client.on("error", (err) => {
+  console.log(err)
   client.destroy();
   process.exit(0);
-});
-
-client.on("interactionCreate", async (interaction) => {
-  const command = client.commands.get(interaction.commandName);
-  if (!interaction.isChatInputCommand()) return;
-  // if (!interaction.guild) {
-  //   interaction.reply({ embeds: [dmNotice] });
-  // }
-  if (!command) return;
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      embeds: [
-        {
-          color: 0x0ccab6,
-          title: "**Error Occurred**",
-          description:
-            "There was an error while executing this command!\n`" + error + "`",
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by " + owner,
-          },
-        },
-      ],
-      content: "",
-      ephemeral: true,
-    });
-  }
-});
-
-client.on("messageCreate", async (message) => {
-  const wait = require("node:timers/promises").setTimeout;
-  if (message.author.bot) return;
-  if (message.channel.type == "DM") {
-    await wait(500);
-    await message.channel.sendTyping();
-    await wait(1000);
-    await message.channel.send({ embeds: [dmNotice] });
-  }
-  if (message.content.includes("<@619613322903420929>")) {
-    message.reply({
-      embeds: [
-        {
-          color: 0x0ccab6,
-          title: "**Need Command Help?**",
-          description:
-            "Type `/` in the message box and select my avatar on the sidebar to check all my available commands!",
-          fields: [
-            {
-              name: "Commands not showing up?",
-              value:
-                "Kick the bot first, then re-invite the bot to the server! \n Be sure to at least give the bot `View Channels`, `Send Messages`, and most importantly `Use Application Commands` via `Server Settings > Roles > hackerman14 (The role name is called it by default)`",
-            },
-            {
-              name: "Have other questions?",
-              value:
-                "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
-            },
-          ],
-          timestamp: new Date(),
-          footer: {
-            text: "Made with ❤️ created by Raymond#2829",
-          },
-        },
-      ],
-    });
-  }
 });
 
 // Other codes

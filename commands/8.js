@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 
@@ -16,7 +17,7 @@ module.exports = {
 
   async execute(interaction) {
     const { client } = interaction;
-    let botOwner = client.users.cache.get("410839910204047360").tag;
+    let botOwner = client.users.cache.get(process.env.OWNERID).tag;
     var answers = [
       "It is certain.",
       "It is decidedly so.",
@@ -58,7 +59,7 @@ module.exports = {
               value: randomAnswer,
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },

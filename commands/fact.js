@@ -1,5 +1,6 @@
-const fetch = require("node-fetch");
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
+const fetch = require("node-fetch");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,7 +8,7 @@ module.exports = {
     .setDescription("Tells you a boring fact!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     fetch("https://useless-facts.sameerkumar.website/api")
       .then((res) => res.json())
       .then((body) => {

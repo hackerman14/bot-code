@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -6,7 +7,7 @@ module.exports = {
     .setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get("410839910204047360").tag;
+    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
     interaction.reply({
       embeds: [
         {
@@ -19,7 +20,7 @@ module.exports = {
           fields: [
             {
               name: "Bot Version",
-              value: "hackerman14 (Beta)",
+              value: "hackerman14",
             },
             {
               name: "Bot Since",
@@ -47,7 +48,7 @@ module.exports = {
               value: "[Discord.js](https://discord.js.org/)",
             },
           ],
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           footer: {
             text: `Made with ❤️ created by ${botOwner}`,
           },
