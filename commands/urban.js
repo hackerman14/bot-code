@@ -15,8 +15,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     let search = interaction.options.getString("word_or_phrase").replace(" ", "+");
     let link = "https://api.urbandictionary.com/v0/define?term=";
     let fetch = await axios(link + encodeURI(search));

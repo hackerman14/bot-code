@@ -13,7 +13,7 @@ const client = new Client({
     status: "dnd",
     activities: [
       {
-        name: "/help | Hello, discord.js v14!",
+        name: "/help | Hello, World!",
       },
     ],
   },

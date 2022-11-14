@@ -1,8 +1,6 @@
 const { Util } = require("discord.js");
 const { SlashCommandBuilder } = require("discord.js");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("quote")
@@ -15,7 +13,7 @@ module.exports = {
     ),
   async execute(interaction) {
     interaction.reply(
-      Util.cleanContent(interaction.options.getString("something"), interaction)
+      Util.cleanContent(`> ${interaction.options.getString("something")}\n- ${interaction.user.tag}`, interaction)
     );
   },
 };

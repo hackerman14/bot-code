@@ -7,8 +7,7 @@ module.exports = {
     .setName("gif")
     .setDescription("Sends you a random GIF!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     fetch(`http://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY}&rating=g`)
       .then((res) => res.json())
       .then((body) => {

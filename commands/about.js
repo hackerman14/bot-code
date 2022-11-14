@@ -7,7 +7,7 @@ module.exports = {
     .setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`; 
     interaction.reply({
       embeds: [
         {
@@ -19,8 +19,8 @@ module.exports = {
           },
           fields: [
             {
-              name: "Bot Version",
-              value: "hackerman14",
+              name: "Bot Edition",
+              value: "NotSoStable",
             },
             {
               name: "Bot Since",
@@ -32,7 +32,7 @@ module.exports = {
             },
             {
               name: "Creator",
-              value: `[${botOwner}](https://raymond-1227.github.io/)`,
+              value: "[Raymond#2829](https://raymond-1227.github.io/)",
             },
             {
               name: "Host",
@@ -45,7 +45,7 @@ module.exports = {
             },
             {
               name: "Library",
-              value: "[Discord.js](https://discord.js.org/)",
+              value: "[discord.js](https://discord.js.org/)",
             },
           ],
           timestamp: new Date().toISOString(),

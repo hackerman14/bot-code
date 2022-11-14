@@ -6,8 +6,7 @@ module.exports = {
     .setName("skeppy")
     .setDescription("Tells you a random Skeppy quotes according to Wikitubia!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     var quotes = [
       "like or die tmr",
       "YOOO how's it going guys! welkom back to another video!",

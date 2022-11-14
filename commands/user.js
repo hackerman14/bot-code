@@ -12,8 +12,7 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     let member = await interaction.options.getUser("user").fetch(true);
     interaction.reply({
       embeds: [

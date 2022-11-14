@@ -6,8 +6,7 @@ module.exports = {
     .setName("photo")
     .setDescription("Sends you an HD stock photo from Unsplash!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     interaction.reply({
       embeds: [
         {

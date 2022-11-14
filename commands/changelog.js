@@ -6,49 +6,23 @@ module.exports = {
     .setName("changelog")
     .setDescription("Check what changes are made to the bot!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     await interaction.reply({
       embeds: [
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: July 20, 2022",
+          description: "Date: November 15, 2022",
           timestamp: new Date().toISOString(),
           fields: [
             {
-              name: "discord.js v14!",
+              name: "Redefined /lawsuit into /sue",
               value:
-                "Implenmented the new discord.js v14!",
+                "Redesigned the /lawsuit command into /sue now in order to make it more logical and fun!",
             },
             {
               name: "Command enhancements",
               value: "A few commands error have been fixed and code improved!",
-            },
-          ],
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
-        },
-      ],
-    });
-    await interaction.followUp({
-      embeds: [
-        {
-          color: 0x0ccab6,
-          title: "**Previous Bot Changelog**",
-          description: "Date: May 21, 2022",
-          timestamp: new Date().toISOString(),
-          fields: [
-            {
-              name: "New command",
-              value:
-                "Added `/selfpunish` command to punish yourself!",
-            },
-            {
-              name: "Command enhancements",
-              value:
-                "A few commands error have been patched, will continue to add & fix more commands!",
             },
           ],
           footer: {

@@ -6,8 +6,7 @@ module.exports = {
     .setName("help")
     .setDescription("How to check my available commands!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     interaction.reply({
       embeds: [
         {

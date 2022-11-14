@@ -8,8 +8,8 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
     .setDMPermission(false),
   async execute(interaction) {
-    const { client, guild } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const { guild } = interaction;
+    const botOwner = `${process.env.BOTOWNER}`;
     const cancelAction = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("cancel")

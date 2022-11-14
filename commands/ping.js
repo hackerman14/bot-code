@@ -9,7 +9,7 @@ module.exports = {
     .setDescription("Replies with pong!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     await interaction.reply({
       embeds: [
         {

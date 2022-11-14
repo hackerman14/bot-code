@@ -7,8 +7,7 @@ module.exports = {
     .setName("fact")
     .setDescription("Tells you a boring fact!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     fetch("https://useless-facts.sameerkumar.website/api")
       .then((res) => res.json())
       .then((body) => {

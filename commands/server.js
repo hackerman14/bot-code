@@ -7,8 +7,8 @@ module.exports = {
     .setDescription("Look up the current Discord server information!")
     .setDMPermission(false),
   async execute(interaction) {
-    const { client, guild } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const { guild } = interaction;
+    const botOwner = `${process.env.BOTOWNER}`;
     const {
       createdTimestamp,
       ownerId,

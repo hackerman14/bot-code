@@ -7,8 +7,7 @@ module.exports = {
     .setName("meme")
     .setDescription("Retrieves a random meme from the internet!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     let subReddits = [
       "dankmeme",
       "memes",

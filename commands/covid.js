@@ -7,8 +7,7 @@ module.exports = {
     .setName("covid")
     .setDescription("Tells you summary details of COVID-19 information!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     fetch("https://api.covid19api.com/summary")
       .then((res) => res.json())
       .then((body) => {

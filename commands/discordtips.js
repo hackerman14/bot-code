@@ -8,8 +8,7 @@ module.exports = {
       'Tells you a random Discord "Did you know" text upon the app startup!'
     ),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     var tips = [
       "Discord's official birthday is May 13, 2015.",
       "`CTRL` `K` / `CMD` `K` to quickly find a previous conversation or channel.",

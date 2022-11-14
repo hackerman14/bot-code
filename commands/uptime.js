@@ -7,7 +7,7 @@ module.exports = {
     .setDescription("Check how long the bot has stayed on!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     let totalSeconds = client.uptime / 1000;
     let days = Math.floor(totalSeconds / 86400);
     let hours = Math.floor(totalSeconds / 3600);

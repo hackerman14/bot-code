@@ -7,8 +7,7 @@ module.exports = {
     .setName("joke")
     .setDescription("Tells you a joke!"),
   async execute(interaction) {
-    const { client } = interaction;
-    const botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     fetch("https://official-joke-api.appspot.com/jokes/random")
       .then((res) => res.json())
       .then((body) => {

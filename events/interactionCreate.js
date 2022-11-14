@@ -3,7 +3,7 @@ module.exports = {
   name: "interactionCreate",
   async execute(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);
-    const botOwner = interaction.client.users.cache.get(process.env.OWNERID).tag;
+    const botOwner = `${process.env.BOTOWNER}`;
     if (!interaction.isChatInputCommand()) return;
     if (!command) return;
     try {
