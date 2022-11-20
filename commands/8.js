@@ -16,8 +16,7 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    const { client } = interaction;
-    let botOwner = client.users.cache.get(process.env.OWNERID).tag;
+    let botOwner = `${process.env.BOTOWNER}`;
     var answers = [
       "It is certain.",
       "It is decidedly so.",

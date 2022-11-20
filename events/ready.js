@@ -4,7 +4,7 @@ module.exports = {
   execute(client) {
     console.log("Ready!");
     console.log(
-      `The bot is currently serving ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`
+      `The bot is currently serving in ${client.guilds.cache.size} servers.`
     );
   },
 };

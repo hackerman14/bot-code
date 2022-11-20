@@ -120,7 +120,7 @@ module.exports = {
             {
               color: 0x0ccab6,
               title: "**Lawsuit Generator**",
-              description: "Sucessfully generated your *totally real* verdict!",
+              description: "Here's your *totally real* verdict!",
               fields: [
                 {
                   name: "Plaintiff",
@@ -156,7 +156,11 @@ module.exports = {
               timestamp: new Date().toISOString(),
               footer: {
                 text:
-                additionalFooterNote === "" ? `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}` :  `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`,
+                  additionalFooterNote === ""
+                    ? `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}`
+                    : `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`,
+                // `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}` ||
+                // `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`
               },
             },
           ],
