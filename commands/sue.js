@@ -156,8 +156,7 @@ module.exports = {
               timestamp: new Date().toISOString(),
               footer: {
                 text:
-                  `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}` ||
-                  `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`,
+                additionalFooterNote === "" ? `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}` :  `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`,
               },
             },
           ],
