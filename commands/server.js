@@ -101,8 +101,12 @@ module.exports = {
             {
               name: "Nitro Stats",
               value: [
-                `
-                - Tier: ${guild.premiumTier.replace("TIER_", "")}`,
+                `- Tier: ${
+                  guild.premiumTier
+                    ? String(guild.premiumTier).replace("TIER_", "")
+                    : "None"
+                }`,
+
                 `- Boosts: ${guild.premiumSubscriptionCount}`,
                 `- Boosters: ${members.cache.filter((m) => m.premiumSince).size}
               `,
