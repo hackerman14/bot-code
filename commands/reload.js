@@ -1,9 +1,10 @@
 require("dotenv").config();
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("reload")
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setDescription("Restarts the bot! (Bot developer exclusive)"),
   async execute(interaction) {
     const { client } = interaction;
