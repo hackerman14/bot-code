@@ -11,14 +11,14 @@ And then, here's the game changer *(to me it definitely is)*. hackerman14 Bot v2
 
 ## Troubleshooting
 
- - If the bot went offline, please contact the owner regards the issue.
- - If the bot wasn't working, you should check the permissions for it in your server or maybe you've blocked the bot.
+ - If the bot went offline, please contact the me regards the issue.
+ - If the bot isn't working, try checking the permissions for the bot in your server or maybe you've blocked the bot.
 
 ## Features
 
- - Fun commands such as /skeppy, /gif etc.
- - Information commands such as /covid, /user etc.
- - Useless commands such as /help, /about, etc.
+ - Fun commands such as `/skeppy`, `/gif` etc.
+ - Information commands such as `/covid`, `/user` etc.
+ - Useless commands such as `/help`, `/about`, etc.
 
 ## Self Hosting
 
