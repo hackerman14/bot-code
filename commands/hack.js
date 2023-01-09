@@ -38,6 +38,7 @@ module.exports = {
         "yahoo.com",
         "aol.com",
         "msn.com",
+        "163.com",
       ];
       var randomEmailSuffix =
         emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
@@ -51,7 +52,7 @@ module.exports = {
     }
 
     function randomPhrase() {
-      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420"];
+      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420", "ratio"];
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
@@ -65,7 +66,8 @@ module.exports = {
         "windows user L",
         "arch linux best",
         "pineapple pizza supermacy",
-        "stop harassing my girl"
+        "stop harassing my girl",
+        "common tate w"
       ];
       var result = message[Math.floor(Math.random() * message.length)];
       return result;
@@ -91,6 +93,7 @@ module.exports = {
       var browser = [
         "Brave",
         "Chrome",
+        "Chromium",
         "Edge",
         "Firefox",
         "Internet Explorer",
