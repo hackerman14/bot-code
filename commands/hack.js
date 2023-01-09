@@ -52,9 +52,6 @@ module.exports = {
     }
 
     function randomPhrase() {
-<<<<<<< Updated upstream
-      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420", "ratio"];
-=======
       var phrase = [
         "iirc",
         "idgaf",
@@ -65,7 +62,6 @@ module.exports = {
         "69420",
         "ratio",
       ];
->>>>>>> Stashed changes
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
@@ -80,11 +76,7 @@ module.exports = {
         "arch linux best",
         "pineapple pizza supermacy",
         "stop harassing my girl",
-<<<<<<< Updated upstream
-        "common tate w"
-=======
         "common tate w",
->>>>>>> Stashed changes
       ];
       var result = message[Math.floor(Math.random() * message.length)];
       return result;
