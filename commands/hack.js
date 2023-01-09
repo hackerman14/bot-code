@@ -43,7 +43,7 @@ module.exports = {
       var randomEmailSuffix =
         emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
 
-      if ((/\d/.test(member.username)) === true){
+      if (/\d/.test(member.username) === true) {
         var result = `${member.username.toLowerCase()}@${randomEmailSuffix}`;
       } else {
         var result = `${member.username.toLowerCase()}${randomText}@${randomEmailSuffix}`;
@@ -52,7 +52,20 @@ module.exports = {
     }
 
     function randomPhrase() {
+<<<<<<< Updated upstream
       var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420", "ratio"];
+=======
+      var phrase = [
+        "iirc",
+        "idgaf",
+        "lol",
+        "xd",
+        "haha",
+        "you sux",
+        "69420",
+        "ratio",
+      ];
+>>>>>>> Stashed changes
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
@@ -67,7 +80,11 @@ module.exports = {
         "arch linux best",
         "pineapple pizza supermacy",
         "stop harassing my girl",
+<<<<<<< Updated upstream
         "common tate w"
+=======
+        "common tate w",
+>>>>>>> Stashed changes
       ];
       var result = message[Math.floor(Math.random() * message.length)];
       return result;
@@ -132,7 +149,7 @@ module.exports = {
       256,
       999
     )}.${randomNumber(256, 999)}.${randomNumber(256, 999)}`;
-    
+
     const title = "**The Ultimate Hacker**";
     const description = `Target: ${member}`;
     const fieldName = "Console Log";

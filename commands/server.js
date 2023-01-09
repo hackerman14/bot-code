@@ -106,7 +106,6 @@ module.exports = {
                     ? String(guild.premiumTier).replace("TIER_", "")
                     : "None"
                 }`,
-
                 `- Boosts: ${guild.premiumSubscriptionCount}`,
                 `- Boosters: ${members.cache.filter((m) => m.premiumSince).size}
               `,

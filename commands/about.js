@@ -7,7 +7,7 @@ module.exports = {
     .setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`; 
+    const botOwner = `${process.env.BOTOWNER}`;
     interaction.reply({
       embeds: [
         {
@@ -41,7 +41,8 @@ module.exports = {
             },
             {
               name: "Open Source",
-              value: "[hackerman14/bot-codes](https://github.com/hackerman14/bot-codes)",
+              value:
+                "[hackerman14/bot-codes](https://github.com/hackerman14/bot-codes)",
             },
             {
               name: "Library",
