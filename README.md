@@ -38,4 +38,4 @@ Yes you can, but I don't recommend you doing so, I had issues making projects wo
 *   Boring Facts: [useless-facts-api](https://github.com/sameerkumar18/useless-facts-api)
 *	Jokes: [ICNDB](http://icndb.com/api)
 *	COVID-19 Information: [COVID19 API](https://covid19api.com)
-*	Special Thanks To People In These Communities: [YouTube](https://youtube.com), [Stack Overflow](https://stackoverflow.com), [code::together](https://discord.gg/BPJ3W3X), [Discord.js Guide](https://discordjs.guide/)
+*	Special Thanks To People In These Communities: [YouTube](https://youtube.com), [Stack Overflow](https://stackoverflow.com), [code::together](https://discord.gg/aeHesjSV), [Discord.js Guide](https://discordjs.guide/), and more to mention!
