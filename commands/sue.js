@@ -74,11 +74,11 @@ module.exports = {
           fields: [
             {
               name: "Plaintiff",
-              value: interaction.user.tag,
+              value: interaction.user.displayName,
             },
             {
               name: "Defendant",
-              value: user.tag,
+              value: user.displayName,
             },
             {
               name: "Details",

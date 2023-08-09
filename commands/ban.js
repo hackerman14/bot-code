@@ -32,23 +32,28 @@ module.exports = {
         },
       ],
     });
-    await user.send({
-      embeds: [
-        {
-          color: 0xf04a47,
-          description: `You were banned from ${guild.name} | ${reason}`,
-        },
-      ],
-    });
-    wait(5000);
-    await user.send({
-      embeds: [
-        {
-          color: 0xf04a47,
-          description: `Just kidding, this isn't an actual ban.`,
-        },
-      ],
-    });
+    
+    try {
+      await user.send({
+        embeds: [
+          {
+            color: 0xf04a47,
+            description: `You were banned from ${guild.name} | ${reason}`,
+          },
+        ],
+      });
+      wait(5000);
+      await user.send({
+        embeds: [
+          {
+            color: 0xf04a47,
+            description: `Just kidding, this isn't an actual ban.`,
+          },
+        ],
+      });
+    } catch (err) {
+      console.log(err);
+    }
 
     if (guild.id === "633535718559580179") {
       let member = await interaction.options.getMember("user");

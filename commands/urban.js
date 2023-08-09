@@ -54,7 +54,7 @@ module.exports = {
         ephemeral: true,
       });
     let data = fetch[0];
-    let definition = data.definition;
+    let definition = data.definition || "No definition found";
     let example = data.example;
     let permalink = data.permalink;
     let thumbsUp = data.thumbs_up;

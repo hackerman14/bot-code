@@ -42,7 +42,7 @@ module.exports = {
             {
               name: "Open Source",
               value:
-                "[hackerman14/bot-codes](https://github.com/hackerman14/bot-codes)",
+                "[hackerman14/bot-code](https://github.com/hackerman14/bot-code)",
             },
             {
               name: "Library",
