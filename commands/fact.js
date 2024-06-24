@@ -3,9 +3,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const fetch = require("node-fetch");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("fact")
-    .setDescription("Tells you a boring fact!"),
+  data: new SlashCommandBuilder().setName("fact").setDescription("Tells you a boring fact!"),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
     fetch("https://useless-facts.sameerkumar.website/api")

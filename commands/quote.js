@@ -6,10 +6,7 @@ module.exports = {
     .setName("quote")
     .setDescription("Turn your words into a quote!")
     .addStringOption((option) =>
-      option
-        .setName("something")
-        .setDescription("Type the word you want the bot to quote")
-        .setRequired(true)
+      option.setName("something").setDescription("Type the word you want the bot to quote").setRequired(true)
     ),
   async execute(interaction) {
     interaction.reply(

@@ -2,9 +2,7 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("uptime")
-    .setDescription("Check how long the bot has stayed on!"),
+  data: new SlashCommandBuilder().setName("uptime").setDescription("Check how long the bot has stayed on!"),
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = `${process.env.BOTOWNER}`;

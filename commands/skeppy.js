@@ -72,7 +72,7 @@ module.exports = {
       embeds: [
         {
           color: 0x0ccab6,
-          title: "**Skeppy Meme**",
+          title: "**Skeppy Quotes**",
           description: randomQuote,
           timestamp: new Date().toISOString(),
           footer: {

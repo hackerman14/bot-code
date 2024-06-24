@@ -3,9 +3,7 @@ const randomPuppy = require("random-puppy");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("meme")
-    .setDescription("Retrieves a random meme from the internet!"),
+  data: new SlashCommandBuilder().setName("meme").setDescription("Retrieves a random meme from the internet!"),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
     let subReddits = [

@@ -2,9 +2,7 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("about")
-    .setDescription("Shows you the info about the bot!"),
+  data: new SlashCommandBuilder().setName("about").setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = `${process.env.BOTOWNER}`;
@@ -28,21 +26,19 @@ module.exports = {
             },
             {
               name: "Bot Website",
-              value: "[https://hackerman14.tk](https://hackerman14.github.io/)",
+              value: "<https://hackerman14.github.io/>",
             },
             {
               name: "Creator",
-              value: "[Raymond#2829](https://raymond-1227.github.io/)",
+              value: "[rhsu](https://raymond-1227.github.io/)",
             },
             {
-              name: "Host",
-              value:
-                "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
+              name: "Host Provider",
+              value: "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
             },
             {
               name: "Open Source",
-              value:
-                "[hackerman14/bot-code](https://github.com/hackerman14/bot-code)",
+              value: "[hackerman14/bot-code](https://github.com/hackerman14/bot-code)",
             },
             {
               name: "Library",

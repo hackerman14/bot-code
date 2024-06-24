@@ -2,9 +2,7 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("owner")
-    .setDescription("Check if you own the hackerman14 bot!"),
+  data: new SlashCommandBuilder().setName("owner").setDescription("Check if you own the hackerman14 bot!"),
   async execute(interaction) {
     const { client } = interaction;
     let botOwner = client.users.cache.get(process.env.OWNERID).tag;

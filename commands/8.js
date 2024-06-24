@@ -5,15 +5,8 @@ const wait = require("node:timers/promises").setTimeout;
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("8")
-    .setDescription(
-      "Ask any yes/no question, and it will answer you something!"
-    )
-    .addStringOption((option) =>
-      option
-        .setName("question")
-        .setDescription("Yes/No questions only")
-        .setRequired(true)
-    ),
+    .setDescription("Ask any yes/no question, and it will answer you something!")
+    .addStringOption((option) => option.setName("question").setDescription("Yes/No questions only").setRequired(true)),
 
   async execute(interaction) {
     let botOwner = `${process.env.BOTOWNER}`;

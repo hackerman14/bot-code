@@ -3,9 +3,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const fetch = require("node-fetch");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("gif")
-    .setDescription("Sends you a random GIF!"),
+  data: new SlashCommandBuilder().setName("gif").setDescription("Sends you a random GIF!"),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
     fetch(`http://api.giphy.com/v1/gifs/random?api_key=${process.env.GIPHY}&rating=g`)

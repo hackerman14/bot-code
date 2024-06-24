@@ -8,17 +8,9 @@ module.exports = {
     .setDescription("Fake bans people!")
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setDMPermission(false)
-    .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user you want to ban")
-        .setRequired(true)
-    )
+    .addUserOption((option) => option.setName("user").setDescription("The user you want to ban").setRequired(true))
     .addStringOption((option) =>
-      option
-        .setName("reason")
-        .setDescription("Reason why you are banning the user")
-        .setRequired(true)
+      option.setName("reason").setDescription("Reason why you are banning the user").setRequired(true)
     ),
   async execute(interaction) {
     const { guild } = interaction;
@@ -32,7 +24,7 @@ module.exports = {
         },
       ],
     });
-    
+
     try {
       await user.send({
         embeds: [

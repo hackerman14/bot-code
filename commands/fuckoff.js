@@ -11,10 +11,7 @@ module.exports = {
     const { guild } = interaction;
     const botOwner = `${process.env.BOTOWNER}`;
     const cancelAction = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("cancel")
-        .setLabel("Cancel")
-        .setStyle("DANGER")
+      new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle("DANGER")
     );
     if (!interaction.member.permissions.has("KICK_MEMBERS"))
       return interaction.reply({
@@ -53,7 +50,7 @@ module.exports = {
     });
     collector.on("collect", async (i) => {
       if (i.customId === "cancel") {
-        cancelAction.components[0].setDisabled(true)
+        cancelAction.components[0].setDisabled(true);
         await i.update({
           embeds: [
             {
@@ -73,16 +70,15 @@ module.exports = {
     });
     collector.on("end", (collection) => {
       if (collection.first()?.customId === "cancel") {
-        return
+        return;
       } else {
-        cancelAction.components[0].setDisabled(true)
+        cancelAction.components[0].setDisabled(true);
         interaction.editReply({
           embeds: [
             {
               color: 0x0ccab6,
               title: "**You Hate Me™**",
-              description:
-                "Thank you for using hackerman14 bot, have a nice day!",
+              description: "Thank you for using hackerman14 bot, have a nice day!",
               timestamp: new Date().toISOString(),
               footer: {
                 text: `Made with ❤️ created by ${botOwner}`,

@@ -12,13 +12,18 @@ module.exports = {
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: November 15, 2022",
+          description: "Date: June 21, 2024",
           timestamp: new Date().toISOString(),
           fields: [
             {
-              name: "Redefined /lawsuit into /sue",
+              name: "Removed `/covid` command",
               value:
-                "Redesigned the /lawsuit command into /sue now in order to make it more logical and fun!",
+                "`/covid` was removed due to COVID-19 being unrevalent now, and the API that was being used reached its end of life on 2023.",
+            },
+            {
+              name: "Removed `/btcabuse` command",
+              value:
+                "`/btc` was removed due to the updated API being too strict on rate limits.",
             },
             {
               name: "Command enhancements",

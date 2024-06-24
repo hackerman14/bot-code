@@ -3,9 +3,7 @@ const { SlashCommandBuilder } = require("discord.js");
 const fetch = require("node-fetch");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("joke")
-    .setDescription("Tells you a joke!"),
+  data: new SlashCommandBuilder().setName("joke").setDescription("Tells you a joke!"),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
     fetch("https://official-joke-api.appspot.com/jokes/random")

@@ -6,20 +6,14 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("hack")
     .setDescription("Hack a user! (Dank Memer enhanced replica)")
-    .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user you want to hack!")
-        .setRequired(true)
-    ),
+    .addUserOption((option) => option.setName("user").setDescription("The user you want to hack!").setRequired(true)),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
     let member = await interaction.options.getUser("user").fetch(true);
 
     function randomPassword() {
       var length = 8,
-        charset =
-          "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=",
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=",
         retVal = "";
       for (var i = 0, n = charset.length; i < length; ++i) {
         retVal += charset.charAt(Math.floor(Math.random() * n));
@@ -40,8 +34,7 @@ module.exports = {
         "msn.com",
         "163.com",
       ];
-      var randomEmailSuffix =
-        emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
+      var randomEmailSuffix = emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
 
       if (/\d/.test(member.username) === true) {
         var result = `${member.username.toLowerCase()}@${randomEmailSuffix}`;
@@ -52,16 +45,7 @@ module.exports = {
     }
 
     function randomPhrase() {
-      var phrase = [
-        "iirc",
-        "idgaf",
-        "lol",
-        "xd",
-        "haha",
-        "you sux",
-        "69420",
-        "ratio",
-      ];
+      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420", "ratio"];
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
@@ -137,10 +121,10 @@ module.exports = {
 
     // For nerds: IPv4 have digits between 0 and 255,
     // so there wouldn't be issues about IPs if I use all digits about 255.
-    const randomIP = `${randomNumber(256, 999)}.${randomNumber(
+    const randomIP = `${randomNumber(256, 999)}.${randomNumber(256, 999)}.${randomNumber(256, 999)}.${randomNumber(
       256,
       999
-    )}.${randomNumber(256, 999)}.${randomNumber(256, 999)}`;
+    )}`;
 
     const title = "**The Ultimate Hacker**";
     const description = `Target: ${member}`;
@@ -154,9 +138,7 @@ module.exports = {
     const log6 = `Found latest DM: "${randomDM()}"`;
     const log7 = `Finding user's most common phrase...`;
     const log8 = `Found user's most common phrase: ${randomPhrase()}`;
-    const log9 = `Injecting ${randomMalware()} into discriminator #${
-      member.discriminator
-    }`;
+    const log9 = `Injecting ${randomMalware()} into discriminator #${member.discriminator}`;
     const log10 = `Malware injected, stole their ${randomBrowser()} password too.`;
     const log11 = `Hacking their Steam account...`;
     const log12 = `Breached user's Steam account: ${randomUsername()}`;
@@ -200,12 +182,7 @@ module.exports = {
           fields: [
             {
               name: fieldName,
-              value: [
-                `\`\`\``,
-                `[${time1}] ${log1}`,
-                `[${time2}] ${log2}`,
-                `\`\`\``,
-              ].join("\n"),
+              value: [`\`\`\``, `[${time1}] ${log1}`, `[${time2}] ${log2}`, `\`\`\``].join("\n"),
             },
           ],
           timestamp: new Date().toISOString(),
@@ -650,12 +627,7 @@ module.exports = {
             },
             {
               name: `${fieldName} 2`,
-              value: [
-                `\`\`\``,
-                `[${time15}] ${maxLengthError}`,
-                `[${time15}] ${log16}`,
-                `\`\`\``,
-              ].join("\n"),
+              value: [`\`\`\``, `[${time15}] ${maxLengthError}`, `[${time15}] ${log16}`, `\`\`\``].join("\n"),
             },
           ],
           timestamp: new Date().toISOString(),
@@ -859,8 +831,7 @@ module.exports = {
             },
             {
               name: "In case you're dumb...",
-              value:
-                "This is 100% a joke command that doesn't even hack people...",
+              value: "This is 100% a joke command that doesn't even hack people...",
             },
           ],
           timestamp: new Date().toISOString(),

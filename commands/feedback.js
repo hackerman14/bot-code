@@ -1,24 +1,14 @@
 require("dotenv").config();
-const {
-  ActionRowBuilder,
-  Events,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} = require("discord.js");
+const { ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("feedback")
-    .setDescription("Send some feedback to the bot developer!"),
+  data: new SlashCommandBuilder().setName("feedback").setDescription("Send some feedback to the bot developer!"),
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = `${process.env.BOTOWNER}`;
 
-    const modal = new ModalBuilder()
-      .setCustomId("sendFeedback")
-      .setTitle("Send Feedback");
+    const modal = new ModalBuilder().setCustomId("sendFeedback").setTitle("Send Feedback");
     const subjectInput = new TextInputBuilder()
       .setCustomId("subjectInput")
       .setLabel("Subject")
@@ -44,8 +34,7 @@ module.exports = {
       if (!interaction.isModalSubmit()) return;
 
       const userSubject = interaction.fields.getTextInputValue("subjectInput");
-      const userFeedback =
-        interaction.fields.getTextInputValue("feedbackInput");
+      const userFeedback = interaction.fields.getTextInputValue("feedbackInput");
       console.log({ userSubject, userFeedback });
 
       if (interaction.customId === "sendFeedback") {

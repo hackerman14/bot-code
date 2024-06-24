@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, ChannelType } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,16 +9,7 @@ module.exports = {
   async execute(interaction) {
     const { guild } = interaction;
     const botOwner = `${process.env.BOTOWNER}`;
-    const {
-      createdTimestamp,
-      ownerId,
-      description,
-      members,
-      memberCount,
-      channels,
-      emojis,
-      stickers,
-    } = guild;
+    const { createdTimestamp, ownerId, description, members, memberCount, channels, emojis, stickers } = guild;
 
     if (!guild) return;
 
@@ -62,30 +53,18 @@ module.exports = {
               value: [
                 `
                 - Total: ${channels.cache.size}`,
-                `- Text: ${
-                  channels.cache.filter((c) => c.type === "GUILD_TEXT").size
-                }`,
-                `- Voice: ${
-                  channels.cache.filter((c) => c.type === "GUILD_VOICE").size
-                }`,
-                `- Announcements: ${
-                  channels.cache.filter((c) => c.type === "GUILD_NEWS").size
-                }`,
-                `- Stages: ${
-                  channels.cache.filter((c) => c.type === "GUILD_STAGE_VOICE")
-                    .size
-                }`,
+                `- Text: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size}`,
+                `- Voice: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice).size}`,
+                `- Announcements: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildAnnouncement).size}`,
+                `- Forums: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildForum).size}`,
+                `- Stages: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildStageVoice).size}`,
                 `- Threads: ${
-                  channels.cache.filter(
+                  guild.channels.cache.filter(
                     (c) =>
-                      c.type === "GUILD_PUBLIC_THREAD" &&
-                      "GUILD_PRIVATE_THREAD" &&
-                      "GUILD_NEWS_THREAD"
+                      c.type === ChannelType.PublicThread && ChannelType.PrivateThread && ChannelType.AnnouncementThread
                   ).size
                 }`,
-                `- Categories: ${
-                  channels.cache.filter((c) => c.type === "GUILD_CATEGORY").size
-                }`,
+                `- Categories: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildCategory).size}`,
               ].join("\n"),
             },
             {
@@ -101,11 +80,7 @@ module.exports = {
             {
               name: "Nitro Stats",
               value: [
-                `- Tier: ${
-                  guild.premiumTier
-                    ? String(guild.premiumTier).replace("TIER_", "")
-                    : "None"
-                }`,
+                `- Tier: ${guild.premiumTier ? String(guild.premiumTier).replace("TIER_", "") : "None"}`,
                 `- Boosts: ${guild.premiumSubscriptionCount}`,
                 `- Boosters: ${members.cache.filter((m) => m.premiumSince).size}
               `,

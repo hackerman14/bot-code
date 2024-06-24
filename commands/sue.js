@@ -1,10 +1,5 @@
 require("dotenv").config();
-const {
-  SlashCommandBuilder,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-} = require("discord.js");
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,16 +7,10 @@ module.exports = {
     .setDescription("Fake lawsuits to sue anyone!")
     .setDMPermission(false)
     .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user you want to start a lawsuit against")
-        .setRequired(true)
+      option.setName("user").setDescription("The user you want to start a lawsuit against").setRequired(true)
     )
     .addStringOption((option) =>
-      option
-        .setName("details")
-        .setDescription("Details what the user violated")
-        .setRequired(true)
+      option.setName("details").setDescription("Details what the user violated").setRequired(true)
     ),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
@@ -31,10 +20,7 @@ module.exports = {
     let additionalFooterNote;
 
     const convertBtn = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("convert")
-        .setLabel("Convert to Verdict")
-        .setStyle(ButtonStyle.Primary)
+      new ButtonBuilder().setCustomId("convert").setLabel("Convert to Verdict").setStyle(ButtonStyle.Primary)
     );
 
     if (user.id === interaction.user.id)
@@ -53,13 +39,10 @@ module.exports = {
       });
 
     if (user.id === process.env.OWNERID) {
-      sentence =
-        "Plaintiff needs to pay the defendant $10M USD\nPlaintiff sentenced to death";
-      additionalFooterNote =
-        "imagine suing the owner lol, i own this court dude";
+      sentence = "Plaintiff needs to pay the defendant $10M USD\nPlaintiff sentenced to death";
+      additionalFooterNote = "imagine suing the owner lol, i own this court dude";
     } else if (user.bot === true) {
-      sentence =
-        "Defendant is not guilty\nPlaintiff needs to pay the defendant $1M USD";
+      sentence = "Defendant is not guilty\nPlaintiff needs to pay the defendant $1M USD";
       additionalFooterNote = "imagine suing a bot lol";
     } else {
       sentence = "Death Penalty";
@@ -136,17 +119,11 @@ module.exports = {
                 },
                 {
                   name: "Law Violated",
-                  value: `hackerman14 Law Chapter ${Math.floor(
+                  value: `hackerman14 Law Chapter ${Math.floor(Math.random() * 100)} Section ${Math.floor(
                     Math.random() * 100
-                  )} Section ${Math.floor(
+                  )}, Article ${Math.floor(Math.random() * 100)}, Paragraph ${Math.floor(
                     Math.random() * 100
-                  )}, Article ${Math.floor(
-                    Math.random() * 100
-                  )}, Paragraph ${Math.floor(
-                    Math.random() * 100
-                  )}, Subparagraph ${Math.floor(
-                    Math.random() * 100
-                  )}, Item ${Math.floor(Math.random() * 100)}`,
+                  )}, Subparagraph ${Math.floor(Math.random() * 100)}, Item ${Math.floor(Math.random() * 100)}`,
                 },
                 {
                   name: "Sentence",

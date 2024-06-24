@@ -9,9 +9,7 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("word_or_phrase")
-        .setDescription(
-          "Type the word or phrase you want to look up on Urban Dictionary"
-        )
+        .setDescription("Type the word or phrase you want to look up on Urban Dictionary")
         .setRequired(true)
     ),
   async execute(interaction) {
@@ -27,8 +25,7 @@ module.exports = {
           {
             color: 0x0ccab6,
             title: "**Urban Dictionary**",
-            description:
-              "Due to NSFW topic definitions so please run this command in an age restricted channel!",
+            description: "Due to NSFW topic definitions so please run this command in an age restricted channel!",
             timestamp: new Date().toISOString(),
             footer: {
               text: `Made with ❤️ created by ${botOwner}`,
@@ -43,8 +40,7 @@ module.exports = {
           {
             color: 0x0ccab6,
             title: "**Urban Dictionary**",
-            description:
-              "What you're looking for doesn't exist on Urban Dictionary!",
+            description: "What you're looking for doesn't exist on Urban Dictionary!",
             timestamp: new Date().toISOString(),
             footer: {
               text: `Made with ❤️ created by ${botOwner}`,
@@ -61,10 +57,7 @@ module.exports = {
     let thumbsDown = data.thumbs_down;
     let title = data.word;
 
-    definition =
-      definition.length >= 1024
-        ? definition.slice(0, 1020) + "..."
-        : definition;
+    definition = definition.length >= 1024 ? definition.slice(0, 1020) + "..." : definition;
     example = example.length >= 1024 ? example.slice(0, 1020) + "..." : example;
 
     interaction.reply({

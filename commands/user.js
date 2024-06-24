@@ -5,12 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("user")
     .setDescription("Look up someone's Discord profile information!")
-    .addUserOption((option) =>
-      option
-        .setName("user")
-        .setDescription("The user you want to look up")
-        .setRequired(true)
-    ),
+    .addUserOption((option) => option.setName("user").setDescription("The user you want to look up").setRequired(true)),
   async execute(interaction) {
     const botOwner = `${process.env.BOTOWNER}`;
     let member = await interaction.options.getUser("user").fetch(true);

@@ -4,9 +4,7 @@ const { SlashCommandBuilder } = require("discord.js");
 let owner = "Raymond#2829";
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Replies with pong!"),
+  data: new SlashCommandBuilder().setName("ping").setDescription("Replies with pong!"),
   async execute(interaction) {
     const { client } = interaction;
     const botOwner = `${process.env.BOTOWNER}`;
