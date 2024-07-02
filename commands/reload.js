@@ -4,11 +4,10 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("reload")
-    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers) // You don't want most of the people to see this command
     .setDescription("Restarts the bot! (Bot developer exclusive)"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
     if (interaction.user.id !== process.env.OWNERID)
       return interaction.reply({
         embeds: [
@@ -16,10 +15,6 @@ module.exports = {
             color: 0x0ccab6,
             title: "**iReboot**",
             description: "Only the bot owner can perform this action!",
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: `Made with ❤️ created by ${botOwner}`,
-            },
           },
         ],
         ephemeral: true,
@@ -30,10 +25,6 @@ module.exports = {
           color: 0x0ccab6,
           title: "**iReboot**",
           description: "Bot is now rebooting!",
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
       ephemeral: true,

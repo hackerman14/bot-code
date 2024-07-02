@@ -4,7 +4,6 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder().setName("help").setDescription("How to check my available commands!"),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
     interaction.reply({
       embeds: [
         {
@@ -18,10 +17,6 @@ module.exports = {
               value: "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
             },
           ],
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
       ephemeral: true,

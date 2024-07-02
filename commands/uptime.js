@@ -5,7 +5,6 @@ module.exports = {
   data: new SlashCommandBuilder().setName("uptime").setDescription("Check how long the bot has stayed on!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
     let totalSeconds = client.uptime / 1000;
     let days = Math.floor(totalSeconds / 86400);
     let hours = Math.floor(totalSeconds / 3600);
@@ -20,10 +19,7 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Time Tracker**",
           description: `The bot has stayed on for ${uptime}!`,
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
+          
         },
       ],
     });

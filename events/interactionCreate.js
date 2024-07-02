@@ -3,7 +3,6 @@ module.exports = {
   name: "interactionCreate",
   async execute(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);
-    const botOwner = `${process.env.BOTOWNER}`;
     if (!interaction.isChatInputCommand()) return;
     if (!command) return;
     try {
@@ -19,9 +18,6 @@ module.exports = {
               "There was an error while executing this command!\n```" +
               error +
               "```",
-            footer: {
-              text: `Made with ❤️ created by ${botOwner}`,
-            },
           },
         ],
         content: "",

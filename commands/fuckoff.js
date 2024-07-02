@@ -9,7 +9,6 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction) {
     const { guild } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
     const cancelAction = new ActionRowBuilder().addComponents(
       new ButtonBuilder().setCustomId("cancel").setLabel("Cancel").setStyle("DANGER")
     );
@@ -20,10 +19,6 @@ module.exports = {
             color: "#db574f",
             title: "**You Hate Me™**",
             description: "Only the moderators can perform this action!",
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: `Made with ❤️ created by ${botOwner}`,
-            },
           },
         ],
         ephemeral: true,
@@ -35,10 +30,6 @@ module.exports = {
           title: "**You Hate Me™**",
           description:
             "Sorry to see you go, the bot will leave within 60 seconds after executing the command.\n**To cancel the action, click on the button below.**",
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
       components: [cancelAction],
@@ -57,10 +48,6 @@ module.exports = {
               color: 0x0ccab6,
               title: "**You Hate Me™**",
               description: "Action cancelled!",
-              timestamp: new Date().toISOString(),
-              footer: {
-                text: `Made with ❤️ created by ${botOwner}`,
-              },
             },
           ],
           components: [cancelAction],
@@ -79,10 +66,6 @@ module.exports = {
               color: 0x0ccab6,
               title: "**You Hate Me™**",
               description: "Thank you for using hackerman14 bot, have a nice day!",
-              timestamp: new Date().toISOString(),
-              footer: {
-                text: `Made with ❤️ created by ${botOwner}`,
-              },
             },
           ],
           components: [cancelAction],

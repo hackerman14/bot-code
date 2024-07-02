@@ -2,37 +2,32 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("changelog")
-    .setDescription("Check what changes are made to the bot!"),
+  data: new SlashCommandBuilder().setName("changelog").setDescription("Check what changes are made to the bot!"),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
     await interaction.reply({
       embeds: [
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: June 21, 2024",
+          description: "Date: July 3, 2024",
           timestamp: new Date().toISOString(),
           fields: [
             {
-              name: "Removed `/covid` command",
+              name: "Added `/define` command",
               value:
-                "`/covid` was removed due to COVID-19 being unrevalent now, and the API that was being used reached its end of life on 2023.",
+                "The `/define` command was added to the bot, allowing you to define a word with the help of Merriam-Webster!",
             },
             {
-              name: "Removed `/btcabuse` command",
+              name: "Added `/translate` command",
               value:
-                "`/btc` was removed due to the updated API being too strict on rate limits.",
+                "The `/translate` command was added to the bot, allowing you to translate text between different languages with the help of Google Translate!",
             },
             {
-              name: "Command enhancements",
-              value: "A few commands error have been fixed and code improved!",
+              name: "Major command enhancements",
+              value:
+                "Many commands have been rewritten due to many outdated APIs in use, and to improve the overall consistency of the bot!",
             },
           ],
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
     });

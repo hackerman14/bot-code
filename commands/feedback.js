@@ -3,11 +3,9 @@ const { ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("feedback").setDescription("Send some feedback to the bot developer!"),
+  data: new SlashCommandBuilder().setName("feedback").setDescription("Send some feedback to the bot developer! (This doesn't work at the moment)"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
-
     const modal = new ModalBuilder().setCustomId("sendFeedback").setTitle("Send Feedback");
     const subjectInput = new TextInputBuilder()
       .setCustomId("subjectInput")
@@ -44,10 +42,6 @@ module.exports = {
               color: 0x0ccab6,
               title: "**Feedback**",
               description: "Successfully sent feedback!",
-              timestamp: new Date().toISOString(),
-              footer: {
-                text: `Made with ❤️ created by ${botOwner}`,
-              },
             },
           ],
           ephemeral: true,

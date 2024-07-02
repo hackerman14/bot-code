@@ -2,9 +2,7 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("example")
-    .setDescription("Shows you an example Discord embed!"),
+  data: new SlashCommandBuilder().setName("example").setDescription("Shows you an example Discord embed!"),
   async execute(interaction) {
     interaction.reply({
       embeds: [
@@ -14,12 +12,12 @@ module.exports = {
           url: "https://discord.js.org",
           author: {
             name: "Some name",
-            icon_url: "https://i.imgur.com/wSTFkRM.png",
+            icon_url: "https://i.imgur.com/AfFp7pu.png",
             url: "https://discord.js.org",
           },
           description: "Some description here",
           thumbnail: {
-            url: "https://i.imgur.com/wSTFkRM.png",
+            url: "https://i.imgur.com/AfFp7pu.png",
           },
           fields: [
             {
@@ -29,6 +27,7 @@ module.exports = {
             {
               name: "\u200b",
               value: "\u200b",
+              inline: false,
             },
             {
               name: "Inline field title",
@@ -47,12 +46,12 @@ module.exports = {
             },
           ],
           image: {
-            url: "https://i.imgur.com/wSTFkRM.png",
+            url: "https://i.imgur.com/AfFp7pu.png",
           },
           timestamp: new Date().toISOString(),
           footer: {
             text: "Some footer text here",
-            icon_url: "https://i.imgur.com/wSTFkRM.png",
+            icon_url: "https://i.imgur.com/AfFp7pu.png",
           },
         },
       ],

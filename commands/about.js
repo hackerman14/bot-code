@@ -5,7 +5,7 @@ module.exports = {
   data: new SlashCommandBuilder().setName("about").setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
+    
     interaction.reply({
       embeds: [
         {
@@ -45,9 +45,8 @@ module.exports = {
               value: "[discord.js](https://discord.js.org/)",
             },
           ],
-          timestamp: new Date().toISOString(),
           footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
+            text: `Made with ❤️ created by ${process.env.BOTOWNER}`,
           },
         },
       ],

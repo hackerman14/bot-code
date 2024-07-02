@@ -7,8 +7,9 @@ module.exports = {
     .setDescription("Look up someone's Discord profile information!")
     .addUserOption((option) => option.setName("user").setDescription("The user you want to look up").setRequired(true)),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
-    let member = await interaction.options.getUser("user").fetch(true);
+    const user = interaction.options.getUser("user");
+    const member = await interaction.guild.members.fetch(user.id);
+
     interaction.reply({
       embeds: [
         {
@@ -16,26 +17,36 @@ module.exports = {
           title: "**User Information**",
           description: "Here's the user information!",
           thumbnail: {
-            url: member.displayAvatarURL({ size: 2048, dynamic: true }),
+            url: member.user.displayAvatarURL({ size: 2048, dynamic: true }),
           },
           fields: [
             {
-              name: "Username + Tag",
-              value: member.tag,
+              name: "Username",
+              value: member.user.tag,
+              inline: true,
+            },
+            {
+              name: "Nickname",
+              value: member.nickname || "None",
+              inline: true,
             },
             {
               name: "User ID",
-              value: member.id,
+              value: `\`\`\`${member.user.id}\`\`\``,
+            },
+            {
+              name: "Roles",
+              value: member.roles.cache.map((role) => role.toString()).join(", "),
             },
             {
               name: "Account Creation Date",
-              value: `<t:${parseInt(member.createdTimestamp / 1000)}:R>`,
+              value: `<t:${parseInt(member.user.createdTimestamp / 1000)}:R>`,
+            },
+            {
+              name: "Joined Server",
+              value: `<t:${parseInt(member.joinedTimestamp / 1000)}:R>`,
             },
           ],
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
     });

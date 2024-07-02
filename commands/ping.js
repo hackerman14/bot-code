@@ -1,23 +1,16 @@
 require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
-let owner = "Raymond#2829";
-
 module.exports = {
   data: new SlashCommandBuilder().setName("ping").setDescription("Replies with pong!"),
   async execute(interaction) {
     const { client } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
     await interaction.reply({
       embeds: [
         {
           color: 0x0ccab6,
           title: "**Lag Machine**",
           description: "Ping?",
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: "Made with ❤️ created by " + owner,
-          },
         },
       ],
     });
@@ -37,10 +30,6 @@ module.exports = {
               value: `${Math.round(client.ws.ping)}ms`,
             },
           ],
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
     });

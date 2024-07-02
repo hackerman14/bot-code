@@ -13,7 +13,6 @@ module.exports = {
       option.setName("details").setDescription("Details what the user violated").setRequired(true)
     ),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
     let user = await interaction.options.getUser("user");
     let details = interaction.options.getString("details");
     let sentence;
@@ -30,9 +29,6 @@ module.exports = {
             color: 0x0ccab6,
             title: "**Lawsuit Generator**",
             description: "Why would you sue yourself?",
-            footer: {
-              text: `Made with ❤️ created by ${botOwner}`,
-            },
           },
         ],
         ephemeral: true,
@@ -71,8 +67,8 @@ module.exports = {
           timestamp: new Date().toISOString(),
           footer: {
             text:
-              `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}` ||
-              `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`,
+              `Disclaimer: It's not real.` ||
+              `Disclaimer: It's not real. also ${additionalFooterNote}`,
           },
         },
       ],
@@ -134,10 +130,8 @@ module.exports = {
               footer: {
                 text:
                   additionalFooterNote === ""
-                    ? `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}`
-                    : `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`,
-                // `Disclaimer: It's not real.\nMade with ❤️ created by ${botOwner}` ||
-                // `Disclaimer: It's not real. also ${additionalFooterNote}\nMade with ❤️ created by ${botOwner}`
+                    ? `Disclaimer: It's not real.`
+                    : `Disclaimer: It's not real. also ${additionalFooterNote}`,
               },
             },
           ],

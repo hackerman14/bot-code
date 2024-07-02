@@ -19,14 +19,9 @@ module.exports = {
               },
               {
                 name: "Have other questions?",
-                value:
-                  "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
+                value: "You can check out the bot FAQ first by [clicking here!](https://hackerman14.github.io/faq)",
               },
             ],
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: "Made with ❤️ created by Raymond#2829",
-            },
           },
         ],
       });

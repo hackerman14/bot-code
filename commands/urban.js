@@ -13,7 +13,6 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
     let search = interaction.options.getString("word_or_phrase").replace(" ", "+");
     let link = "https://api.urbandictionary.com/v0/define?term=";
     let fetch = await axios(link + encodeURI(search));
@@ -26,10 +25,7 @@ module.exports = {
             color: 0x0ccab6,
             title: "**Urban Dictionary**",
             description: "Due to NSFW topic definitions so please run this command in an age restricted channel!",
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: `Made with ❤️ created by ${botOwner}`,
-            },
+
           },
         ],
         ephemeral: true,
@@ -41,10 +37,7 @@ module.exports = {
             color: 0x0ccab6,
             title: "**Urban Dictionary**",
             description: "What you're looking for doesn't exist on Urban Dictionary!",
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: `Made with ❤️ created by ${botOwner}`,
-            },
+
           },
         ],
         ephemeral: true,
@@ -80,10 +73,7 @@ module.exports = {
               value: example,
             },
           ],
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
+          
         },
       ],
     });

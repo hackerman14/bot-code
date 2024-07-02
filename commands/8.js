@@ -9,7 +9,6 @@ module.exports = {
     .addStringOption((option) => option.setName("question").setDescription("Yes/No questions only").setRequired(true)),
 
   async execute(interaction) {
-    let botOwner = `${process.env.BOTOWNER}`;
     var answers = [
       "It is certain.",
       "It is decidedly so.",
@@ -51,10 +50,6 @@ module.exports = {
               value: randomAnswer,
             },
           ],
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
     });

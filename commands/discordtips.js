@@ -8,7 +8,6 @@ module.exports = {
       'Tells you a random Discord "Did you know" text upon the app startup!'
     ),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
     var tips = [
       "Discord's official birthday is May 13, 2015.",
       "`CTRL` `K` / `CMD` `K` to quickly find a previous conversation or channel.",
@@ -44,10 +43,6 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Discord Tips**",
           description: randomTip,
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
         },
       ],
     });

@@ -2,9 +2,8 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("photo").setDescription("Sends you an HD stock photo from Unsplash!"),
+  data: new SlashCommandBuilder().setName("photo").setDescription("Sends you an HD stock photo!"),
   async execute(interaction) {
-    const botOwner = `${process.env.BOTOWNER}`;
     fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH}`)
       .then((res) => res.json())
       .then((body) => {
@@ -13,11 +12,11 @@ module.exports = {
             {
               color: 0x0ccab6,
               title: "**Random Stock Photo**",
-              description: "Here's your photo from Unsplash!",
+              description: "Here's your HD photo!",
               fields: [
                 {
                   name: "Photographer",
-                  value: `[${body.user.name}](${body.user.links.html})`,
+                  value: `[${body.user.name}](${body.user.links.html}?utm_source=hackerman14&utm_medium=referral)`,
                 },
                 {
                   name: "Original URL",
@@ -31,9 +30,8 @@ module.exports = {
               image: {
                 url: body.urls.raw,
               },
-              timestamp: new Date(),
               footer: {
-                text: `Made with ❤️ created by ${botOwner}`,
+                text: "Powered by Unsplash",
               },
             },
           ],

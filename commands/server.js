@@ -8,7 +8,6 @@ module.exports = {
     .setDMPermission(false),
   async execute(interaction) {
     const { guild } = interaction;
-    const botOwner = `${process.env.BOTOWNER}`;
     const { createdTimestamp, ownerId, description, members, memberCount, channels, emojis, stickers } = guild;
 
     if (!guild) return;
@@ -17,23 +16,25 @@ module.exports = {
       embeds: [
         {
           color: 0x0ccab6,
-          title: "Server Information",
+          title: "**Server Information**",
           description: "Here's the server information!",
           thumbnail: {
-            url: guild.iconURL,
+            url: guild.iconURL(),
           },
           fields: [
             {
               name: "Server Name",
               value: guild.name,
-            },
-            {
-              name: "Description",
-              value: description || "(None)",
+              inline: true,
             },
             {
               name: "Owner",
               value: `<@${ownerId}>`,
+              inline: true,
+            },
+            {
+              name: "Description",
+              value: description || "(None)",
             },
             {
               name: "Server Creation Date",
@@ -87,10 +88,7 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          timestamp: new Date().toISOString(),
-          footer: {
-            text: `Made with ❤️ created by ${botOwner}`,
-          },
+          
         },
       ],
     });

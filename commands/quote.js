@@ -1,4 +1,3 @@
-const { Util } = require("discord.js");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -9,8 +8,14 @@ module.exports = {
       option.setName("something").setDescription("Type the word you want the bot to quote").setRequired(true)
     ),
   async execute(interaction) {
-    interaction.reply(
-      Util.cleanContent(`> ${interaction.options.getString("something")}\n- ${interaction.user.tag}`, interaction)
-    );
+    interaction.reply({
+      embeds: [
+        {
+          color: 0x0ccab6,
+          title: "**Quote Machine**",
+          description: `*${interaction.options.getString("something")}*\n\u2013 ${interaction.user.displayName}`,
+        },
+      ],
+    });
   },
 };
