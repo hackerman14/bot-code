@@ -19,7 +19,7 @@ module.exports = {
           title: "**Server Information**",
           description: "Here's the server information!",
           thumbnail: {
-            url: guild.iconURL(),
+            url: guild.iconURL({ size: 2048, dynamic: true }),
           },
           fields: [
             {
