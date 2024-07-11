@@ -20,7 +20,7 @@ One of the main reasons I'm making this bot open source is to help people who en
 
  - Fun commands such as `/skeppy`, `/gif` etc.
  - Information commands such as `/urban`, `/define` etc.
- - Useless commands such as `/help`, `/about`, etc.
+ - Useless commands such as `/fact`, `/example`, etc.
 
 ## Self Hosting
 
