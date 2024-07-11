@@ -37,10 +37,10 @@ Yes you can, but I don't recommend you doing so, I had issues making projects wo
 * Library: [discord.js](https://discord.js.org)
 * Server Count: [DBL API](https://top.gg/api/docs)
 * GIF Library: [GIPHY Developers](https://developers.giphy.com) and [Tenor API](https://developers.google.com/tenor/guides/quickstart)
-*	HD Photo Gallery: [Unsplash Image API](https://unsplash.com/developers)
+* HD Photo Gallery: [Unsplash Image API](https://unsplash.com/developers)
 * Word Definition: [Urban Dictionary](https://www.urbandictionary.com) and [Marriam-Webster Dictionary API](https://dictionaryapi.com/)
 * Translate: [Google Translate API](https://cloud.google.com/translate)
 * Boring Facts: [Useless Facts API by sameerkumar18](https://github.com/sameerkumar18/useless-facts-api) and [Random Useless Facts by jsphpl](https://uselessfacts.jsph.pl)
-*	Dad Jokes: [icanhazdadjoke](https://icanhazdadjoke.com/)
-*	Special Thanks To People In These Communities: [YouTube](https://youtube.com), [Stack Overflow](https://stackoverflow.com), [Discord.js Guide](https://discordjs.guide/), and more to mention!
+* Dad Jokes: [icanhazdadjoke](https://icanhazdadjoke.com/)
+* Special Thanks To People In These Communities: [YouTube](https://youtube.com), [Stack Overflow](https://stackoverflow.com), [Discord.js Guide](https://discordjs.guide/), and more to mention!
 * AI Assist: [ChatGPT](https://chatgpt.com) and [GitHub Copilot](https://github.com/features/copilot)
