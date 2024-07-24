@@ -9,7 +9,7 @@
     "start": "node index.js"
   },
   "author": "Raymond Hsu",
-  "license": "MIT",
+  "license": "GPL V3",
   "dependencies": {
     "@top-gg/sdk": "^3.1.6",
     "axios": "^1.7.2",
