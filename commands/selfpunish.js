@@ -28,7 +28,7 @@ module.exports = {
         embeds: [
           {
             color: 0x43b582,
-            description: `<:botSuccess:956980119086465124> ***${member.tag} has been warned. || ${reason}***`,
+            description: `<:botSuccess:1279325617476735098> ***${member.tag} has been warned.***`,
           },
         ],
       });
@@ -36,7 +36,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were warned in ${guild.name} for: ${reason}`,
+            description: `You were warned in ${guild.name} for ${reason}`,
           },
         ],
       });
@@ -45,7 +45,7 @@ module.exports = {
         embeds: [
           {
             color: 0x43b582,
-            description: `<:botSuccess:956980119086465124> ***${member.tag} was muted*** | ${reason}`,
+            description: `<:botSuccess:1279325617476735098> ***${member.tag} was muted.***`,
           },
         ],
       });
@@ -53,7 +53,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were muted in ${guild.name} | ${reason}`,
+            description: `You were muted in ${guild.name} for ${reason}`,
           },
         ],
       });
@@ -62,7 +62,7 @@ module.exports = {
         embeds: [
           {
             color: 0x43b582,
-            description: `<:botSuccess:956980119086465124> ***${member.tag} was kicked*** | ${reason}`,
+            description: `<:botSuccess:1279325617476735098> ***${member.tag} was kicked.***`,
           },
         ],
       });
@@ -70,7 +70,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were kicked from ${guild.name} | ${reason}`,
+            description: `You were kicked from ${guild.name} for ${reason}`,
           },
         ],
       });
@@ -79,7 +79,7 @@ module.exports = {
         embeds: [
           {
             color: 0x43b582,
-            description: `<:botSuccess:956980119086465124> ***${member.tag} was banned*** | ${reason}`,
+            description: `<:botSuccess:1279325617476735098> ***${member.tag} was banned.***`,
           },
         ],
       });
@@ -87,7 +87,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were banned from ${guild.name} | ${reason}`,
+            description: `You were banned from ${guild.name} for ${reason}`,
           },
         ],
       });

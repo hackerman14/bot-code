@@ -20,7 +20,7 @@ module.exports = {
       embeds: [
         {
           color: 0x43b582,
-          description: `<:botSuccess:956980119086465124> ***${user.tag} was banned*** | ${reason}`,
+          description: `<:botSuccess:1279325617476735098> ***${user.tag} was banned*** | ${reason}`,
         },
       ],
     });

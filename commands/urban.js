@@ -18,18 +18,6 @@ module.exports = {
     let fetch = await axios(link + encodeURI(search));
     fetch = fetch.data.list;
 
-    if (!interaction.channel.nsfw)
-      return interaction.reply({
-        embeds: [
-          {
-            color: 0x0ccab6,
-            title: "**Urban Dictionary**",
-            description: "Due to NSFW topic definitions so please run this command in an age restricted channel!",
-
-          },
-        ],
-        ephemeral: true,
-      });
     if (fetch === 0)
       return interaction.reply({
         embeds: [
