@@ -1,11 +1,18 @@
 require("dotenv").config();
-const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  InteractionContextType,
+  MessageFlags,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("sue")
     .setDescription("Fake lawsuits to sue anyone!")
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
       option.setName("user").setDescription("The user you want to start a lawsuit against").setRequired(true)
     )
@@ -31,10 +38,13 @@ module.exports = {
             description: "Why would you sue yourself?",
           },
         ],
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
 
-    if (user.id === process.env.OWNERID) {
+    if (user.bot === true && interaction.user.id === process.env.OWNERID) {
+      sentence = "Defendant needs to pay the plaintiff $10M USD\nDefendant sentenced to death";
+      additionalFooterNote = "";
+    } else if (user.id === process.env.OWNERID) {
       sentence = "Plaintiff needs to pay the defendant $10M USD\nPlaintiff sentenced to death";
       additionalFooterNote = "imagine suing the owner lol, i own this court dude";
     } else if (user.bot === true) {
@@ -42,6 +52,7 @@ module.exports = {
       additionalFooterNote = "imagine suing a bot lol";
     } else {
       sentence = "Death Penalty";
+      additionalFooterNote = "";
     }
 
     await interaction.reply({
@@ -64,11 +75,8 @@ module.exports = {
               value: details,
             },
           ],
-          timestamp: new Date().toISOString(),
           footer: {
-            text:
-              `Disclaimer: It's not real.` ||
-              `Disclaimer: It's not real. also ${additionalFooterNote}`,
+            text: `Disclaimer: It's not real.` || `Disclaimer: It's not real. also ${additionalFooterNote}`,
           },
         },
       ],
@@ -82,13 +90,14 @@ module.exports = {
 
     collector.on("ignore", (i) =>
       i.reply({
-        ephemeral: true,
         embeds: [
-          new EmbedBuilder({
+          {
+            color: 0x0ccab6,
             title: "**Lawsuit Generator**",
             description: "You're not the author of the lawsuit!",
-          }),
+          },
         ],
+        flags: MessageFlags.Ephemeral,
       })
     );
     collector.on("collect", async (i) => {
@@ -126,7 +135,6 @@ module.exports = {
                   value: sentence,
                 },
               ],
-              timestamp: new Date().toISOString(),
               footer: {
                 text:
                   additionalFooterNote === ""

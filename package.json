@@ -9,14 +9,14 @@
     "start": "node index.js"
   },
   "author": "Raymond Hsu",
-  "license": "GPL V3",
+  "license": "MIT",
   "dependencies": {
     "@top-gg/sdk": "^3.1.6",
-    "axios": "^1.7.6",
+    "axios": "^1.7.9",
     "discord-bot-analytics": "^1.0.14",
-    "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "discord.js": "^14.17.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "moment": "^2.30.1",
     "random-puppy": "^1.1.0",
     "topgg-autoposter": "^2.0.2"

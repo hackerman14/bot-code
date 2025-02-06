@@ -10,7 +10,6 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
           description: "Date: August 7, 2024",
-          timestamp: new Date().toISOString(),
           fields: [
             {
               name: "Added `/encrypt` and `/decrypt` command",

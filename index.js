@@ -1,5 +1,4 @@
 // Core codes
-
 const fs = require("node:fs");
 const path = require("node:path");
 const {
@@ -23,7 +22,6 @@ const client = new Client({
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 // Commands Handler
-
 client.commands = new Collection();
 
 const commandsPath = path.join(__dirname, "commands");
@@ -45,7 +43,6 @@ for (const file of commandFiles) {
 }
 
 // Events Handler
-
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
   .readdirSync(eventsPath)

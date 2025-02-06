@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const axios = require("axios");
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
 
           },
         ],
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     let data = fetch[0];
     let definition = data.definition || "No definition found";

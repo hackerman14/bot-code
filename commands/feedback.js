@@ -1,6 +1,5 @@
 require("dotenv").config();
-const { ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder().setName("feedback").setDescription("Send some feedback to the bot developer! (This doesn't work at the moment)"),
@@ -44,7 +43,7 @@ module.exports = {
               description: "Successfully sent feedback!",
             },
           ],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
       }
     });

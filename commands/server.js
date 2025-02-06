@@ -1,11 +1,11 @@
 require("dotenv").config();
-const { SlashCommandBuilder, ChannelType } = require("discord.js");
+const { SlashCommandBuilder, ChannelType, InteractionContextType } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("server")
     .setDescription("Look up the current Discord server information!")
-    .setDMPermission(false),
+    .setContexts(InteractionContextType.Guild),
   async execute(interaction) {
     const { guild } = interaction;
     const { createdTimestamp, ownerId, description, members, memberCount, channels, emojis, stickers } = guild;

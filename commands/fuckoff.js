@@ -1,12 +1,12 @@
 require("dotenv").config();
-const { SlashCommandBuilder, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, InteractionContextType, MessageFlags } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("fuckoff")
     .setDescription("A fancy way to kick this bot! >:(")
     .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
-    .setDMPermission(false),
+    .setContexts(InteractionContextType.Guild),
   async execute(interaction) {
     const { guild } = interaction;
     
@@ -24,7 +24,7 @@ module.exports = {
             description: "Only the moderators can perform this action!",
           },
         ],
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
 
@@ -58,7 +58,7 @@ module.exports = {
             },
           ],
           components: [actionRow],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
         collector.stop();
       } else if (i.customId === "leaveNow") {
@@ -72,7 +72,7 @@ module.exports = {
             },
           ],
           components: [actionRow],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
         collector.stop();
         guild.leave();
@@ -91,7 +91,7 @@ module.exports = {
             },
           ],
           components: [actionRow],
-          ephemeral: true,
+          flags: MessageFlags.Ephemeral,
         });
         guild.leave();
       }

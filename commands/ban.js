@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType } = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     .setName("ban")
     .setDescription("Fake bans people!")
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
-    .setDMPermission(false)
+    .setContexts(InteractionContextType.Guild)
     .addUserOption((option) => option.setName("user").setDescription("The user you want to ban").setRequired(true))
     .addStringOption((option) =>
       option.setName("reason").setDescription("Reason why you are banning the user").setRequired(true)
@@ -20,7 +20,7 @@ module.exports = {
       embeds: [
         {
           color: 0x43b582,
-          description: `<:botSuccess:1279325617476735098> ***${user.tag} was banned*** | ${reason}`,
+          description: `<:botSuccess:1279325617476735098> ***${user.tag} was banned.***`,
         },
       ],
     });
@@ -30,7 +30,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were banned from ${guild.name} | ${reason}`,
+            description: `You were banned from ${guild.name} for ${reason}`,
           },
         ],
       });

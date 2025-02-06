@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { MessageFlags } = require("discord.js");
 module.exports = {
   name: "interactionCreate",
   async execute(interaction) {
@@ -21,7 +22,7 @@ module.exports = {
           },
         ],
         content: "",
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     }
   },
