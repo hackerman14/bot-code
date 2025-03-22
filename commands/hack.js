@@ -11,9 +11,10 @@ module.exports = {
     let member = await interaction.options.getUser("user").fetch(true);
 
     function randomPassword() {
-      var length = 8,
-        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=",
-        retVal = "";
+      var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+      var length = Math.floor(Math.random() * (24 - 12 + 1)) + 12;
+      var retVal = "";
+
       for (var i = 0, n = charset.length; i < length; ++i) {
         retVal += charset.charAt(Math.floor(Math.random() * n));
       }
@@ -44,14 +45,14 @@ module.exports = {
     }
 
     function randomPhrase() {
-      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "you sux", "69420", "ratio"];
+      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "u sux", "drown", "ratio", "lmao", "bruh", "smh", "wtf"];
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
 
     function randomDM() {
       var message = [
-        "ur mom is kinda hot",
+        "ur mom's kinda hot",
         "look at this dude",
         "i wanna breakup with you",
         "imagine using macos",
@@ -81,6 +82,26 @@ module.exports = {
       return result;
     }
 
+    function randomDevice() {
+      var device = [
+        "iPhone",
+        "iPad",
+        "Mac",
+        "Android phone",
+        "Android tablet",
+        "Windows Phone",
+        "Windows PC",
+        "Linux PC",
+        "Xbox",
+        "PlayStation",
+        "Nintendo Switch",
+        "Smart Fridge",
+        "Smart TV",
+      ];
+      var result = device[Math.floor(Math.random() * device.length)];
+      return result;
+    }
+
     function randomBrowser() {
       var browser = [
         "Brave",
@@ -99,7 +120,7 @@ module.exports = {
     }
 
     function randomUsername() {
-      var malware = [
+      var username = [
         "Minecraft4Life",
         "desperate_enuf",
         "kissmyaxe",
@@ -110,7 +131,7 @@ module.exports = {
         "oprah_wind_fury",
         "fresh_out_the_oven",
       ];
-      var result = malware[Math.floor(Math.random() * malware.length)];
+      var result = username[Math.floor(Math.random() * username.length)];
       return result;
     }
 
@@ -119,7 +140,7 @@ module.exports = {
     }
 
     // For nerds: IPv4 have digits between 0 and 255,
-    // so there wouldn't be issues about IPs if I use all digits about 255.
+    // so there wouldn't be issues about IPs if I use all digits above 255.
     const randomIP = `${randomNumber(256, 999)}.${randomNumber(256, 999)}.${randomNumber(256, 999)}.${randomNumber(
       256,
       999
@@ -134,11 +155,11 @@ module.exports = {
     const log3 = `Email: ${randomEmail()}`;
     const log4 = `Pasword: ${randomPassword()}`;
     const log5 = `Fetching DMs with closest friends... (if they are any friends at all)`;
-    const log6 = `Found latest DM: "${randomDM()}"`;
+    const log6 = `Found latest DM message: "${randomDM()}"`;
     const log7 = `Finding user's most common phrase...`;
     const log8 = `Found user's most common phrase: ${randomPhrase()}`;
-    const log9 = `Injecting ${randomMalware()} into discriminator #${member.discriminator}`;
-    const log10 = `Malware injected, stole their ${randomBrowser()} password too.`;
+    const log9 = `Injecting ${randomMalware()} into their ${randomDevice()}`;
+    const log10 = `Malware injected, stole their passwords on ${randomBrowser()} as well.`;
     const log11 = `Hacking their Steam account...`;
     const log12 = `Breached user's Steam account: ${randomUsername()}`;
     const log13 = `Finding user's IP address...`;
@@ -163,7 +184,6 @@ module.exports = {
               value: [`\`\`\``, `[${time1}] ${log1}`, `\`\`\``].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -181,7 +201,6 @@ module.exports = {
               value: [`\`\`\``, `[${time1}] ${log1}`, `[${time2}] ${log2}`, `\`\`\``].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -206,7 +225,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -232,7 +250,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -259,7 +276,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -287,7 +303,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -316,7 +331,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -346,7 +360,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -377,7 +390,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -409,7 +421,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -442,7 +453,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -476,7 +486,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -511,7 +520,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -547,7 +555,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -587,7 +594,6 @@ module.exports = {
               value: [`\`\`\``, `[${time15}] ${maxLengthError}`, `[${time15}] ${log16}`, `\`\`\``].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -633,7 +639,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -680,7 +685,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -728,7 +732,6 @@ module.exports = {
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });
@@ -779,7 +782,6 @@ module.exports = {
               value: "This is 100% a joke command that doesn't even hack people...",
             },
           ],
-          
         },
       ],
     });
