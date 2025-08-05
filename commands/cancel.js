@@ -30,7 +30,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were cancelled from ${guild.name} for ${reason}. \n You'll also be cancelled on twitter and posted on r/discordapp.`,
+            description: `You were cancelled from ${guild.name} for ${reason}. \n You'll also be cancelled on twitter and posted on r/discordapp & 4chan.`,
           },
         ],
       });
@@ -45,24 +45,6 @@ module.exports = {
       });
     } catch (err) {
       console.log(err);
-    }
-
-    if (guild.id === "633535718559580179") {
-      let member = await interaction.options.getMember("user");
-      let role = await guild.roles.fetch("964481713269002251");
-      if (user.nickname === null) {
-        await member.roles.add(role);
-        await wait(5000);
-        await member.roles.remove(role);
-      }
-      if (user.nickname !== null) {
-        let originalNickname = member.nickname;
-        await member.setNickname("");
-        await member.roles.add(role);
-        await wait(5000);
-        await member.roles.remove(role);
-        await member.setNickname(originalNickname);
-      }
     }
   },
 };
