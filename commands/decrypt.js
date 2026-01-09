@@ -5,7 +5,10 @@ module.exports = {
     .setName("decrypt")
     .setDescription("Decrypt your text from Base64 to readable text!")
     .addStringOption((option) =>
-      option.setName("something").setDescription("The text you want to decrypt").setRequired(true)
+      option
+        .setName("something")
+        .setDescription("The text you want to decrypt")
+        .setRequired(true)
     ),
   async execute(interaction) {
     interaction.reply({
@@ -17,11 +20,16 @@ module.exports = {
           fields: [
             {
               name: "Encrypted Text",
-              value: `\`\`\`${interaction.options.getString("something")}\`\`\``,
+              value: `\`\`\`${interaction.options.getString(
+                "something"
+              )}\`\`\``,
             },
             {
               name: "Decrypted Text",
-              value: Buffer.from(interaction.options.getString("something"), "base64").toString("utf-8"),
+              value: Buffer.from(
+                interaction.options.getString("something"),
+                "base64"
+              ).toString("utf-8"),
             },
           ],
         },

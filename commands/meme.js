@@ -24,7 +24,9 @@ async function getRedditAccessToken() {
 }
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("meme").setDescription("Retrieves a random meme from the internet!"),
+  data: new SlashCommandBuilder()
+    .setName("meme")
+    .setDescription("Retrieves a random meme from the internet!"),
   async execute(interaction) {
     let subReddits = [
       "dankmemes",
@@ -42,17 +44,22 @@ module.exports = {
     let random = subReddits[Math.floor(Math.random() * subReddits.length)];
 
     const token = await getRedditAccessToken();
-    const response = await axios.get(`https://oauth.reddit.com/r/${random}/hot`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "User-Agent": "DiscordBot (your-bot-email@example.com)", // Change to a valid email
-      },
-      params: {
-        limit: 100,
-      },
-    });
+    const response = await axios.get(
+      `https://oauth.reddit.com/r/${random}/hot`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "User-Agent": "DiscordBot (your-bot-email@example.com)", // Change to a valid email
+        },
+        params: {
+          limit: 100,
+        },
+      }
+    );
 
-    const posts = response.data.data.children.filter((post) => post.data.post_hint === "image");
+    const posts = response.data.data.children.filter(
+      (post) => post.data.post_hint === "image"
+    );
     if (posts.length === 0) {
       return interaction.reply(`No image posts found in r/${random}`);
     }

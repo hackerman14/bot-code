@@ -1,5 +1,9 @@
 require("dotenv").config();
-const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  InteractionContextType,
+} = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
@@ -8,9 +12,17 @@ module.exports = {
     .setDescription("Fake bans people!")
     .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
     .setContexts(InteractionContextType.Guild)
-    .addUserOption((option) => option.setName("user").setDescription("The user you want to ban").setRequired(true))
+    .addUserOption((option) =>
+      option
+        .setName("user")
+        .setDescription("The user you want to ban")
+        .setRequired(true)
+    )
     .addStringOption((option) =>
-      option.setName("reason").setDescription("Reason why you are banning the user").setRequired(true)
+      option
+        .setName("reason")
+        .setDescription("Reason why you are banning the user")
+        .setRequired(true)
     ),
   async execute(interaction) {
     const { guild } = interaction;

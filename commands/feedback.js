@@ -1,38 +1,107 @@
 require("dotenv").config();
-const { SlashCommandBuilder, ActionRowBuilder, Events, ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  Events,
+  LabelBuilder,
+  StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  MessageFlags,
+} = require("discord.js");
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND);
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("feedback").setDescription("Send some feedback to the bot developer! (This doesn't work at the moment)"),
+  data: new SlashCommandBuilder()
+    .setName("feedback")
+    .setDescription(
+      "Send some feedback to the bot developer! (This doesn't work at the moment)"
+    ),
   async execute(interaction) {
     const { client } = interaction;
-    const modal = new ModalBuilder().setCustomId("sendFeedback").setTitle("Send Feedback");
+    const modal = new ModalBuilder()
+      .setCustomId("sendFeedback")
+      .setTitle("Send Feedback");
+
+    const feedbackTypeSelect = new StringSelectMenuBuilder()
+      .setCustomId("feedbackType")
+      .setPlaceholder("Make a selection!")
+      .addOptions(
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Bug Report")
+          .setDescription("Report a bug or issue with the bot.")
+          .setValue("bugReport"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Feature Request")
+          .setDescription("Suggest a new feature or UX improvement.")
+          .setValue("featureRequest"),
+        new StringSelectMenuOptionBuilder()
+          .setLabel("Other")
+          .setDescription("Other types of feedback.")
+          .setValue("other")
+      );
+    const feedbackTypeLabel = new LabelBuilder()
+      .setLabel("Feedback Type")
+      .setStringSelectMenuComponent(feedbackTypeSelect);
+
     const subjectInput = new TextInputBuilder()
       .setCustomId("subjectInput")
-      .setLabel("Subject")
-      .setPlaceholder("Bug Report")
+      .setPlaceholder("/something command is broken")
       .setStyle(TextInputStyle.Short)
       .setMinLength(5)
       .setMaxLength(100)
       .setRequired(true);
+    const subjectLabel = new LabelBuilder()
+      .setLabel("Subject")
+      .setTextInputComponent(subjectInput);
+
     const feedbackInput = new TextInputBuilder()
       .setCustomId("feedbackInput")
-      .setLabel("Your Feedback")
-      .setPlaceholder("Hello, I'm having a problem with the bot!")
+      .setPlaceholder("When I use /something, it gives me an error...")
       .setStyle(TextInputStyle.Paragraph)
-      .setMaxLength(10)
+      .setMinLength(10)
       .setMaxLength(1000)
       .setRequired(true);
-    const subject = new ActionRowBuilder().addComponents(subjectInput);
-    const feedback = new ActionRowBuilder().addComponents(feedbackInput);
-    modal.addComponents(subject, feedback);
+    const feedbackLabel = new LabelBuilder()
+      .setLabel("Feedback")
+      .setTextInputComponent(feedbackInput);
+
+    modal.addLabelComponents(feedbackTypeLabel, subjectLabel, feedbackLabel);
     await interaction.showModal(modal);
 
     client.on(Events.InteractionCreate, async (interaction) => {
       if (!interaction.isModalSubmit()) return;
 
+      const FEEDBACK_TYPE_MAP = {
+        bugReport: "Bug Report",
+        featureRequest: "Feature Request",
+        other: "Other",
+      };
+
+      const username = interaction.user.username;
+      const rawFeedbackType =
+        interaction.fields.getStringSelectValues("feedbackType")[0];
+      const userFeedbackType = FEEDBACK_TYPE_MAP[rawFeedbackType];
       const userSubject = interaction.fields.getTextInputValue("subjectInput");
-      const userFeedback = interaction.fields.getTextInputValue("feedbackInput");
-      console.log({ userSubject, userFeedback });
+      const userFeedback =
+        interaction.fields.getTextInputValue("feedbackInput");
+      console.log({ userFeedbackType, userSubject, userFeedback });
+
+      await resend.emails.send({
+        from: `hackerman14 Feedback <${process.env.EMAIL_SENDER}>`,
+        to: process.env.EMAIL_RECEIVER,
+        template: {
+          id: "hackerman14-bot-feedback",
+          variables: {
+            FEEDBACK_TYPE: userFeedbackType,
+            FEEDBACK_SUBJECT: userSubject,
+            FEEDBACK_CONTENT: userFeedback,
+            USERNAME: username,
+          },
+        },
+      });
 
       if (interaction.customId === "sendFeedback") {
         interaction.reply({
@@ -40,7 +109,7 @@ module.exports = {
             {
               color: 0x0ccab6,
               title: "**Feedback**",
-              description: "Successfully sent feedback!",
+              description: "Thanks for your feedback!",
             },
           ],
           flags: MessageFlags.Ephemeral,

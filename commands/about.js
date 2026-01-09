@@ -2,10 +2,12 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("about").setDescription("Shows you the info about the bot!"),
+  data: new SlashCommandBuilder()
+    .setName("about")
+    .setDescription("Shows you the info about the bot!"),
   async execute(interaction) {
     const { client } = interaction;
-    
+
     interaction.reply({
       embeds: [
         {
@@ -34,11 +36,13 @@ module.exports = {
             },
             {
               name: "Host Provider",
-              value: "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
+              value:
+                "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
             },
             {
               name: "Open Source",
-              value: "[hackerman14/bot-code](https://github.com/hackerman14/bot-code)",
+              value:
+                "[hackerman14/bot-code](https://github.com/hackerman14/bot-code)",
             },
             {
               name: "Library",

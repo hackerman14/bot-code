@@ -1,5 +1,9 @@
 require("dotenv").config();
-const { SlashCommandBuilder, ChannelType, InteractionContextType } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  ChannelType,
+  InteractionContextType,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,7 +12,16 @@ module.exports = {
     .setContexts(InteractionContextType.Guild),
   async execute(interaction) {
     const { guild } = interaction;
-    const { createdTimestamp, ownerId, description, members, memberCount, channels, emojis, stickers } = guild;
+    const {
+      createdTimestamp,
+      ownerId,
+      description,
+      members,
+      memberCount,
+      channels,
+      emojis,
+      stickers,
+    } = guild;
 
     if (!guild) return;
 
@@ -54,18 +67,44 @@ module.exports = {
               value: [
                 `
                 - Total: ${channels.cache.size}`,
-                `- Text: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size}`,
-                `- Voice: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice).size}`,
-                `- Announcements: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildAnnouncement).size}`,
-                `- Forums: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildForum).size}`,
-                `- Stages: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildStageVoice).size}`,
+                `- Text: ${
+                  guild.channels.cache.filter(
+                    (c) => c.type === ChannelType.GuildText
+                  ).size
+                }`,
+                `- Voice: ${
+                  guild.channels.cache.filter(
+                    (c) => c.type === ChannelType.GuildVoice
+                  ).size
+                }`,
+                `- Announcements: ${
+                  guild.channels.cache.filter(
+                    (c) => c.type === ChannelType.GuildAnnouncement
+                  ).size
+                }`,
+                `- Forums: ${
+                  guild.channels.cache.filter(
+                    (c) => c.type === ChannelType.GuildForum
+                  ).size
+                }`,
+                `- Stages: ${
+                  guild.channels.cache.filter(
+                    (c) => c.type === ChannelType.GuildStageVoice
+                  ).size
+                }`,
                 `- Threads: ${
                   guild.channels.cache.filter(
                     (c) =>
-                      c.type === ChannelType.PublicThread && ChannelType.PrivateThread && ChannelType.AnnouncementThread
+                      c.type === ChannelType.PublicThread &&
+                      ChannelType.PrivateThread &&
+                      ChannelType.AnnouncementThread
                   ).size
                 }`,
-                `- Categories: ${guild.channels.cache.filter((c) => c.type === ChannelType.GuildCategory).size}`,
+                `- Categories: ${
+                  guild.channels.cache.filter(
+                    (c) => c.type === ChannelType.GuildCategory
+                  ).size
+                }`,
               ].join("\n"),
             },
             {
@@ -81,14 +120,17 @@ module.exports = {
             {
               name: "Nitro Stats",
               value: [
-                `- Tier: ${guild.premiumTier ? String(guild.premiumTier).replace("TIER_", "") : "None"}`,
+                `- Tier: ${
+                  guild.premiumTier
+                    ? String(guild.premiumTier).replace("TIER_", "")
+                    : "None"
+                }`,
                 `- Boosts: ${guild.premiumSubscriptionCount}`,
                 `- Boosters: ${members.cache.filter((m) => m.premiumSince).size}
               `,
               ].join("\n"),
             },
           ],
-          
         },
       ],
     });

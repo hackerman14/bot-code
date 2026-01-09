@@ -2,7 +2,9 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("example").setDescription("Shows you an example Discord embed!"),
+  data: new SlashCommandBuilder()
+    .setName("example")
+    .setDescription("Shows you an example Discord embed!"),
   async execute(interaction) {
     interaction.reply({
       embeds: [

@@ -5,7 +5,10 @@ module.exports = {
     .setName("quote")
     .setDescription("Turn your words into a quote!")
     .addStringOption((option) =>
-      option.setName("something").setDescription("The text you want the bot to quote").setRequired(true)
+      option
+        .setName("something")
+        .setDescription("The text you want the bot to quote")
+        .setRequired(true)
     ),
   async execute(interaction) {
     interaction.reply({
@@ -13,7 +16,9 @@ module.exports = {
         {
           color: 0x0ccab6,
           title: "**Quote Machine**",
-          description: `*${interaction.options.getString("something")}*\n\u2013 ${interaction.user.displayName}`,
+          description: `*${interaction.options.getString(
+            "something"
+          )}*\n\u2013 ${interaction.user.displayName}`,
         },
       ],
     });

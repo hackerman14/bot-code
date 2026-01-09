@@ -5,7 +5,10 @@ module.exports = {
     .setName("encrypt")
     .setDescription("Encrypt your text in Base64!")
     .addStringOption((option) =>
-      option.setName("something").setDescription("The text you want to encrypt").setRequired(true)
+      option
+        .setName("something")
+        .setDescription("The text you want to encrypt")
+        .setRequired(true)
     ),
   async execute(interaction) {
     interaction.reply({
@@ -21,7 +24,10 @@ module.exports = {
             },
             {
               name: "Encrypted Text",
-              value: `\`\`\`${Buffer.from(interaction.options.getString("something"), "utf-8").toString("base64")}\`\`\``,
+              value: `\`\`\`${Buffer.from(
+                interaction.options.getString("something"),
+                "utf-8"
+              ).toString("base64")}\`\`\``,
             },
           ],
         },

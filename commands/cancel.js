@@ -6,7 +6,7 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("cancel")
     .setDescription("Cancels people!")
-    .setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
+    .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) => option.setName("user").setDescription("The user you want to cancel").setRequired(true))
     .addStringOption((option) =>
@@ -30,7 +30,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were cancelled from ${guild.name} for ${reason}. \n You'll also be cancelled on twitter and posted on r/discordapp & 4chan.`,
+            description: `You were cancelled from ${guild.name} for ${reason}. \n You'll also be cancelled on X, r/discordapp and 4chan.`,
           },
         ],
       });

@@ -5,7 +5,12 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("user")
     .setDescription("Look up someone's Discord profile information!")
-    .addUserOption((option) => option.setName("user").setDescription("The user you want to look up").setRequired(true)),
+    .addUserOption((option) =>
+      option
+        .setName("user")
+        .setDescription("The user you want to look up")
+        .setRequired(true)
+    ),
   async execute(interaction) {
     const user = interaction.options.getUser("user");
     const member = await interaction.guild.members.fetch(user.id);
@@ -36,7 +41,9 @@ module.exports = {
             },
             {
               name: "Roles",
-              value: member.roles.cache.map((role) => role.toString()).join(", "),
+              value: member.roles.cache
+                .map((role) => role.toString())
+                .join(", "),
             },
             {
               name: "Account Creation Date",

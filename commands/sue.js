@@ -14,10 +14,16 @@ module.exports = {
     .setDescription("Fake lawsuits to sue anyone!")
     .setContexts(InteractionContextType.Guild)
     .addUserOption((option) =>
-      option.setName("user").setDescription("The user you want to start a lawsuit against").setRequired(true)
+      option
+        .setName("user")
+        .setDescription("The user you want to start a lawsuit against")
+        .setRequired(true)
     )
     .addStringOption((option) =>
-      option.setName("details").setDescription("Details what the user violated").setRequired(true)
+      option
+        .setName("details")
+        .setDescription("Details what the user violated")
+        .setRequired(true)
     ),
   async execute(interaction) {
     let user = await interaction.options.getUser("user");
@@ -26,7 +32,10 @@ module.exports = {
     let additionalFooterNote;
 
     const convertBtn = new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId("convert").setLabel("Convert to Verdict").setStyle(ButtonStyle.Primary)
+      new ButtonBuilder()
+        .setCustomId("convert")
+        .setLabel("Convert to Verdict")
+        .setStyle(ButtonStyle.Primary)
     );
 
     if (user.id === interaction.user.id)
@@ -42,13 +51,17 @@ module.exports = {
       });
 
     if (user.bot === true && interaction.user.id === process.env.OWNERID) {
-      sentence = "Defendant needs to pay the plaintiff $10M USD\nDefendant sentenced to death";
+      sentence =
+        "Defendant needs to pay the plaintiff $10M USD\nDefendant sentenced to death";
       additionalFooterNote = "";
     } else if (user.id === process.env.OWNERID) {
-      sentence = "Plaintiff needs to pay the defendant $10M USD\nPlaintiff sentenced to death";
-      additionalFooterNote = "imagine suing the owner lol, i own this court dude";
+      sentence =
+        "Plaintiff needs to pay the defendant $10M USD\nPlaintiff sentenced to death";
+      additionalFooterNote =
+        "imagine suing the owner lol, i own this court dude";
     } else if (user.bot === true) {
-      sentence = "Defendant is not guilty\nPlaintiff needs to pay the defendant $1M USD";
+      sentence =
+        "Defendant is not guilty\nPlaintiff needs to pay the defendant $1M USD";
       additionalFooterNote = "imagine suing a bot lol";
     } else {
       sentence = "Death Penalty";
@@ -76,7 +89,9 @@ module.exports = {
             },
           ],
           footer: {
-            text: `Disclaimer: It's not real.` || `Disclaimer: It's not real. also ${additionalFooterNote}`,
+            text:
+              `Disclaimer: It's not real.` ||
+              `Disclaimer: It's not real. also ${additionalFooterNote}`,
           },
         },
       ],
@@ -124,11 +139,17 @@ module.exports = {
                 },
                 {
                   name: "Law Violated",
-                  value: `hackerman14 Law Chapter ${Math.floor(Math.random() * 100)} Section ${Math.floor(
+                  value: `hackerman14 Law Chapter ${Math.floor(
                     Math.random() * 100
-                  )}, Article ${Math.floor(Math.random() * 100)}, Paragraph ${Math.floor(
+                  )} Section ${Math.floor(
                     Math.random() * 100
-                  )}, Subparagraph ${Math.floor(Math.random() * 100)}, Item ${Math.floor(Math.random() * 100)}`,
+                  )}, Article ${Math.floor(
+                    Math.random() * 100
+                  )}, Paragraph ${Math.floor(
+                    Math.random() * 100
+                  )}, Subparagraph ${Math.floor(
+                    Math.random() * 100
+                  )}, Item ${Math.floor(Math.random() * 100)}`,
                 },
                 {
                   name: "Sentence",

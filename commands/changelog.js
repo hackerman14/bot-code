@@ -2,19 +2,25 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("changelog").setDescription("Check what changes are made to the bot!"),
+  data: new SlashCommandBuilder()
+    .setName("changelog")
+    .setDescription("Check what changes are made to the bot!"),
   async execute(interaction) {
     await interaction.reply({
       embeds: [
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: August 7, 2024",
+          description: "Date: January 10, 2026",
           fields: [
             {
-              name: "Added `/encrypt` and `/decrypt` command",
+              name: "Added `/feedback` command",
               value:
-                "The following 2 commands were added to the bot, allowing you to encrypt and decrypt text using Base64 encoding!",
+                "Now you can send me feedbacks about the bot directly through Discord!",
+            },
+            {
+              name: "Added `/no` command",
+              value: "You can send people a no response using No-as-a-Service!",
             },
             {
               name: "Minor command enhancements",

@@ -2,9 +2,13 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("photo").setDescription("Sends you an HD stock photo!"),
+  data: new SlashCommandBuilder()
+    .setName("photo")
+    .setDescription("Sends you an HD stock photo!"),
   async execute(interaction) {
-    fetch(`https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH}`)
+    fetch(
+      `https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH}`
+    )
       .then((res) => res.json())
       .then((body) => {
         interaction.reply({
@@ -25,7 +29,7 @@ module.exports = {
                 {
                   name: "Download",
                   value: `[Click here to download!](${body.links.download})`,
-                }
+                },
               ],
               image: {
                 url: body.urls.raw,

@@ -6,12 +6,18 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("hack")
     .setDescription("Hack a user! (Dank Memer enhanced replica)")
-    .addUserOption((option) => option.setName("user").setDescription("The user you want to hack!").setRequired(true)),
+    .addUserOption((option) =>
+      option
+        .setName("user")
+        .setDescription("The user you want to hack!")
+        .setRequired(true)
+    ),
   async execute(interaction) {
     let member = await interaction.options.getUser("user").fetch(true);
 
     function randomPassword() {
-      var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+      var charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
       var length = Math.floor(Math.random() * (24 - 12 + 1)) + 12;
       var retVal = "";
 
@@ -34,7 +40,8 @@ module.exports = {
         "msn.com",
         "163.com",
       ];
-      var randomEmailSuffix = emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
+      var randomEmailSuffix =
+        emailSuffix[Math.floor(Math.random() * emailSuffix.length)];
 
       if (/\d/.test(member.username) === true) {
         var result = `${member.username.toLowerCase()}@${randomEmailSuffix}`;
@@ -45,7 +52,20 @@ module.exports = {
     }
 
     function randomPhrase() {
-      var phrase = ["iirc", "idgaf", "lol", "xd", "haha", "u sux", "drown", "ratio", "lmao", "bruh", "smh", "wtf"];
+      var phrase = [
+        "iirc",
+        "idgaf",
+        "lol",
+        "xd",
+        "haha",
+        "u sux",
+        "drown",
+        "ratio",
+        "lmao",
+        "bruh",
+        "smh",
+        "wtf",
+      ];
       var result = phrase[Math.floor(Math.random() * phrase.length)];
       return result;
     }
@@ -141,10 +161,10 @@ module.exports = {
 
     // For nerds: IPv4 have digits between 0 and 255,
     // so there wouldn't be issues about IPs if I use all digits above 255.
-    const randomIP = `${randomNumber(256, 999)}.${randomNumber(256, 999)}.${randomNumber(256, 999)}.${randomNumber(
+    const randomIP = `${randomNumber(256, 999)}.${randomNumber(
       256,
       999
-    )}`;
+    )}.${randomNumber(256, 999)}.${randomNumber(256, 999)}`;
 
     const title = "**The Ultimate Hacker**";
     const description = `Target: ${member}`;
@@ -198,7 +218,12 @@ module.exports = {
           fields: [
             {
               name: fieldName,
-              value: [`\`\`\``, `[${time1}] ${log1}`, `[${time2}] ${log2}`, `\`\`\``].join("\n"),
+              value: [
+                `\`\`\``,
+                `[${time1}] ${log1}`,
+                `[${time2}] ${log2}`,
+                `\`\`\``,
+              ].join("\n"),
             },
           ],
         },
@@ -591,7 +616,12 @@ module.exports = {
             },
             {
               name: `${fieldName} 2`,
-              value: [`\`\`\``, `[${time15}] ${maxLengthError}`, `[${time15}] ${log16}`, `\`\`\``].join("\n"),
+              value: [
+                `\`\`\``,
+                `[${time15}] ${maxLengthError}`,
+                `[${time15}] ${log16}`,
+                `\`\`\``,
+              ].join("\n"),
             },
           ],
         },
@@ -779,7 +809,8 @@ module.exports = {
             },
             {
               name: "In case you're dumb...",
-              value: "This is 100% a joke command that doesn't even hack people...",
+              value:
+                "This is 100% a joke command that doesn't even hack people...",
             },
           ],
         },

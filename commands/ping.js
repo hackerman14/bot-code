@@ -2,7 +2,9 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("ping").setDescription("Replies with pong!"),
+  data: new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Replies with pong!"),
   async execute(interaction) {
     const { client } = interaction;
     await interaction.reply({

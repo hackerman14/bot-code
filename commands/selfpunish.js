@@ -15,7 +15,10 @@ module.exports = {
         .setRequired(true)
     )
     .addStringOption((option) =>
-      option.setName("reason").setDescription("Reason why you are punishing yourself").setRequired(true)
+      option
+        .setName("reason")
+        .setDescription("Reason why you are punishing yourself")
+        .setRequired(true)
     ),
 
   async execute(interaction) {

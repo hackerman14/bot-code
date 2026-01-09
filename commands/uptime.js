@@ -2,7 +2,9 @@ require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("uptime").setDescription("Check how long the bot has stayed on!"),
+  data: new SlashCommandBuilder()
+    .setName("uptime")
+    .setDescription("Check how long the bot has stayed on!"),
   async execute(interaction) {
     const { client } = interaction;
     let totalSeconds = client.uptime / 1000;
@@ -19,7 +21,6 @@ module.exports = {
           color: 0x0ccab6,
           title: "**Time Tracker**",
           description: `The bot has stayed on for ${uptime}!`,
-          
         },
       ],
     });

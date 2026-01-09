@@ -3,7 +3,9 @@ const { SlashCommandBuilder } = require("discord.js");
 const axios = require("axios");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("gif").setDescription("Sends you a random GIF!"),
+  data: new SlashCommandBuilder()
+    .setName("gif")
+    .setDescription("Sends you a random GIF!"),
   async execute(interaction) {
     const APIs = [
       {
@@ -30,7 +32,9 @@ module.exports = {
       },
     ];
     const randomAPI = APIs[Math.floor(Math.random() * APIs.length)];
-    const response = await axios.get(randomAPI.url, { params: randomAPI.params });
+    const response = await axios.get(randomAPI.url, {
+      params: randomAPI.params,
+    });
 
     await interaction.reply({
       embeds: [

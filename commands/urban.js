@@ -9,11 +9,15 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("word_or_phrase")
-        .setDescription("Type the word or phrase you want to look up on Urban Dictionary")
+        .setDescription(
+          "Type the word or phrase you want to look up on Urban Dictionary"
+        )
         .setRequired(true)
     ),
   async execute(interaction) {
-    let search = interaction.options.getString("word_or_phrase").replace(" ", "+");
+    let search = interaction.options
+      .getString("word_or_phrase")
+      .replace(" ", "+");
     let link = "https://api.urbandictionary.com/v0/define?term=";
     let fetch = await axios(link + encodeURI(search));
     fetch = fetch.data.list;
@@ -24,8 +28,8 @@ module.exports = {
           {
             color: 0x0ccab6,
             title: "**Urban Dictionary**",
-            description: "What you're looking for doesn't exist on Urban Dictionary!",
-
+            description:
+              "What you're looking for doesn't exist on Urban Dictionary!",
           },
         ],
         flags: MessageFlags.Ephemeral,
@@ -38,7 +42,10 @@ module.exports = {
     let thumbsDown = data.thumbs_down;
     let title = data.word;
 
-    definition = definition.length >= 1024 ? definition.slice(0, 1020) + "..." : definition;
+    definition =
+      definition.length >= 1024
+        ? definition.slice(0, 1020) + "..."
+        : definition;
     example = example.length >= 1024 ? example.slice(0, 1020) + "..." : example;
 
     interaction.reply({
@@ -61,7 +68,6 @@ module.exports = {
               value: example,
             },
           ],
-          
         },
       ],
     });

@@ -7,7 +7,10 @@ module.exports = {
     .setName("define")
     .setDescription("Defines a given word or something")
     .addStringOption((option) =>
-      option.setName("something").setDescription("The word or phrase to define").setRequired(true)
+      option
+        .setName("something")
+        .setDescription("The word or phrase to define")
+        .setRequired(true)
     ),
   async execute(interaction) {
     const something = interaction.options.getString("something");

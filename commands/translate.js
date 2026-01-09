@@ -7,22 +7,34 @@ module.exports = {
     .setName("translate")
     .setDescription("Translates a given text to the user's specified language!")
     .addStringOption((option) =>
-      option.setName("language").setDescription("The target language code (e.g. en, es, fr)").setRequired(true)
+      option
+        .setName("language")
+        .setDescription("The target language code (e.g. en, es, fr)")
+        .setRequired(true)
     )
-    .addStringOption((option) => option.setName("text").setDescription("The text to translate").setRequired(true)),
+    .addStringOption((option) =>
+      option
+        .setName("text")
+        .setDescription("The text to translate")
+        .setRequired(true)
+    ),
   async execute(interaction) {
     const targetLanguage = interaction.options.getString("language");
     const textToTranslate = interaction.options.getString("text");
 
-    const response = await axios.post("https://translate.googleapis.com/translate_a/single", null, {
-      params: {
-        client: "gtx",
-        sl: "auto",
-        tl: targetLanguage,
-        dt: "t",
-        q: textToTranslate,
-      },
-    });
+    const response = await axios.post(
+      "https://translate.googleapis.com/translate_a/single",
+      null,
+      {
+        params: {
+          client: "gtx",
+          sl: "auto",
+          tl: targetLanguage,
+          dt: "t",
+          q: textToTranslate,
+        },
+      }
+    );
 
     await interaction.reply({
       embeds: [

@@ -1,5 +1,9 @@
 require("dotenv").config();
-const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  MessageFlags,
+} = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()

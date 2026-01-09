@@ -4,9 +4,10 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("skeppy")
-    .setDescription("Tells you a random Skeppy (or related) quote along with its meaning!"),
+    .setDescription(
+      "Tells you a random Skeppy (or related) quote along with its meaning!"
+    ),
   async execute(interaction) {
-
     var quotes = [
       {
         quote: "like or die tmr",
@@ -30,7 +31,8 @@ module.exports = {
       },
       {
         quote: "m",
-        meaning: 'That one time when Skeppy accidentally typed "m" in his server\'s global chat',
+        meaning:
+          'That one time when Skeppy accidentally typed "m" in his server\'s global chat',
       },
       {
         quote: "QUIT GAME",
@@ -79,11 +81,13 @@ module.exports = {
       },
       {
         quote: "oh shoot there's a mod on",
-        meaning: "Skeppy finds out there's other staff member on a Minecraft server",
+        meaning:
+          "Skeppy finds out there's other staff member on a Minecraft server",
       },
       {
         quote: "*eagle loud screaming especially when he eats the spicy sauce*",
-        meaning: "[Beautiful voice during a SkyWars hot sauce challenge](https://youtu.be/dZV5YxTYX1Q&t=75)",
+        meaning:
+          "[Beautiful voice during a SkyWars hot sauce challenge](https://youtu.be/dZV5YxTYX1Q&t=75)",
       },
       {
         quote: "i was testing",
@@ -108,7 +112,8 @@ module.exports = {
       },
       {
         quote: "14",
-        meaning: "A random number that Skeppy made a6d say repeatedly to piss BadBoyHalo off",
+        meaning:
+          "A random number that Skeppy made a6d say repeatedly to piss BadBoyHalo off",
       },
       {
         quote: "WHY DID YOU DO IT!?!?",
@@ -141,7 +146,8 @@ module.exports = {
       },
       {
         quote: "ping spoofing",
-        meaning: "A type of hack that Skeppy keeps mentioning to piss BadBoyHalo off",
+        meaning:
+          "A type of hack that Skeppy keeps mentioning to piss BadBoyHalo off",
       },
       {
         quote: "turtle",
@@ -166,7 +172,8 @@ module.exports = {
       },
       {
         quote: "ding",
-        meaning: 'BadBoyHalo\'s "ding ding ding ding ding, ding ding ding ding ding ding ding"',
+        meaning:
+          'BadBoyHalo\'s "ding ding ding ding ding, ding ding ding ding ding ding ding"',
       },
       {
         quote: "oh my goodness",
@@ -182,11 +189,13 @@ module.exports = {
       },
       {
         quote: "pine cone",
-        meaning: "A random thing that Skeppy looked up on Google that BadBoyHalo is confused about",
+        meaning:
+          "A random thing that Skeppy looked up on Google that BadBoyHalo is confused about",
       },
       {
         quote: "thin-crust pizza",
-        meaning: "A kind of pizza that Skeppy sent 72 of them to BadBoyHalo for a video",
+        meaning:
+          "A kind of pizza that Skeppy sent 72 of them to BadBoyHalo for a video",
       },
       {
         quote: "slash slash undo",
@@ -259,7 +268,8 @@ module.exports = {
         {
           color: 0x0ccab6,
           title: "**Skeppy Quotes**",
-          description: "Another day, another Skeppy's (and related) classic quote.",
+          description:
+            "Another day, another Skeppy's (and related) classic quote.",
           fields: [
             {
               name: "Quote",
@@ -270,7 +280,6 @@ module.exports = {
               value: randomQuote.meaning,
             },
           ],
-          
         },
       ],
     });

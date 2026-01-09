@@ -3,7 +3,9 @@ const { SlashCommandBuilder } = require("discord.js");
 const axios = require("axios");
 
 module.exports = {
-  data: new SlashCommandBuilder().setName("joke").setDescription("Tells you a dad joke!"),
+  data: new SlashCommandBuilder()
+    .setName("joke")
+    .setDescription("Tells you a dad joke!"),
   async execute(interaction) {
     const response = await axios.get("https://icanhazdadjoke.com", {
       headers: {
