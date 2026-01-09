@@ -13,7 +13,7 @@ One of the main reasons I'm making this bot open source is to help people who en
 
 ## Troubleshooting
 
- - If the bot went offline, please contact the me regards the issue.
+ - If the bot went offline, please contact me regards the issue.
  - If the bot isn't working, try checking the permissions for the bot in your server or maybe you've blocked the bot.
 
 ## Features
