@@ -16,7 +16,7 @@ module.exports = {
     const something = interaction.options.getString("something");
 
     const response = await axios.get(
-      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${something}?key=${process.env.MW}`
+      `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${something}?key=${process.env.MW_API_KEY}`
     );
 
     if (response.data.length === 0) {

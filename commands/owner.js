@@ -6,7 +6,7 @@ module.exports = {
     .setName("owner")
     .setDescription("Check if you own the hackerman14 bot!"),
   async execute(interaction) {
-    if (interaction.user.id !== process.env.OWNERID)
+    if (interaction.user.id !== process.env.OWNER_ID)
       return interaction.reply({
         embeds: [
           {

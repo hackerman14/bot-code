@@ -11,7 +11,7 @@ const {
   MessageFlags,
 } = require("discord.js");
 const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -87,10 +87,9 @@ module.exports = {
       const userSubject = interaction.fields.getTextInputValue("subjectInput");
       const userFeedback =
         interaction.fields.getTextInputValue("feedbackInput");
-      console.log({ userFeedbackType, userSubject, userFeedback });
 
       await resend.emails.send({
-        from: `hackerman14 Feedback <${process.env.EMAIL_SENDER}>`,
+        from: `hackerman14 Bot Feedback <${process.env.EMAIL_SENDER}>`,
         to: process.env.EMAIL_RECEIVER,
         template: {
           id: "hackerman14-bot-feedback",

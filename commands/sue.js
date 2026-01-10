@@ -50,11 +50,11 @@ module.exports = {
         flags: MessageFlags.Ephemeral,
       });
 
-    if (user.bot === true && interaction.user.id === process.env.OWNERID) {
+    if (user.bot === true && interaction.user.id === process.env.OWNER_ID) {
       sentence =
         "Defendant needs to pay the plaintiff $10M USD\nDefendant sentenced to death";
       additionalFooterNote = "";
-    } else if (user.id === process.env.OWNERID) {
+    } else if (user.id === process.env.OWNER_ID) {
       sentence =
         "Plaintiff needs to pay the defendant $10M USD\nPlaintiff sentenced to death";
       additionalFooterNote =

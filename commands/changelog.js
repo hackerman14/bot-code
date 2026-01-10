@@ -20,12 +20,16 @@ module.exports = {
             },
             {
               name: "Added `/no` command",
-              value: "You can send people a no response using No-as-a-Service!",
+              value: "Send people a `no` response using No-as-a-Service!",
             },
             {
-              name: "Minor command enhancements",
+              name: "Added `/gender` command",
+              value: "Determine the gender of a name response using Genderize!",
+            },
+            {
+              name: "Minor enhancements",
               value:
-                "Some commands have been improved for the overall consistency of the bot!",
+                "Some code has been improved for the overall consistency of the bot!",
             },
           ],
         },

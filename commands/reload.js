@@ -12,7 +12,7 @@ module.exports = {
     .setDescription("Restarts the bot! (Bot developer exclusive)"),
   async execute(interaction) {
     const { client } = interaction;
-    if (interaction.user.id !== process.env.OWNERID)
+    if (interaction.user.id !== process.env.OWNER_ID)
       return interaction.reply({
         embeds: [
           {

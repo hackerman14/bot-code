@@ -9,10 +9,10 @@ module.exports = {
   async execute(interaction) {
     const APIs = [
       {
-        name: "GIPHY",
+        name: "Giphy",
         url: "http://api.giphy.com/v1/gifs/random",
         params: {
-          api_key: process.env.GIPHY,
+          api_key: process.env.GIPHY_API_KEY,
           rating: "pg",
         },
         extractUrl: (data) => data.data.images.original.url,
@@ -22,7 +22,7 @@ module.exports = {
         url: "https://tenor.googleapis.com/v2/search",
         params: {
           q: "gif",
-          key: process.env.TENOR,
+          key: process.env.TENOR_API_KEY,
           media_filter: "gif",
           content_filter: "medium",
           random: "true",

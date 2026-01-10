@@ -20,7 +20,7 @@ module.exports = {
           fields: [
             {
               name: "Bot Edition",
-              value: "NotSoStable",
+              value: "NotSoStable (Build 2026.01.10)",
             },
             {
               name: "Bot Since",
@@ -50,7 +50,7 @@ module.exports = {
             },
           ],
           footer: {
-            text: `Made with ❤️ created by ${process.env.BOTOWNER}`,
+            text: `Made with ❤️ created by ${process.env.BOT_OWNER}`,
           },
         },
       ],

@@ -5,7 +5,7 @@ const axios = require("axios");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("no")
-    .setDescription("No-as-a-Service"),
+    .setDescription("Say no with a meaningful reason!"),
   async execute(interaction) {
     const response = await axios.get("https://naas.isalman.dev/no");
     const reason = response.data.reason;

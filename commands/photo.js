@@ -7,7 +7,7 @@ module.exports = {
     .setDescription("Sends you an HD stock photo!"),
   async execute(interaction) {
     fetch(
-      `https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH}`
+      `https://api.unsplash.com/photos/random?client_id=${process.env.UNSPLASH_ACCESS_KEY}`
     )
       .then((res) => res.json())
       .then((body) => {

@@ -14,7 +14,7 @@ module.exports = {
       },
       {
         url: "https://uselessfacts.jsph.pl/api/v2/facts/random",
-        name: "Joseph Paul's uselessfacts API",
+        name: "Joseph Paul's Random Useless Facts",
       },
     ];
     const randomAPI = APIs[Math.floor(Math.random() * APIs.length)];

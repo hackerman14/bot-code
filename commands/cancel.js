@@ -1,5 +1,9 @@
 require("dotenv").config();
-const { SlashCommandBuilder, PermissionFlagsBits, InteractionContextType } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  PermissionFlagsBits,
+  InteractionContextType,
+} = require("discord.js");
 const wait = require("node:timers/promises").setTimeout;
 
 module.exports = {
@@ -8,9 +12,17 @@ module.exports = {
     .setDescription("Cancels people!")
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
     .setContexts(InteractionContextType.Guild)
-    .addUserOption((option) => option.setName("user").setDescription("The user you want to cancel").setRequired(true))
+    .addUserOption((option) =>
+      option
+        .setName("user")
+        .setDescription("The user you want to cancel")
+        .setRequired(true)
+    )
     .addStringOption((option) =>
-      option.setName("reason").setDescription("Reason why you are cancelling the user").setRequired(true)
+      option
+        .setName("reason")
+        .setDescription("Reason why you are cancelling the user")
+        .setRequired(true)
     ),
   async execute(interaction) {
     const { guild } = interaction;
@@ -30,7 +42,7 @@ module.exports = {
         embeds: [
           {
             color: 0xf04a47,
-            description: `You were cancelled from ${guild.name} for ${reason}. \n You'll also be cancelled on X, r/discordapp and 4chan.`,
+            description: `You were cancelled from ${guild.name} for ${reason}. \n You'll also be cancelled on X, Reddit and 4chan. \n Commentary YouTubers will soon upload videos regarding your cancellation.`,
           },
         ],
       });
