@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 const axios = require("axios");
 
@@ -10,7 +9,7 @@ module.exports = {
     const APIs = [
       {
         name: "Giphy",
-        url: "http://api.giphy.com/v1/gifs/random",
+        url: "https://api.giphy.com/v1/gifs/random",
         params: {
           api_key: process.env.GIPHY_API_KEY,
           rating: "pg",
@@ -18,17 +17,13 @@ module.exports = {
         extractUrl: (data) => data.data.images.original.url,
       },
       {
-        name: "Tenor",
-        url: "https://tenor.googleapis.com/v2/search",
+        name: "KLIPY",
+        url: `https://api.klipy.com/api/v1/${process.env.KLIPY_API_KEY}/gifs/trending`,
         params: {
-          q: "gif",
-          key: process.env.TENOR_API_KEY,
-          media_filter: "gif",
-          content_filter: "medium",
-          random: "true",
-          limit: 1,
+          page: Math.floor(Math.random() * 50) + 1,
+          customer_id: "hackerman14",
         },
-        extractUrl: (data) => data.results[0].media_formats.gif.url,
+        extractUrl: (data) => data.data.data[Math.floor(Math.random() * 24)]?.file?.hd?.gif?.url,
       },
     ];
     const randomAPI = APIs[Math.floor(Math.random() * APIs.length)];

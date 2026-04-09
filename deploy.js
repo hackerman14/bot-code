@@ -1,16 +1,19 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { REST, Routes } = require("discord.js");
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 
 const commands = [];
+exports.commands = commands;
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
   .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
 
-const clientId = process.env.CLIENTID;
-const guildId = process.env.GUILDID;
+const clientId = process.env.CLIENT_ID;
+exports.clientId = clientId;
+const guildId = process.env.GUILD_ID;
+exports.guildId = guildId;
 
 for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
@@ -27,7 +30,8 @@ for (const file of commandFiles) {
 // This file will deploy both guild and global commands by default.
 
 // Construct and prepare an instance of the REST module
-const rest = new REST().setToken(process.env.DISCORD);
+const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
+exports.rest = rest;
 
 // Deploy guild commands
 (async () => {

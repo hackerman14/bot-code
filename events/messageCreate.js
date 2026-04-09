@@ -3,7 +3,11 @@ module.exports = {
   name: "messageCreate",
   async execute(message) {
     if (message.author.bot) return;
-    if (message.content.includes(`<@${process.env.CLIENTID}>`)) {
+
+    // Supposedly this works, but due to Discord not permitting me to use Message Intent API,
+    // the bot cannot read any message content and thus won't respond to any message.
+    // Oh well, at least it can still respond to slash commands and pings!
+    if (message.mentions.has(process.env.CLIENT_ID)) {
       message.reply({
         embeds: [
           {

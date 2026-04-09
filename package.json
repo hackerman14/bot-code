@@ -11,15 +11,14 @@
   "author": "Raymond Hsu",
   "license": "MIT",
   "dependencies": {
-    "@top-gg/sdk": "^3.1.6",
-    "axios": "^1.13.2",
+    "axios": "^1.14.0",
     "discord-bot-analytics": "^1.0.14",
-    "discord.js": "^14.25.1",
-    "dotenv": "^17.2.3",
+    "discord.js": "^14.26.2",
+    "dotenv": "^17.4.1",
     "express": "^5.2.1",
     "moment": "^2.30.1",
     "random-puppy": "^1.1.0",
-    "resend": "^6.7.0",
+    "resend": "^6.10.0",
     "topgg-autoposter": "^2.0.2"
   }
 }

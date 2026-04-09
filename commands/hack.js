@@ -1,4 +1,3 @@
-require("dotenv").config();
 const wait = require("node:timers/promises").setTimeout;
 const { SlashCommandBuilder } = require("discord.js");
 

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -280,6 +279,9 @@ module.exports = {
               value: randomQuote.meaning,
             },
           ],
+          footer: {
+            text: "I no longer watch Skeppy so it's no longer updated, I just kept this command for the legacy",
+          }
         },
       ],
     });

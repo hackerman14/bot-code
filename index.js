@@ -78,14 +78,14 @@ app.get("/", (request, response) => {
 
 const cheweyBotAnalyticsAPI = require("discord-bot-analytics");
 const customAnalytics = new cheweyBotAnalyticsAPI(
-  process.env.CHEWEY,
+  process.env.CHEWEY_API_KEY,
   client
 );
 
 const { AutoPoster } = require("topgg-autoposter");
-const ap = AutoPoster(process.env.TOPGG, client);
+const ap = AutoPoster(process.env.TOPGG_API_TOKEN, client);
 ap.on("posted", () => {
   console.log("Posted stats to Top.gg!");
 });
 
-client.login(process.env.DISCORD);
+client.login(process.env.DISCORD_BOT_TOKEN);

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -11,26 +10,18 @@ module.exports = {
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: January 10, 2026",
+          description: "Date: April 1, 2026",
           fields: [
             {
-              name: "Added `/feedback` command",
+              name: "Updated `/gif` command",
               value:
-                "Now you can send me feedbacks about the bot directly through Discord!",
+                "Changed the API provider from Tenor to KLIPY since Tenor API is getting terminated soon.",
             },
-            {
-              name: "Added `/no` command",
-              value: "Send people a `no` response using No-as-a-Service!",
-            },
-            {
-              name: "Added `/gender` command",
-              value: "Determine the gender of a name response using Genderize!",
-            },
-            {
-              name: "Minor enhancements",
-              value:
-                "Some code has been improved for the overall consistency of the bot!",
-            },
+          //   {
+          //     name: "Minor enhancements",
+          //     value:
+          //       "Some code has been improved for the overall consistency of the bot!",
+          //   },
           ],
         },
       ],
