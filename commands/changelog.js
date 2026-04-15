@@ -10,18 +10,18 @@ module.exports = {
         {
           color: 0x0ccab6,
           title: "**Bot Changelog**",
-          description: "Date: April 1, 2026",
+          description: "Date: `April 15, 2026`",
           fields: [
             {
-              name: "Updated `/gif` command",
+              name: "Added `/yes` command",
               value:
-                "Changed the API provider from Tenor to KLIPY since Tenor API is getting terminated soon.",
+                "In addition to the `/no` command, you can now use `/yes` to get a meaningful reason for saying yes!",
             },
-          //   {
-          //     name: "Minor enhancements",
-          //     value:
-          //       "Some code has been improved for the overall consistency of the bot!",
-          //   },
+            {
+              name: "Minor enhancements",
+              value:
+                "Some code has been improved for the overall consistency of the bot!",
+            },
           ],
         },
       ],
