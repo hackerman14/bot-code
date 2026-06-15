@@ -60,11 +60,11 @@ module.exports = {
             },
             {
               name: "Definition",
-              value: definition,
+              value: definition.replace(/[\[\]]/g, ''),
             },
             {
               name: "Usage Example",
-              value: example,
+              value: example.replace(/[\[\]]/g, ''),
             },
           ],
         },

@@ -19,7 +19,7 @@ module.exports = {
           fields: [
             {
               name: "Bot Edition",
-              value: "NotSoStable (Build 2026.01.10)",
+              value: "NotSoStable (Build 2026.05.06)",
             },
             {
               name: "Bot Since",
@@ -36,7 +36,7 @@ module.exports = {
             {
               name: "Host Provider",
               value:
-                "[Oracle Cloud Infrastructure](https://www.oracle.com/cloud/)",
+                "[Google Cloud](https://cloud.google.com/)",
             },
             {
               name: "Open Source",
